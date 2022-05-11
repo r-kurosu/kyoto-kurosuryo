@@ -8,8 +8,10 @@ install requirements (preparing now...)
 ## 1. test experiment
 - run dt_argorithm_test.py
 - defolt dateset is all.
+(coming soon...)
+
 
 ## 2. CV experiment
 - run dt_argolithm.py
 - defolt dataset is all.
-
+(coming soon...)
