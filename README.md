@@ -1,4 +1,3 @@
-# kyoto-u
 Made by Kurosu 
 
 ## setting
