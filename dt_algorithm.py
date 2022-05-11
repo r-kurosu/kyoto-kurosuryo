@@ -17,10 +17,14 @@ CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 RHO = 0.05
 THETA = 0.1
 N_LEAST = 10
-INPUT_DATA = "dataset/classification_var0_5000_42922/AhR_small_var0_desc_norm.csv"
-VALUE_DATA = "dataset/classification_var0_5000_42922/AhR_small_values.txt"
+# CSV_DATA = "dataset/AhR_large_var0_quadratic_h5000_desc_norm.csv"
+# VALUE_DATA = "dataset/AhR_large_values.txt"
+CSV_DATA = "dataset/classification_var0_5000_42922/AhR_large_var0_quadratic_h50_desc_norm.csv"
+VALUE_DATA = "dataset/classification_var0_5000_42922/AhR_large_values.txt"
 
-EXPERIMENT_DATA = 0
+TIMES = 1 # CVの回数（実験は10で行う）
+
+
 
 def read_data_list():
     df = pd.read_csv("dataset.csv")
@@ -362,7 +366,7 @@ def test_main(INPUT_CSV, INPUT_TXT):
     test_scores = []
     train_scores = []
     st_time = time.time()
-    for times in range(10):
+    for times in range(TIMES):
         # print("-----------------------------------------------")
         # print(f"{times+1}回目の交差実験")
         # 5-foldCVによる分析
@@ -395,7 +399,7 @@ def test_main(INPUT_CSV, INPUT_TXT):
 
             while D > N_least:
                 p += 1
-                # print(f"|D|={D}", f"p={p}")
+                print(f"|D|={D}", f"p={p}")
                 new_D, new_x_df, new_y = constructing_DT_based_HP(x_train, y_train, D, K, w_p, b_p, c_p_A, c_p_B, CIDs_train, a_score_train)
                 D = new_D
                 x_train = new_x_df.reset_index(drop=True)
@@ -429,18 +433,18 @@ def test_main(INPUT_CSV, INPUT_TXT):
             train_score = roc_auc_score(y_true_train, a_score_train)
             ROC_AOC_scores_train.append(train_score)
             train_scores.append(train_score)
-            # print(f"ROC/AUC train score: {train_score}")
+            print(f"ROC/AUC train score: {train_score}")
 
             a_score_test = a_score_test.to_numpy()
             y_test = y_test.to_numpy()
             test_score = roc_auc_score(y_true_test, a_score_test)
             ROC_AOC_scores_test.append(test_score)
             test_scores.append(test_score)
-            # print(f"ROC/AUC test score: {test_score}")
+            print(f"ROC/AUC test score: {test_score}")
 
         # 5foldCV終了
-        # print(f"ROC AUC train score: {statistics.median(ROC_AOC_scores_train)}, {ROC_AOC_scores_train}")
-        # print(f"ROC AUC test score: {statistics.median(ROC_AOC_scores_test)}, {ROC_AOC_scores_test}")
+        print(f"ROC AUC train score: {statistics.median(ROC_AOC_scores_train)}, {ROC_AOC_scores_train}")
+        print(f"ROC AUC test score: {statistics.median(ROC_AOC_scores_test)}, {ROC_AOC_scores_test}")
 
     # 10回のCV終了
     ed_time = time.time()
@@ -455,10 +459,15 @@ def test_main(INPUT_CSV, INPUT_TXT):
 
 
 def main():
-    INPUT_CSV, INPUT_TXT = read_data_list()
-    for i in reversed(range(len(INPUT_CSV))):
-        print("↓ " + str(INPUT_CSV[i]))
-        test_main(INPUT_CSV[i], INPUT_TXT[i])
+    ## - experiment all datasets
+    # INPUT_CSV, INPUT_TXT = read_data_list()
+    # for i in reversed(range(len(INPUT_CSV))):
+    #     print("↓ " + str(INPUT_CSV[i]))
+    #     test_main(INPUT_CSV[i], INPUT_TXT[i])
+
+    ## - experiment one dataset
+    print(f"experiment {CSV_DATA}")
+    test_main(CSV_DATA, VALUE_DATA)
 
     return
 

@@ -17,10 +17,9 @@ RHO = 0.05
 THETA = 0.1
 N_LEAST = 10
 INPUT_DATA = "dataset/classification_var0_5000_42922/AR_LBD_large_var0_quadratic_h200_desc_norm.csv"
-VALUE_DATA = "dataset/classification_var0_5000_42922/AR_LBD_large_values.txt"
-
+VALUE_DATA = "dataset/AhR_large_values.txt"
 TEST_INPUT_DATA = "dataset/classification_test_var0_5000_42922/AR_LBD_large_var0_quadratic_h200_desc_norm.csv"
-TEST_VALUE_DATA = "dataset/classification_test_var0_5000_42922/AR_LBD_large_values.txt"
+TEST_VALUE_DATA = "dataset/AhR_large_values.txt"
 
 print(f"rho : {RHO}")
 print(f"theta : {THETA}")
@@ -432,8 +431,8 @@ def main_test(train_data: object, train_value: object, test_data: object, test_v
 
 
 def main():
+    # 1.　全てのデータを実験
     TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT = read_data_list()
-
     results = []
     for i in range(66):
         score1 = main_test(train_data=TRAIN_CSV[i], train_value=TRAIN_TXT[i], test_data=TEST_CSV[i], test_value=TEST_TXT[i])
@@ -446,6 +445,17 @@ def main():
 
         results.append(score)
     print(f"average score : {statistics.mean(results)}")
+
+    # 2. 一つだけ実験---------------------------------------------------------
+    TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT = INPUT_DATA, VALUE_DATA, TEST_INPUT_DATA, TEST_VALUE_DATA
+    score1 = main_test(train_data=TRAIN_CSV, train_value=TRAIN_TXT, test_data=TEST_CSV, test_value=TEST_TXT)
+    score2 = main_test(train_data=TEST_CSV, train_value=TEST_TXT, test_data=TRAIN_CSV, test_value=TRAIN_TXT)
+
+    score = statistics.median([score1, score2])
+    print("---------------------------------------")
+    print(TRAIN_CSV[i])
+    print(f"score median : {score}")
+    # --------------------------------------------------------------------
 
     return
 
