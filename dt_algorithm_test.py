@@ -16,11 +16,11 @@ CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 RHO = 0.05
 THETA = 0.1
 N_LEAST = 10
-INPUT_DATA = "classification_var0_5000_42922/AR_LBD_large_var0_quadratic_h200_desc_norm.csv"
-VALUE_DATA = "classification_var0_5000_42922/AR_LBD_large_values.txt"
+INPUT_DATA = "dataset/classification_var0_5000_42922/AR_LBD_large_var0_quadratic_h200_desc_norm.csv"
+VALUE_DATA = "dataset/classification_var0_5000_42922/AR_LBD_large_values.txt"
 
-TEST_INPUT_DATA = "classification_test_var0_5000_42922/AR_LBD_large_var0_quadratic_h200_desc_norm.csv"
-TEST_VALUE_DATA = "classification_test_var0_5000_42922/AR_LBD_large_values.txt"
+TEST_INPUT_DATA = "dataset/classification_test_var0_5000_42922/AR_LBD_large_var0_quadratic_h200_desc_norm.csv"
+TEST_VALUE_DATA = "dataset/classification_test_var0_5000_42922/AR_LBD_large_values.txt"
 
 print(f"rho : {RHO}")
 print(f"theta : {THETA}")
@@ -38,10 +38,10 @@ def read_data_list():
     for i in range(len(df)):
         for size in l_or_s:
             for h in h_list:
-                TRAIN_CSV.append("classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-                TEST_CSV.append("classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-                TRAIN_TXT.append("classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
-                TEST_TXT.append("classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
+                TRAIN_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
+                TEST_CSV.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
+                TRAIN_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
+                TEST_TXT.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
 
     return TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT
 
@@ -79,7 +79,7 @@ def find_separator(x_df, y, D, K, w_p, b_p, CIDs):
     model = pulp.LpProblem("Linear_Separator", pulp.LpMinimize)
     # 変数定義
     b = pulp.LpVariable("b", cat=pulp.LpContinuous)
-    w = [pulp.LpVariable("w_{}".format(i),-2, 2, cat=pulp.LpContinuous) for i in range(K)]
+    w = [pulp.LpVariable("w_{}".format(i), -1, 1, cat=pulp.LpContinuous) for i in range(K)]
     eps = pulp.LpVariable('eps', lowBound=0, cat=pulp.LpContinuous)
     # 目的関数
     model += eps
