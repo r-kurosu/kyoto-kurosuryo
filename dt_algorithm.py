@@ -19,8 +19,8 @@ THETA = 0.1
 N_LEAST = 10
 # CSV_DATA = "dataset/AhR_large_var0_quadratic_h5000_desc_norm.csv"
 # VALUE_DATA = "dataset/AhR_large_values.txt"
-CSV_DATA = "dataset/classification_var0_5000_42922/AhR_large_var0_quadratic_h50_desc_norm.csv"
-VALUE_DATA = "dataset/classification_var0_5000_42922/AhR_large_values.txt"
+CSV_DATA = "dataset/AhR_large_var0_quadratic_h25000_desc_norm.csv"
+VALUE_DATA = "dataset/AhR_large_values.txt"
 
 TIMES = 1 # CVの回数（実験は10で行う）
 
@@ -73,9 +73,9 @@ def read_dataset(data_csv, value_txt):
 def find_separator(x_df, y, D, K, w_p, b_p, CIDs):
     model = pulp.LpProblem("Linear_Separator", pulp.LpMinimize)
     # 変数定義
-    b = pulp.LpVariable("b", cat=pulp.LpContinuous)
+    b = pulp.LpVariable("b", -1, 1, cat=pulp.LpContinuous)
     w = [pulp.LpVariable("w_{}".format(i), -1, 1, cat=pulp.LpContinuous) for i in range(K)]
-    eps = pulp.LpVariable('eps', lowBound=0, cat=pulp.LpContinuous)
+    eps = pulp.LpVariable('eps', cat=pulp.LpContinuous)
     # 目的関数
     model += eps
     # 制約条件
@@ -362,7 +362,7 @@ def test_main(INPUT_CSV, INPUT_TXT):
     # print(x)
     # print(CIDs)
 
-    # 10回5-fold回す
+    # (TIMES)回 5-fold回す
     test_scores = []
     train_scores = []
     st_time = time.time()
@@ -459,15 +459,15 @@ def test_main(INPUT_CSV, INPUT_TXT):
 
 
 def main():
-    ## - experiment all datasets
-    # INPUT_CSV, INPUT_TXT = read_data_list()
-    # for i in reversed(range(len(INPUT_CSV))):
-    #     print("↓ " + str(INPUT_CSV[i]))
-    #     test_main(INPUT_CSV[i], INPUT_TXT[i])
+    ## 1. experiment all datasets
+    INPUT_CSV, INPUT_TXT = read_data_list()
+    for i in reversed(range(len(INPUT_CSV))):
+        print("↓ " + str(INPUT_CSV[i]))
+        test_main(INPUT_CSV[i], INPUT_TXT[i])
 
-    ## - experiment one dataset
-    print(f"experiment {CSV_DATA}")
-    test_main(CSV_DATA, VALUE_DATA)
+    ## 2. experiment one dataset
+    # print(f"experiment {CSV_DATA}")
+    # test_main(CSV_DATA, VALUE_DATA)
 
     return
 
