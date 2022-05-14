@@ -25,7 +25,7 @@ N_LEAST = 10
 CSV_DATA = "dataset/AhR_large_var0_quadratic_h25000_desc_norm.csv"
 VALUE_DATA = "dataset/AhR_large_values.txt"
 
-TIMES = 1 # CVの回数（実験は10で行う）
+TIMES = 10 # CVの回数（実験は10で行う）
 
 
 

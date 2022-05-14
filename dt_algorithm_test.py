@@ -4,10 +4,13 @@ import numpy as np
 import pandas as pd
 import pulp
 import time, sys, copy, itertools, math, warnings, os
+import openpyxl as excel
+import datetime
+import pathlib
 
 from sklearn.linear_model import Lasso, LinearRegression
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score, balanced_accuracy_score
 
 warnings.simplefilter('ignore')
 CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
@@ -35,12 +38,18 @@ def read_data_list():
     l_or_s = ["large", "small"]
     h_list = [50, 100, 200]
     for i in range(len(df)):
-        for size in l_or_s:
-            for h in h_list:
-                TRAIN_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-                TEST_CSV.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-                TRAIN_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
-                TEST_TXT.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
+        TRAIN_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_large_var0_desc_norm.csv")
+        TEST_CSV.append(
+            "dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_large_var0_desc_norm.csv")
+        TRAIN_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_large_values.txt")
+        TEST_TXT.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_large_values.txt")
+
+        # for size in l_or_s:
+        #     for h in h_list:
+        #         TRAIN_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
+        #         TEST_CSV.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
+        #         TRAIN_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
+        #         TEST_TXT.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
 
     return TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT
 
@@ -77,9 +86,9 @@ def read_dataset(data_csv, value_txt):
 def find_separator(x_df, y, D, K, w_p, b_p, CIDs):
     model = pulp.LpProblem("Linear_Separator", pulp.LpMinimize)
     # 変数定義
-    b = pulp.LpVariable("b", cat=pulp.LpContinuous)
+    b = pulp.LpVariable("b", -1, 1, cat=pulp.LpContinuous)
     w = [pulp.LpVariable("w_{}".format(i), -1, 1, cat=pulp.LpContinuous) for i in range(K)]
-    eps = pulp.LpVariable('eps', lowBound=0, cat=pulp.LpContinuous)
+    eps = pulp.LpVariable('eps', cat=pulp.LpContinuous)
     # 目的関数
     model += eps
     # 制約条件
@@ -351,7 +360,9 @@ def set_a_q(x_df, y, CIDs, a_score):
 
     return
 
+
 depths = []
+
 
 def main_test(train_data: object, train_value: object, test_data: object, test_value: object) -> object:
     # 1. read data set
@@ -391,6 +402,7 @@ def main_test(train_data: object, train_value: object, test_data: object, test_v
     a_score_train = a_score.to_numpy()
     y_train = y_true_train.to_numpy()
     train_score = roc_auc_score(y_train, a_score_train)
+    bacc_train_score = balanced_accuracy_score(y_train, a_score_train)
 
     # 3. test ---------------------------------------------
     x_test, y_test = read_dataset(test_data, test_value)
@@ -421,41 +433,115 @@ def main_test(train_data: object, train_value: object, test_data: object, test_v
     a_score_test = a_score_test.to_numpy()
     y_true_test = y_true_test.to_numpy()
     test_score = roc_auc_score(y_true_test, a_score_test)
+    bacc_test_score = balanced_accuracy_score(y_true_test, a_score_test)
 
     # print("======================================================")
     # print(train_data)
     print(f"train score : {train_score}")
     print(f"test score : {test_score}")
 
-    return test_score
+    return train_score, test_score, bacc_train_score, bacc_test_score
+
+
+def output_xlx(ws, i, data_name, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score):
+    ws["A" + str(i + 2)] = data_name
+    ws["B" + str(i + 2)] = ROCAUC_train_score
+    ws["C" + str(i + 2)] = ROCAUC_test_score
+    ws["D" + str(i + 2)] = BACC_train_score
+    ws["E" + str(i + 2)] = BACC_test_score
+
+    return
+
+
+def wright_columns(ws):
+    ws["B1"] = "train score ROC/AOC"
+    ws["C1"] = "test score ROC/AOC"
+    ws["D1"] = "train score BACC"
+    ws["E1"] = "test score BACC"
+    return
+
+
+def make_dir(now_time):
+    y_m_d = now_time.strftime('%Y-%m-%d')
+    p_file = pathlib.Path("outputfile/TEST/" + y_m_d)
+
+    if not p_file.exists():
+        p_file.mkdir()
+
+    return y_m_d
+
+
+def prepare_output_file():
+    # 出力用のファイルを準備
+    now_time = datetime.datetime.now()
+    y_m_d = make_dir(now_time)
+    date_time = now_time.strftime('%Y%m%d%H%M%S')
+
+    file_name = f"outputfile/TEST/{y_m_d}/{date_time}.xlsx"
+
+    return file_name
+
+
+def check_exist_dataset(fail1, fail2, fail3, fail4):
+    if os.path.exists(fail1) == False or os.path.exists(fail2) == False or os.path.exists(
+            fail3) == False or os.path.exists(fail4) == False:
+        return False
+
+    return True
 
 
 def main():
-    # 1.　全てのデータを実験
+    # エクセルシートを用意
+    wbname = prepare_output_file()
+    wb = excel.Workbook()
+    ws = wb.active
+    wright_columns(ws)
+
+    # 1.　全てのデータを実験--------------------------------------------------
     TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT = read_data_list()
     results = []
-    for i in range(66):
-        score1 = main_test(train_data=TRAIN_CSV[i], train_value=TRAIN_TXT[i], test_data=TEST_CSV[i], test_value=TEST_TXT[i])
-        score2 = main_test(train_data=TEST_CSV[i], train_value=TEST_TXT[i], test_data=TRAIN_CSV[i], test_value=TRAIN_TXT[i])
+    for i in range(len(TRAIN_CSV)):
+        if not check_exist_dataset(TRAIN_CSV[i], TRAIN_TXT[i], TEST_CSV[i], TEST_TXT[i]):
+            continue
+        train_score1, test_score1, bacc_train_score1, bacc_test_score1 = main_test(train_data=TRAIN_CSV[i],
+                                                                                   train_value=TRAIN_TXT[i],
+                                                                                   test_data=TEST_CSV[i],
+                                                                                   test_value=TEST_TXT[i])
+        train_score2, test_score2, bacc_train_score2, bacc_test_score2 = main_test(train_data=TEST_CSV[i],
+                                                                                   train_value=TEST_TXT[i],
+                                                                                   test_data=TRAIN_CSV[i],
+                                                                                   test_value=TRAIN_TXT[i])
 
-        score = statistics.median([score1, score2])
+        train_score = statistics.median([train_score1, train_score2])
+        test_score = statistics.median([test_score1, test_score2])
+        bacc_train_score = statistics.median([bacc_train_score1, bacc_train_score2])
+        bacc_test_score = statistics.median([bacc_test_score1, bacc_test_score2])
         print("---------------------------------------")
         print(TRAIN_CSV[i])
-        print(f"score median : {score}")
+        print(f"train score median : {train_score}")
+        print(f"test score median : {test_score}")
+        results.append(test_score)
+        output_xlx(ws, i, TRAIN_CSV[i], train_score, test_score, bacc_train_score, bacc_test_score)
 
-        results.append(score)
-    print(f"average score : {statistics.mean(results)}")
+    print(f"average score : {statistics.median(results)}")
 
     # 2. 一つだけ実験---------------------------------------------------------
-    TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT = INPUT_DATA, VALUE_DATA, TEST_INPUT_DATA, TEST_VALUE_DATA
-    score1 = main_test(train_data=TRAIN_CSV, train_value=TRAIN_TXT, test_data=TEST_CSV, test_value=TEST_TXT)
-    score2 = main_test(train_data=TEST_CSV, train_value=TEST_TXT, test_data=TRAIN_CSV, test_value=TRAIN_TXT)
-
-    score = statistics.median([score1, score2])
-    print("---------------------------------------")
-    print(TRAIN_CSV[i])
-    print(f"score median : {score}")
+    # TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT = INPUT_DATA, VALUE_DATA, TEST_INPUT_DATA, TEST_VALUE_DATA
+    # train_score1, test_score1, bacc_train_score1, bacc_test_score1 = main_test(train_data=TRAIN_CSV, train_value=TRAIN_TXT, test_data=TEST_CSV, test_value=TEST_TXT)
+    # train_score2, test_score2, bacc_train_score2, bacc_test_score2 = main_test(train_data=TEST_CSV, train_value=TEST_TXT, test_data=TRAIN_CSV, test_value=TRAIN_TXT)
+    #
+    # train_score = statistics.median([train_score1, train_score2])
+    # test_score = statistics.median([test_score1, test_score2])
+    # bacc_train_score = statistics.median([bacc_train_score1, bacc_train_score2])
+    # bacc_test_score = statistics.median([bacc_test_score1, bacc_test_score2])
+    # print("---------------------------------------")
+    # print(TRAIN_CSV)
+    # print(f"train score median : {train_score}")
+    # print(f"test score median : {test_score}")
+    # output_xlx(ws, 1, TRAIN_CSV, train_score, test_score, bacc_train_score, bacc_test_score)
     # --------------------------------------------------------------------
+
+    wb.save(wbname)
 
     return
 
