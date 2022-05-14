@@ -497,6 +497,13 @@ def wright_columns(ws):
     return
 
 
+def wright_parameter(ws):
+    ws["G2"] = f"rho = {RHO}"
+    ws["G3"] = f"theta = {THETA}"
+    ws["G4"] = f"n_least = {N_LEAST}"
+    return
+
+
 def make_dir(now_time):
     y_m_d = now_time.strftime('%Y-%m-%d')
     p_file = pathlib.Path("outputfile/CV/" + y_m_d)
@@ -524,6 +531,7 @@ def main():
     wb = excel.Workbook()
     ws = wb.active
     wright_columns(ws)
+    wright_parameter(ws)
 
     ## 1. experiment all datasets
     INPUT_CSV, INPUT_TXT = read_data_list()
