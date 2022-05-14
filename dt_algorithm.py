@@ -1,13 +1,16 @@
 import statistics
 
+import datetime as datetime
 import numpy as np
 import pandas as pd
 import pulp
 import time, sys, copy, itertools, math, warnings, os
-
+import openpyxl as excel
+import datetime
+import pathlib
 from sklearn.linear_model import Lasso, LinearRegression
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
-from sklearn.metrics import roc_auc_score
+from sklearn.metrics import roc_auc_score, balanced_accuracy_score
 
 
 warnings.simplefilter('ignore')
@@ -33,10 +36,12 @@ def read_data_list():
     l_or_s = ["large", "small"]
     h_list = [50, 100, 200]
     for i in range(len(df)):
-        for size in l_or_s:
-            for h in h_list:
-                INPUT_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-                INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
+        INPUT_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_large_var0_desc_norm.csv")
+        INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_large_values.txt")
+        # for size in l_or_s:
+        #     for h in h_list:
+        #         INPUT_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
+        #         INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
 
     return INPUT_CSV, INPUT_TXT
 
@@ -365,6 +370,8 @@ def test_main(INPUT_CSV, INPUT_TXT):
     # (TIMES)回 5-fold回す
     test_scores = []
     train_scores = []
+    test_scores_bacc = []
+    train_scores_bacc = []
     st_time = time.time()
     for times in range(TIMES):
         # print("-----------------------------------------------")
@@ -373,6 +380,8 @@ def test_main(INPUT_CSV, INPUT_TXT):
         kf = KFold(n_splits=5, shuffle=True)
         ROC_AOC_scores_train = []
         ROC_AOC_scores_test = []
+        BACC_scores_train = []
+        BACC_scores_test = []
 
         for train_id, test_id in kf.split(x_df):
             x_train, x_test = x_df.iloc[train_id], x_df.iloc[test_id]
@@ -420,54 +429,114 @@ def test_main(INPUT_CSV, INPUT_TXT):
             for p in range(len(b_p)):
                 new_D, new_x_df, new_y = experiment_test(x_test, y_test, w_p[p], b_p[p], CIDs_test, a_score_test)
                 D = new_D
-                #TODO train->testに変えた。
                 x_test = new_x_df.reset_index(drop=True)
                 y_test = new_y.reset_index(drop=True)
                 CIDs_test.reset_index(drop=True, inplace=True)
 
             set_a_q(x_test, y_test, CIDs_test, a_score_test)
 
-            # 4. 結果
+            # 4. 結果 -------------------------------
             a_score_train = a_score_train.to_numpy()
-            y_train = y_train.to_numpy()
             train_score = roc_auc_score(y_true_train, a_score_train)
-            ROC_AOC_scores_train.append(train_score)
+            bacc_train_score = balanced_accuracy_score(y_true_train, a_score_train)
             train_scores.append(train_score)
+            train_scores_bacc.append(bacc_train_score)
             print(f"ROC/AUC train score: {train_score}")
+            print(f"BACC train score: {bacc_train_score}")
+            # ROC_AOC_scores_train.append(train_score)
+            # BACC_scores_train.append(train_score)
 
             a_score_test = a_score_test.to_numpy()
-            y_test = y_test.to_numpy()
             test_score = roc_auc_score(y_true_test, a_score_test)
-            ROC_AOC_scores_test.append(test_score)
+            bacc_test_score = balanced_accuracy_score(y_true_test, a_score_test)
             test_scores.append(test_score)
+            test_scores_bacc.append(bacc_test_score)
             print(f"ROC/AUC test score: {test_score}")
-
+            print(f"BACC test score: {bacc_test_score}")
+            # ROC_AOC_scores_test.append(test_score)
+            # BACC_scores_test.append(test_score_bacc)
+            # -----------------------------------------
         # 5foldCV終了
-        print(f"ROC AUC train score: {statistics.median(ROC_AOC_scores_train)}, {ROC_AOC_scores_train}")
-        print(f"ROC AUC test score: {statistics.median(ROC_AOC_scores_test)}, {ROC_AOC_scores_test}")
+        # print(f"ROC AUC train score: {statistics.median(ROC_AOC_scores_train)}, {ROC_AOC_scores_train}")
+        # print(f"ROC AUC test score: {statistics.median(ROC_AOC_scores_test)}, {ROC_AOC_scores_test}")
 
     # 10回のCV終了
     ed_time = time.time()
+    ROCAUC_train_score = statistics.median(train_scores)
+    ROCAUC_test_score = statistics.median(test_scores)
+    BACC_train_score = statistics.median(train_scores_bacc)
+    BACC_test_score = statistics.median(test_scores_bacc)
+
     print("======================================================")
     print(data_csv)
-    print(f"train score : {statistics.median(train_scores)}")
-    print(f"test score : {statistics.median(test_scores)}")
+    print(f"ROC/AUC train score (median): {ROCAUC_train_score}")
+    print(f"ROC/AUC test score (median): {ROCAUC_test_score}")
+    print(f"ROC/AUC train score (median): {BACC_train_score}")
+    print(f"ROC/AUC test score (median): {BACC_test_score}")
     print("計算時間 : {:.1f}".format(ed_time - st_time))
     print("======================================================")
+
+    return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score
+
+
+def output_xlx(ws, i, data_name, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score):
+    ws["A"+str(i+2)] = data_name
+    ws["B"+str(i+2)] = ROCAUC_train_score
+    ws["C"+str(i+2)] = ROCAUC_test_score
+    ws["D"+str(i+2)] = BACC_train_score
+    ws["E"+str(i+2)] = BACC_test_score
 
     return
 
 
+def wright_columns(ws):
+    ws["B1"] = "train score ROC/AOC"
+    ws["C1"] = "test score ROC/AOC"
+    ws["D1"] = "train score BACC"
+    ws["E1"] = "test score BACC"
+    return
+
+
+def make_dir(now_time):
+    y_m_d = now_time.strftime('%Y-%m-%d')
+    p_file = pathlib.Path("outputfile/CV/" + y_m_d)
+
+    if not p_file.exists():
+        p_file.mkdir()
+
+    return y_m_d
+
+
+def prepare_output_file():
+    # 出力用のファイルを準備
+    now_time = datetime.datetime.now()
+    y_m_d = make_dir(now_time)
+    date_time = now_time.strftime('%Y%m%d%H%M%S')
+
+    file_name = f"outputfile/CV/{y_m_d}/{date_time}.xlsx"
+
+    return file_name
+
+
 def main():
+    # エクセルシートを用意
+    wbname = prepare_output_file()
+    wb = excel.Workbook()
+    ws = wb.active
+    wright_columns(ws)
+
     ## 1. experiment all datasets
     INPUT_CSV, INPUT_TXT = read_data_list()
-    for i in reversed(range(len(INPUT_CSV))):
+    for i in range(len(INPUT_CSV)):
         print("↓ " + str(INPUT_CSV[i]))
-        test_main(INPUT_CSV[i], INPUT_TXT[i])
-
+        ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score = test_main(INPUT_CSV[i], INPUT_TXT[i])
+        output_xlx(ws, i, INPUT_CSV[i], ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score)
+    wb.save(wbname)
     ## 2. experiment one dataset
     # print(f"experiment {CSV_DATA}")
     # test_main(CSV_DATA, VALUE_DATA)
+
+    wb.save(wbname)
 
     return
 
