@@ -47,11 +47,15 @@ def main():
     wb = excel.Workbook()
     ws = wb.active
     wright_columns(ws)
+    wb.create_sheet(title="train_score")
+    ws_train_score = wb["train_score"]
+    wright_columns(ws_train_score)
     # --
     for i, rho in enumerate(rho_list):
         for j, theta in enumerate(theta_list):
             ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score = dt_algorithm.main(rho, theta)
             ws.cell(row=i + 2, column=i + 2).value = ROCAUC_test_score
+            ws_train_score.cell(row=i + 2, column=i + 2).value = ROCAUC_train_score
 
     wb.save(wb_name)
 
