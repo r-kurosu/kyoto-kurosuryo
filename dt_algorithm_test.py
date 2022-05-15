@@ -497,7 +497,10 @@ def check_exist_dataset(fail1, fail2, fail3, fail4):
     return True
 
 
-def main():
+def main(rho_arg, theta_arg):
+    global RHO
+    global THETA
+    RHO, THETA = rho_arg, theta_arg
     # エクセルシートを用意
     wbname = prepare_output_file()
     wb = excel.Workbook()
@@ -551,8 +554,8 @@ def main():
 
     wb.save(wbname)
 
-    return
+    return train_score, test_score, bacc_train_score, bacc_test_score
 
 
 if __name__ == "__main__":
-    main()
+    main(RHO, THETA)

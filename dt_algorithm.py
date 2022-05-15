@@ -25,7 +25,7 @@ N_LEAST = 10
 CSV_DATA = "dataset/AhR_large_var0_quadratic_h25000_desc_norm.csv"
 VALUE_DATA = "dataset/AhR_large_values.txt"
 
-TIMES = 10 # CVの回数（実験は10で行う）
+TIMES = 1 # CVの回数（実験は10で行う）
 
 
 
@@ -494,6 +494,7 @@ def wright_columns(ws):
     ws["C1"] = "test score ROC/AOC"
     ws["D1"] = "train score BACC"
     ws["E1"] = "test score BACC"
+
     return
 
 
@@ -501,6 +502,7 @@ def wright_parameter(ws):
     ws["G2"] = f"rho = {RHO}"
     ws["G3"] = f"theta = {THETA}"
     ws["G4"] = f"n_least = {N_LEAST}"
+
     return
 
 
@@ -525,7 +527,11 @@ def prepare_output_file():
     return file_name
 
 
-def main():
+def main(rho_arg, theta_arg):
+    global RHO
+    global THETA
+    RHO, THETA = rho_arg, theta_arg
+
     # エクセルシートを用意
     wbname = prepare_output_file()
     wb = excel.Workbook()
@@ -546,8 +552,8 @@ def main():
 
     wb.save(wbname)
 
-    return
+    return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score
 
 
 if __name__ == "__main__":
-    main()
+    main(RHO, THETA)
