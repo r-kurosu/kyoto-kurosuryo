@@ -20,9 +20,12 @@ def wright_columns(ws):
 def make_dir(now_time):
     y_m_d = now_time.strftime('%Y-%m-%d')
     p_file = pathlib.Path("outputfile/CV/" + y_m_d + "/hyper_turning")
+    p_file_ht = pathlib.Path("outputfile/TEST/" + y_m_d + "/hyper_turning")
 
     if not p_file.exists():
         p_file.mkdir()
+    if not p_file_ht.exists():
+        p_file_ht.mkdir()
 
     return y_m_d
 
