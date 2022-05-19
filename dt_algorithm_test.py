@@ -3,7 +3,7 @@ import statistics
 import numpy as np
 import pandas as pd
 import pulp
-import time, sys, copy, itertools, math, warnings, os
+import time, copy, itertools, math, warnings, os
 import openpyxl as excel
 import datetime
 import pathlib
@@ -12,6 +12,9 @@ from sklearn.linear_model import Lasso, LinearRegression
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
 from sklearn.metrics import roc_auc_score, balanced_accuracy_score
 
+import io, sys
+# sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 warnings.simplefilter('ignore')
 CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 
@@ -19,38 +22,58 @@ CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 RHO = 0.05
 THETA = 0.1
 N_LEAST = 10
-INPUT_DATA = "dataset/classification_var0_5000_42922/AR_LBD_large_var0_quadratic_h200_desc_norm.csv"
-VALUE_DATA = "dataset/AhR_large_values.txt"
-TEST_INPUT_DATA = "dataset/classification_test_var0_5000_42922/AR_LBD_large_var0_quadratic_h200_desc_norm.csv"
-TEST_VALUE_DATA = "dataset/AhR_large_values.txt"
+INPUT_DATA = "dataset/classification_var0_5000_42922/AhR_large_var0_quadratic_h200_desc_norm.csv"
+VALUE_DATA = "dataset/classification_var0_5000_42922/AhR_large_values.txt"
+TEST_INPUT_DATA = "dataset/classification_test_var0_5000_42922/AhR_large_var0_quadratic_h200_desc_norm.csv"
+TEST_VALUE_DATA = "dataset/classification_test_var0_5000_42922/AhR_large_values.txt"
 
-print(f"rho : {RHO}")
-print(f"theta : {THETA}")
-print(f"n_least : {N_LEAST}")
+# print(f"rho : {RHO}")
+# print(f"theta : {THETA}")
+# print(f"n_least : {N_LEAST}")
 
 
 def read_data_list():
-    df = pd.read_csv("dataset.csv")
-    TRAIN_CSV = []
-    TRAIN_TXT = []
-    TEST_CSV = []
-    TEST_TXT = []
-    l_or_s = ["large", "small"]
-    h_list = [50, 100, 200]
-    for i in range(len(df)):
-        TRAIN_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_large_var0_desc_norm.csv")
-        TEST_CSV.append(
-            "dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_large_var0_desc_norm.csv")
-        TRAIN_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_large_values.txt")
-        TEST_TXT.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_large_values.txt")
+    # df = pd.read_csv("dataset.csv")
+    # TRAIN_CSV = []
+    # TRAIN_TXT = []
+    # TEST_CSV = []
+    # TEST_TXT = []
+    # l_or_s = ["large", "small"]
+    # h_list = [50, 100, 200]
+    # for i in range(len(df)):
+    #     for size in l_or_s:
+    #         # all linear descs
+    #         TRAIN_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_desc_norm.csv")
+    #         TEST_CSV.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_desc_norm.csv")
+    #         TRAIN_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
+    #         TEST_TXT.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
+    #
+    #     #     for h in h_list:
+    #     #         TRAIN_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
+    #     #         TEST_CSV.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
+    #     #         TRAIN_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
+    #     #         TEST_TXT.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
 
-        # for size in l_or_s:
-        #     for h in h_list:
-        #         TRAIN_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-        #         TEST_CSV.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-        #         TRAIN_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
-        #         TEST_TXT.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
-
+    TRAIN_CSV = [
+        "dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv",
+        "dataset/classification_var0_5000_42922/ATAD5_large_var0_quadratic_h_100_desc_norm.csv",
+        "dataset/classification_var0_5000_42922/PPAR_gamma_small_h200_var0_desc_norm.csv"
+    ]
+    TRAIN_TXT = [
+        "dataset/classification_var0_5000_42922/AhR_large_values.txt",
+        "dataset/classification_var0_5000_42922/ATAD5_large_values.txt",
+        "dataset/classification_var0_5000_42922/PPAR_gamma_small_values.txt"
+    ]
+    TEST_CSV = [
+        "dataset/classification_test_var0_5000_42922/AhR_large_var0_desc_norm.csv",
+        "dataset/classification_test_var0_5000_42922/ATAD5_large_var0_quadratic_h_100_desc_norm.csv",
+        "dataset/classification_test_var0_5000_42922/PPAR_gamma_small_h200_var0_desc_norm.csv"
+    ]
+    TEST_TXT = [
+        "dataset/classification_test_var0_5000_42922/AhR_large_values.txt",
+        "dataset/classification_test_var0_5000_42922/ATAD5_large_values.txt",
+        "dataset/classification_test_var0_5000_42922/PPAR_gamma_small_values.txt"
+    ]
     return TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT
 
 
@@ -317,7 +340,7 @@ def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_scor
     # 2. 超平面（hyper plane）を探す
     # w, b = use_sklearn(x, y)
     w, b, eps = find_separator(x_df, y, D, K, w_p, b_p, CIDs)
-    print(f"w={w}")
+    # print(f"w={w}")
     # print(f"b={b}")
     print(f"eps={eps}")
 
@@ -482,8 +505,8 @@ def prepare_output_file():
     # 出力用のファイルを準備
     now_time = datetime.datetime.now()
     y_m_d = make_dir(now_time)
-    date_time = now_time.strftime('%Y%m%d%H%M%S')
-
+    date_time = now_time.strftime('%Y%m%d-%H%M%S')
+    print(date_time)
     file_name = f"outputfile/TEST/{y_m_d}/{date_time}.xlsx"
 
     return file_name
@@ -511,7 +534,8 @@ def main(rho_arg, theta_arg):
     # 1.　全てのデータを実験--------------------------------------------------
     TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT = read_data_list()
     results = []
-    for i in range(len(TRAIN_CSV)):
+    # for i in range(len(TRAIN_CSV)):
+    for i in range(1):
         if not check_exist_dataset(TRAIN_CSV[i], TRAIN_TXT[i], TEST_CSV[i], TEST_TXT[i]):
             continue
         train_score1, test_score1, bacc_train_score1, bacc_test_score1 = main_test(train_data=TRAIN_CSV[i],
@@ -534,7 +558,7 @@ def main(rho_arg, theta_arg):
         results.append(test_score)
         output_xlx(ws, i, TRAIN_CSV[i], train_score, test_score, bacc_train_score, bacc_test_score)
 
-    print(f"average score : {statistics.median(results)}")
+    # print(f"average score : {statistics.median(results)}")
 
     # 2. 一つだけ実験---------------------------------------------------------
     # TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT = INPUT_DATA, VALUE_DATA, TEST_INPUT_DATA, TEST_VALUE_DATA
