@@ -16,7 +16,7 @@ import dt_tools
 import io, sys
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-warnings.simplefilter('ignore')
+# warnings.simplefilter('ignore')
 CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 
 # マクロ定義
@@ -49,16 +49,16 @@ def read_data_list():
     #     #         INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
     # test
     INPUT_CSV = [
-        # "dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv",
-        # "dataset/classification_var0_5000_42922/ATAD5_large_var0_desc_norm.csv",
-        # "dataset/classification_var0_5000_42922/PPAR_gamma_small_var0_desc_norm.csv",
+        "dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv",
+        "dataset/classification_var0_5000_42922/ATAD5_large_var0_desc_norm.csv",
+        "dataset/classification_var0_5000_42922/PPAR_gamma_small_var0_desc_norm.csv",
         "dataset/classification_var0_5000_42922/PTC_MR_large_var0_desc_norm.csv",
         "dataset/classification_var0_5000_42922/PTC_MR_small_var0_quadratic_h50_desc_norm.csv"
     ]
     INPUT_TXT = [
-        # "dataset/classification_var0_5000_42922/AhR_large_values.txt",
-        # "dataset/classification_var0_5000_42922/ATAD5_large_values.txt",
-        # "dataset/classification_var0_5000_42922/PPAR_gamma_small_values.txt",
+        "dataset/classification_var0_5000_42922/AhR_large_values.txt",
+        "dataset/classification_var0_5000_42922/ATAD5_large_values.txt",
+        "dataset/classification_var0_5000_42922/PPAR_gamma_small_values.txt",
         "dataset/classification_var0_5000_42922/PTC_MR_large_values.txt",
         "dataset/classification_var0_5000_42922/PTC_MR_small_values.txt"
     ]

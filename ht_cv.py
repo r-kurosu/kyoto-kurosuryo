@@ -43,13 +43,13 @@ def make_dir(now_time):
     return y_m_d
 
 
-def prepare_output_file():
+def prepare_output_file(data_name):
     # 出力用のファイルを準備
     now_time = datetime.datetime.now()
     y_m_d = make_dir(now_time)
     date_time = now_time.strftime('%Y%m%d-%H%M%S')
 
-    file_name = f"outputfile/CV/{y_m_d}/hyper_turning/{date_time}_ht_cv.xlsx"
+    file_name = f"outputfile/CV/{y_m_d}/hyper_turning/{date_time}_ht_cv_{data_name}.xlsx"
 
     return file_name
 
@@ -60,7 +60,7 @@ def main():
 
     for k, data in enumerate(INPUT_CSV):
         # エクセルシートを用意
-        wb_name[k] = prepare_output_file()
+        wb_name[k] = prepare_output_file(data_name=data)
         wb = excel.Workbook()
         ws = wb.active
         ws.title = "test score"
