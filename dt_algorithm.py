@@ -4,7 +4,7 @@ import datetime as datetime
 import numpy as np
 import pandas as pd
 import pulp
-import time, sys, copy, itertools, math, warnings, os
+import time, copy, itertools, math, warnings, os
 import openpyxl as excel
 import datetime
 import pathlib
@@ -12,6 +12,9 @@ from sklearn.linear_model import Lasso, LinearRegression
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
 from sklearn.metrics import roc_auc_score, balanced_accuracy_score
 
+import dt_tools
+import io, sys
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 warnings.simplefilter('ignore')
 CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
@@ -25,23 +28,36 @@ N_LEAST = 10
 CSV_DATA = "dataset/AhR_large_var0_quadratic_h25000_desc_norm.csv"
 VALUE_DATA = "dataset/AhR_large_values.txt"
 
-TIMES = 1 # CVの回数（実験は10で行う）
+TIMES = 3 # CVの回数（実験は10で行う）
 
 
 
 def read_data_list():
-    df = pd.read_csv("dataset.csv")
-    INPUT_CSV = []
-    INPUT_TXT = []
-    l_or_s = ["large", "small"]
-    h_list = [50, 100, 200]
-    for i in range(len(df)):
-        INPUT_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_large_var0_desc_norm.csv")
-        INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_large_values.txt")
-        # for size in l_or_s:
-        #     for h in h_list:
-        #         INPUT_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-        #         INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
+    # df = pd.read_csv("dataset.csv")
+    # INPUT_CSV = []
+    # INPUT_TXT = []
+    # l_or_s = ["large", "small"]
+    # h_list = [50, 100, 200]
+    # for i in range(len(df)):
+    #     for size in l_or_s:
+    #         # all linear desc
+    #         INPUT_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_desc_norm.csv")
+    #         INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) +"_values.txt")
+    #
+    #     #     for h in h_list:
+    #     #         INPUT_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
+    #     #         INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
+    # test
+    INPUT_CSV = [
+        "dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv",
+        "dataset/classification_var0_5000_42922/ATAD5_large_var0_desc_norm.csv",
+        "dataset/classification_var0_5000_42922/PPAR_gamma_small_var0_desc_norm.csv"
+    ]
+    INPUT_TXT = [
+        "dataset/classification_var0_5000_42922/AhR_large_values.txt",
+        "dataset/classification_var0_5000_42922/ATAD5_large_values.txt",
+        "dataset/classification_var0_5000_42922/PPAR_gamma_small_values.txt"
+    ]
 
     return INPUT_CSV, INPUT_TXT
 
@@ -377,7 +393,8 @@ def test_main(INPUT_CSV, INPUT_TXT):
         # print("-----------------------------------------------")
         # print(f"{times+1}回目の交差実験")
         # 5-foldCVによる分析
-        kf = KFold(n_splits=5, shuffle=True)
+        kf = KFold(n_splits=5, shuffle=True, random_state=times)
+        # kf = KFold(n_splits=5, shuffle=True, random_state=times+1000)
         ROC_AOC_scores_train = []
         ROC_AOC_scores_test = []
         BACC_scores_train = []
@@ -509,9 +526,15 @@ def wright_parameter(ws):
 def make_dir(now_time):
     y_m_d = now_time.strftime('%Y-%m-%d')
     p_file = pathlib.Path("outputfile/CV/" + y_m_d)
+    p_file_ht = pathlib.Path("outputfile/CV/" + y_m_d + "/hyper_turning")
+    p_file_ht_memo = pathlib.Path("outputfile/CV/" + y_m_d + "/ht_memo")
 
     if not p_file.exists():
         p_file.mkdir()
+    if not p_file_ht.exists():
+        p_file_ht.mkdir()
+    if not p_file_ht_memo.exists():
+        p_file_ht_memo.mkdir()
 
     return y_m_d
 
@@ -520,9 +543,9 @@ def prepare_output_file():
     # 出力用のファイルを準備
     now_time = datetime.datetime.now()
     y_m_d = make_dir(now_time)
-    date_time = now_time.strftime('%Y%m%d%H%M%S')
+    date_time = now_time.strftime('%Y%m%d-%H%M%S')
 
-    file_name = f"outputfile/CV/{y_m_d}/{date_time}.xlsx"
+    file_name = f"outputfile/CV/{y_m_d}/ht_memo/{date_time}.xlsx"
 
     return file_name
 
@@ -542,6 +565,7 @@ def main(rho_arg, theta_arg):
     ## 1. experiment all datasets
     INPUT_CSV, INPUT_TXT = read_data_list()
     for i in range(len(INPUT_CSV)):
+    # for i in range(1):
         print("↓ " + str(INPUT_CSV[i]))
         ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score = test_main(INPUT_CSV[i], INPUT_TXT[i])
         output_xlx(ws, i, INPUT_CSV[i], ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score)
