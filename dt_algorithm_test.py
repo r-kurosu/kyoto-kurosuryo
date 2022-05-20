@@ -7,6 +7,7 @@ import time, copy, itertools, math, warnings, os
 import openpyxl as excel
 import datetime
 import pathlib
+import read_datasets
 
 from sklearn.linear_model import Lasso, LinearRegression
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
@@ -30,51 +31,6 @@ TEST_VALUE_DATA = "dataset/classification_test_var0_5000_42922/AhR_large_values.
 # print(f"rho : {RHO}")
 # print(f"theta : {THETA}")
 # print(f"n_least : {N_LEAST}")
-
-
-def read_data_list():
-    # df = pd.read_csv("dataset.csv")
-    # TRAIN_CSV = []
-    # TRAIN_TXT = []
-    # TEST_CSV = []
-    # TEST_TXT = []
-    # l_or_s = ["large", "small"]
-    # h_list = [50, 100, 200]
-    # for i in range(len(df)):
-    #     for size in l_or_s:
-    #         # all linear descs
-    #         TRAIN_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_desc_norm.csv")
-    #         TEST_CSV.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_desc_norm.csv")
-    #         TRAIN_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
-    #         TEST_TXT.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
-    #
-    #     #     for h in h_list:
-    #     #         TRAIN_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-    #     #         TEST_CSV.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-    #     #         TRAIN_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
-    #     #         TEST_TXT.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
-
-    TRAIN_CSV = [
-        "dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv",
-        "dataset/classification_var0_5000_42922/ATAD5_large_var0_quadratic_h_100_desc_norm.csv",
-        "dataset/classification_var0_5000_42922/PPAR_gamma_small_h200_var0_desc_norm.csv"
-    ]
-    TRAIN_TXT = [
-        "dataset/classification_var0_5000_42922/AhR_large_values.txt",
-        "dataset/classification_var0_5000_42922/ATAD5_large_values.txt",
-        "dataset/classification_var0_5000_42922/PPAR_gamma_small_values.txt"
-    ]
-    TEST_CSV = [
-        "dataset/classification_test_var0_5000_42922/AhR_large_var0_desc_norm.csv",
-        "dataset/classification_test_var0_5000_42922/ATAD5_large_var0_quadratic_h_100_desc_norm.csv",
-        "dataset/classification_test_var0_5000_42922/PPAR_gamma_small_h200_var0_desc_norm.csv"
-    ]
-    TEST_TXT = [
-        "dataset/classification_test_var0_5000_42922/AhR_large_values.txt",
-        "dataset/classification_test_var0_5000_42922/ATAD5_large_values.txt",
-        "dataset/classification_test_var0_5000_42922/PPAR_gamma_small_values.txt"
-    ]
-    return TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT
 
 
 def read_dataset(data_csv, value_txt):

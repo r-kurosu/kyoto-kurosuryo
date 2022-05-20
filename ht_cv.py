@@ -1,6 +1,6 @@
 import time
 
-import dt_algorithm, dt_temp
+import dt_temp, read_datasets
 import pathlib
 import openpyxl as excel
 import datetime
@@ -44,18 +44,21 @@ def make_dir(now_time):
 
 
 def prepare_output_file(data_name):
+    target_name = data_name.split(sep="/")
+    print(target_name[2])
+
     # 出力用のファイルを準備
     now_time = datetime.datetime.now()
     y_m_d = make_dir(now_time)
     date_time = now_time.strftime('%Y%m%d-%H%M%S')
 
-    file_name = f"outputfile/CV/{y_m_d}/hyper_turning/{date_time}_ht_cv_{data_name}.xlsx"
+    file_name = f"outputfile/CV/{y_m_d}/hyper_turning/{date_time}_ht_cv_{target_name[2]}.xlsx"
 
     return file_name
 
 
 def main():
-    INPUT_CSV, INPUT_TXT = dt_temp.read_data_list()
+    INPUT_CSV, INPUT_TXT = read_datasets.read_data_list_for_cv()
     wb_name = [0]*len(INPUT_CSV)
 
     for k, data in enumerate(INPUT_CSV):

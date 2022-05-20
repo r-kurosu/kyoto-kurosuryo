@@ -1603,3 +1603,407 @@ ROC/AUC test score (median): 0.6177631578947369
 time 1.1
 [[0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348], [0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348], [0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348], [0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348], [0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348], [0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348], [0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348, 0.6577748861418348]]
 [[0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6177631578947369], [0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6177631578947369], [0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6177631578947369], [0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6177631578947369], [0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6177631578947369], [0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6177631578947369], [0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6007177033492823, 0.6177631578947369]]
+rho:0.01,theta:0.01
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.5359750012698439
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.5359750012698439
+計算時間 : 256.5
+time 256.6
+rho:0.01,theta:0.05
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.5652492478961355
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.5652492478961355
+計算時間 : 252.7
+time 252.8
+rho:0.01,theta:0.08
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.5646811757443922
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.5646811757443924
+計算時間 : 337.9
+time 338.1
+rho:0.01,theta:0.1
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.5655343806363927
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.5655343806363928
+計算時間 : 528.6
+time 528.7
+rho:0.01,theta:0.2
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.5946755736890237
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.5946755736890237
+計算時間 : 259.2
+time 259.4
+rho:0.01,theta:0.3
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.605548406763153
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.605548406763153
+計算時間 : 263.7
+time 263.8
+rho:0.01,theta:0.5
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.6092080272035423
+ROC/AUC train score (median): 0.7159500447108108
+ROC/AUC test score (median): 0.6092080272035422
+計算時間 : 261.1
+time 261.2
+rho:0.03,theta:0.01
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.725385305504352
+ROC/AUC test score (median): 0.5359750012698439
+ROC/AUC train score (median): 0.7253853055043519
+ROC/AUC test score (median): 0.5359750012698439
+計算時間 : 258.9
+time 259.1
+rho:0.03,theta:0.05
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.725385305504352
+ROC/AUC test score (median): 0.5652492478961355
+ROC/AUC train score (median): 0.7253853055043519
+ROC/AUC test score (median): 0.5652492478961355
+計算時間 : 259.1
+time 259.3
+rho:0.03,theta:0.08
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.725385305504352
+ROC/AUC test score (median): 0.559864326502697
+ROC/AUC train score (median): 0.7253853055043519
+ROC/AUC test score (median): 0.5598643265026971
+計算時間 : 259.6
+time 259.7
+rho:0.03,theta:0.1
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.725385305504352
+ROC/AUC test score (median): 0.5612569057204797
+ROC/AUC train score (median): 0.7253853055043519
+ROC/AUC test score (median): 0.5612569057204797
+計算時間 : 257.3
+time 257.5
+rho:0.03,theta:0.2
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.725385305504352
+ROC/AUC test score (median): 0.5747875132395767
+ROC/AUC train score (median): 0.7253853055043519
+ROC/AUC test score (median): 0.5747875132395768
+計算時間 : 256.6
+time 256.8
+rho:0.03,theta:0.3
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.725385305504352
+ROC/AUC test score (median): 0.605548406763153
+ROC/AUC train score (median): 0.7253853055043519
+ROC/AUC test score (median): 0.605548406763153
+計算時間 : 256.9
+time 257.0
+rho:0.03,theta:0.5
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.725385305504352
+ROC/AUC test score (median): 0.6044974914250452
+ROC/AUC train score (median): 0.7253853055043519
+ROC/AUC test score (median): 0.6044974914250452
+計算時間 : 255.8
+time 255.9
+rho:0.04,theta:0.01
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.5359750012698439
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.5359750012698439
+計算時間 : 258.8
+time 258.9
+rho:0.04,theta:0.05
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.5652492478961355
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.5652492478961355
+計算時間 : 260.1
+time 260.2
+rho:0.04,theta:0.08
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.5646811757443922
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.5646811757443924
+計算時間 : 259.0
+time 259.1
+rho:0.04,theta:0.1
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.5655343806363927
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.5655343806363928
+計算時間 : 259.6
+time 259.8
+rho:0.04,theta:0.2
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.5946755736890237
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.5946755736890237
+計算時間 : 259.7
+time 259.8
+rho:0.04,theta:0.3
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.605548406763153
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.605548406763153
+計算時間 : 257.9
+time 258.0
+rho:0.04,theta:0.5
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.6144219790194356
+ROC/AUC train score (median): 0.7258819971345918
+ROC/AUC test score (median): 0.6144219790194357
+計算時間 : 255.5
+time 255.6
+rho:0.05,theta:0.01
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.5359750012698439
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.5359750012698439
+計算時間 : 10261.7
+time 10261.8
+rho:0.05,theta:0.05
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.5652492478961355
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.5652492478961355
+計算時間 : 268.5
+time 268.7
+rho:0.05,theta:0.08
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.5646811757443922
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.5646811757443924
+計算時間 : 268.0
+time 268.1
+rho:0.05,theta:0.1
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.5655343806363927
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.5655343806363928
+計算時間 : 1042.1
+time 1042.2
+rho:0.05,theta:0.2
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.5946755736890237
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.5946755736890237
+計算時間 : 242.3
+time 242.5
+rho:0.05,theta:0.3
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.605548406763153
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.605548406763153
+計算時間 : 243.9
+time 244.1
+rho:0.05,theta:0.5
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.6092080272035423
+ROC/AUC train score (median): 0.7278683131788652
+ROC/AUC test score (median): 0.6092080272035422
+計算時間 : 248.4
+time 248.5
+rho:0.06,theta:0.01
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.5359750012698439
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.5359750012698439
+計算時間 : 249.9
+time 250.1
+rho:0.06,theta:0.05
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.5652492478961355
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.5652492478961355
+計算時間 : 248.6
+time 248.8
+rho:0.06,theta:0.08
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.5646811757443922
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.5646811757443924
+計算時間 : 246.0
+time 246.2
+rho:0.06,theta:0.1
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.5655343806363927
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.5655343806363928
+計算時間 : 247.4
+time 247.6
+rho:0.06,theta:0.2
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.5946755736890237
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.5946755736890237
+計算時間 : 245.5
+time 245.6
+rho:0.06,theta:0.3
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.605548406763153
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.605548406763153
+計算時間 : 251.8
+time 252.0
+rho:0.06,theta:0.5
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.6092080272035423
+ROC/AUC train score (median): 0.7297256060729684
+ROC/AUC test score (median): 0.6092080272035422
+計算時間 : 252.7
+time 252.9
+rho:0.08,theta:0.01
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5450368349585433
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5450368349585432
+計算時間 : 254.1
+time 254.2
+rho:0.08,theta:0.05
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5652492478961355
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5652492478961355
+計算時間 : 253.4
+time 253.5
+rho:0.08,theta:0.08
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5646811757443922
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5646811757443924
+計算時間 : 254.4
+time 254.5
+rho:0.08,theta:0.1
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5655343806363927
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5655343806363928
+計算時間 : 254.4
+time 254.6
+rho:0.08,theta:0.2
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5946755736890237
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5946755736890237
+計算時間 : 254.3
+time 254.5
+rho:0.08,theta:0.3
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.605548406763153
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.605548406763153
+計算時間 : 253.2
+time 253.3
+rho:0.08,theta:0.5
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.6092080272035423
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.6092080272035422
+計算時間 : 253.0
+time 253.2
+rho:0.1,theta:0.01
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5487813505536534
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5487813505536534
+計算時間 : 254.5
+time 254.7
+rho:0.1,theta:0.05
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5652492478961355
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5652492478961355
+計算時間 : 253.6
+time 253.7
+rho:0.1,theta:0.08
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5646811757443922
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5646811757443924
+計算時間 : 253.3
+time 253.5
+rho:0.1,theta:0.1
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5655343806363927
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5655343806363928
+計算時間 : 254.3
+time 254.5
+rho:0.1,theta:0.2
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5920188255487473
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5920188255487473
+計算時間 : 253.6
+time 253.8
+rho:0.1,theta:0.3
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5947297799099622
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5947297799099622
+計算時間 : 253.0
+time 253.1
+rho:0.1,theta:0.5
+dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5858488521183582
+ROC/AUC train score (median): 0.7300990883210345
+ROC/AUC test score (median): 0.5858488521183582
+計算時間 : 253.5
+time 253.6
+Traceback (most recent call last):
+  File "/Users/kurosuryou/kyoto-kurosuryo/ht_cv.py", line 92, in <module>
+    main()
+  File "/Users/kurosuryou/kyoto-kurosuryo/ht_cv.py", line 85, in main
+    wb.save(wb_name[k])
+  File "/opt/homebrew/lib/python3.9/site-packages/openpyxl/workbook/workbook.py", line 407, in save
+    save_workbook(self, filename)
+  File "/opt/homebrew/lib/python3.9/site-packages/openpyxl/writer/excel.py", line 291, in save_workbook
+    archive = ZipFile(filename, 'w', ZIP_DEFLATED, allowZip64=True)
+  File "/opt/homebrew/Cellar/python@3.9/3.9.12/Frameworks/Python.framework/Versions/3.9/lib/python3.9/zipfile.py", line 1248, in __init__
+    self.fp = io.open(file, filemode)
+FileNotFoundError: [Errno 2] No such file or directory: 'outputfile/CV/2022-05-19/hyper_turning/20220519-180608_ht_cv_dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv.xlsx'

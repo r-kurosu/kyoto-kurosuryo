@@ -31,41 +31,6 @@ VALUE_DATA = "dataset/AhR_large_values.txt"
 TIMES = 2 # CVの回数（実験は10で行う）
 
 
-
-def read_data_list():
-    # df = pd.read_csv("dataset.csv")
-    # INPUT_CSV = []
-    # INPUT_TXT = []
-    # l_or_s = ["large", "small"]
-    # h_list = [50, 100, 200]
-    # for i in range(len(df)):
-    #     for size in l_or_s:
-    #         # all linear desc
-    #         INPUT_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_desc_norm.csv")
-    #         INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) +"_values.txt")
-    #
-    #     #     for h in h_list:
-    #     #         INPUT_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-    #     #         INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
-    # test
-    INPUT_CSV = [
-        "dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv",
-        "dataset/classification_var0_5000_42922/ATAD5_large_var0_desc_norm.csv",
-        "dataset/classification_var0_5000_42922/PPAR_gamma_small_var0_desc_norm.csv",
-        "dataset/classification_var0_5000_42922/PTC_MR_large_var0_desc_norm.csv",
-        "dataset/classification_var0_5000_42922/PTC_MR_small_var0_quadratic_h50_desc_norm.csv"
-    ]
-    INPUT_TXT = [
-        "dataset/classification_var0_5000_42922/AhR_large_values.txt",
-        "dataset/classification_var0_5000_42922/ATAD5_large_values.txt",
-        "dataset/classification_var0_5000_42922/PPAR_gamma_small_values.txt",
-        "dataset/classification_var0_5000_42922/PTC_MR_large_values.txt",
-        "dataset/classification_var0_5000_42922/PTC_MR_small_values.txt"
-    ]
-
-    return INPUT_CSV, INPUT_TXT
-
-
 def read_dataset(data_csv, value_txt):
     ### read files ###
     # read the csv and the observed values
@@ -129,26 +94,6 @@ def find_separator(x_df, y, D, K, w_p, b_p, CIDs):
         return None, None, None
 
 
-def use_sklearn(x, y):
-    # 2.1データ整理
-    columns_list = x.columns
-    X = x[columns_list]
-    Y = pd.DataFrame(y)
-
-    # # 2.2学習
-    model = LinearRegression()
-    model.fit(X, Y)
-    w = []
-    for i in range(len(columns_list)):
-        w.append(model.coef_[0][i])
-    b = model.intercept_
-    print('coefficient = ', model.coef_[0])  # 説明変数の係数を出力
-    print('intercept = ', model.intercept_)  # 切片を出力
-    print(w)
-
-    return w, b
-
-
 def count_s(y):
     s, s_p = 0, 0
     for a in y:
@@ -165,11 +110,6 @@ def sort_dataset(x_df, y, w, b):
     # print(x_df)
     # print(y)
     # print(w)
-    #TODO: eps<1の時のバグ対処----
-    # if len(x_df) == 0:
-    #     print(x_df)
-    #     return z, z_p
-    # -------------------------
     for index, a in y.iteritems():
         if a == 0:
             z.append(naiseki(w, x_df.loc[index]) - b)
@@ -569,7 +509,7 @@ def main(rho_arg, theta_arg, INPUT_CSV, INPUT_TXT):
     ## 1. experiment all datasets
     # INPUT_CSV, INPUT_TXT = read_data_list()
     ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score = test_main(INPUT_CSV, INPUT_TXT)
-    # output_xlx(ws, i, INPUT_CSV[i], ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score)
+    output_xlx(ws, 1, INPUT_CSV, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score)
 
     wb.save(wbname1)
 
