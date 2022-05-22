@@ -12,7 +12,7 @@ from sklearn.linear_model import Lasso, LinearRegression
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
 from sklearn.metrics import roc_auc_score, balanced_accuracy_score
 
-import dt_tools
+import dt_tools, read_datasets
 import io, sys
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
@@ -522,5 +522,5 @@ def main(rho_arg, theta_arg, INPUT_CSV, INPUT_TXT):
 
 
 if __name__ == "__main__":
-    INPUT_CSV, INPUT_TXT = read_data_list()
+    INPUT_CSV, INPUT_TXT = read_datasets.read_data_list()
     main(RHO, THETA, INPUT_CSV, INPUT_TXT)

@@ -61,22 +61,30 @@ def read_data_list_for_test():
     TRAIN_CSV = [
         "dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv",
         "dataset/classification_var0_5000_42922/ATAD5_large_var0_quadratic_h_100_desc_norm.csv",
-        "dataset/classification_var0_5000_42922/PPAR_gamma_small_h200_var0_desc_norm.csv"
+        "dataset/classification_var0_5000_42922/PPAR_gamma_small_h200_var0_desc_norm.csv",
+        "dataset/classification_var0_5000_42922/PTC_MR_large_var0_desc_norm.csv",
+        "dataset/classification_var0_5000_42922/PTC_MR_small_var0_quadratic_h50_desc_norm.csv"
     ]
     TRAIN_TXT = [
         "dataset/classification_var0_5000_42922/AhR_large_values.txt",
         "dataset/classification_var0_5000_42922/ATAD5_large_values.txt",
-        "dataset/classification_var0_5000_42922/PPAR_gamma_small_values.txt"
+        "dataset/classification_var0_5000_42922/PPAR_gamma_small_values.txt",
+        "dataset/classification_var0_5000_42922/PTC_MR_large_values.txt",
+        "dataset/classification_var0_5000_42922/PTC_MR_small_values.txt"
     ]
     TEST_CSV = [
         "dataset/classification_test_var0_5000_42922/AhR_large_var0_desc_norm.csv",
         "dataset/classification_test_var0_5000_42922/ATAD5_large_var0_quadratic_h_100_desc_norm.csv",
-        "dataset/classification_test_var0_5000_42922/PPAR_gamma_small_h200_var0_desc_norm.csv"
+        "dataset/classification_test_var0_5000_42922/PPAR_gamma_small_h200_var0_desc_norm.csv",
+        "dataset/classification_test_var0_5000_42922/PTC_MR_large_var0_desc_norm.csv",
+        "dataset/classification_test_var0_5000_42922/PTC_MR_small_var0_quadratic_h50_desc_norm.csv"
     ]
     TEST_TXT = [
         "dataset/classification_test_var0_5000_42922/AhR_large_values.txt",
         "dataset/classification_test_var0_5000_42922/ATAD5_large_values.txt",
-        "dataset/classification_test_var0_5000_42922/PPAR_gamma_small_values.txt"
+        "dataset/classification_test_var0_5000_42922/PPAR_gamma_small_values.txt",
+        "dataset/classification_test_var0_5000_42922/PTC_MR_large_values.txt",
+        "dataset/classification_test_var0_5000_42922/PTC_MR_small_values.txt"
     ]
 
     return TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT

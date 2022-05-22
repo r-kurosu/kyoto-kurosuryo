@@ -1,6 +1,6 @@
 import time
 
-import dt_temp, read_datasets
+import dt_temp, read_datasets, dt_tools, dt_for_cv
 import pathlib
 import openpyxl as excel
 import datetime
@@ -25,6 +25,7 @@ def wright_columns(ws, dataset):
     ws.cell(row=12, column=1).value = "theta"
     ws.cell(row=1, column=12).value = "rho"
     ws.cell(row=13, column=2).value = dataset
+
     return
 
 
@@ -45,7 +46,6 @@ def make_dir(now_time):
 
 def prepare_output_file(data_name):
     target_name = data_name.split(sep="/")
-    print(target_name[2])
 
     # 出力用のファイルを準備
     now_time = datetime.datetime.now()
@@ -78,16 +78,23 @@ def main():
             for j, theta in enumerate(theta_list):
                 st_time = time.time()
                 print(f"rho:{rho},theta:{theta}")
-                ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score = dt_temp.main(rho, theta, INPUT_CSV[k], INPUT_TXT[k])
+                ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score \
+                    = dt_for_cv.main(rho, theta, INPUT_CSV[k], INPUT_TXT[k], 2)
+                # test
+                # ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score \
+                #     = dt_temp.main(rho, theta, INPUT_CSV[k], INPUT_TXT[k])
+                # -----
                 ws.cell(row=j + 2, column=i + 2).value = ROCAUC_test_score
                 ws_train_score.cell(row=j + 2, column=i + 2).value = ROCAUC_train_score
                 score_data_test[i][j] = ROCAUC_test_score
                 score_data_train[i][j] = ROCAUC_train_score
+
                 ed_time = time.time()
                 print("time {:.1f}".format(ed_time - st_time))
+
         wb.save(wb_name[k])
-        print(score_data_train)
-        print(score_data_test)
+        # print(score_data_train)
+        # print(score_data_test)
     return
 
 
