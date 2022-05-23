@@ -13,8 +13,10 @@ import io
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-rho_list = [0.01, 0.03, 0.04, 0.05, 0.06, 0.08, 0.1]
-theta_list = [0.01, 0.05, 0.08, 0.1, 0.2, 0.30, 0.5]
+# rho_list = [0.01, 0.03, 0.05, 0.07, 0.1, 0.5, 0.7, 1]
+# theta_list = [0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1]
+rho_list = [0.05]
+theta_list = [0.1]
 
 
 def wright_columns(ws, dataset):
@@ -80,10 +82,7 @@ def main():
                 print(f"rho:{rho},theta:{theta}")
                 ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score \
                     = dt_for_cv.main(rho, theta, INPUT_CSV[k], INPUT_TXT[k], 2)
-                # test
-                # ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score \
-                #     = dt_temp.main(rho, theta, INPUT_CSV[k], INPUT_TXT[k])
-                # -----
+
                 ws.cell(row=j + 2, column=i + 2).value = ROCAUC_test_score
                 ws_train_score.cell(row=j + 2, column=i + 2).value = ROCAUC_train_score
                 score_data_test[i][j] = ROCAUC_test_score
@@ -93,8 +92,8 @@ def main():
                 print("time {:.1f}".format(ed_time - st_time))
 
         wb.save(wb_name[k])
-        # print(score_data_train)
-        # print(score_data_test)
+        print(score_data_train)
+        print(score_data_test)
     return
 
 

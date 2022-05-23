@@ -165,10 +165,20 @@ def main(rho_arg, theta_arg, INPUT_CSV, INPUT_TXT, cv_times):
 
 if __name__ == "__main__":
     INPUT_CSV, INPUT_TXT = read_datasets.read_data_list_for_cv()
+    # エクセルシートを用意
+    wbname_all = dt_tools.prepare_output_file_for_ht_memo()
+    wb_all = excel.Workbook()
+    ws_all = wb_all.active
+    dt_tools.wright_columns(ws_all)
+    dt_tools.wright_parameter(ws_all, RHO, THETA, N_LEAST)
     for i in range(len(INPUT_CSV)):
-        main(rho_arg=RHO,
+        ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score\
+            = main(rho_arg=RHO,
              theta_arg=THETA,
              INPUT_CSV=INPUT_CSV[i],
              INPUT_TXT=INPUT_TXT[i],
              cv_times=TIMES
              )
+        dt_tools.output_xlx(ws_all, 1, INPUT_CSV[i], ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score)
+
+    wb_all.save(wbname_all)
