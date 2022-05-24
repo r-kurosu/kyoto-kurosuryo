@@ -3,6 +3,7 @@ outputfile/
 .DS_Store
 .idea
 .out
+read_datasets.py
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
