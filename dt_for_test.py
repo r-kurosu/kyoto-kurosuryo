@@ -67,6 +67,7 @@ def test_main(INPUT_CSV: str,
     b_p = []
     c_p_A = []
     c_p_B = []
+    depths = 0
 
     while D > N_least:
         p += 1
@@ -78,6 +79,7 @@ def test_main(INPUT_CSV: str,
         CIDs.reset_index(drop=True, inplace=True)
     q = p + 1
     a_score = dt_tools.set_a_q(x_train, y, CIDs, a_score)
+    depths = len(b_p)
 
     # 3. test ---------------------------------------------
     D = len(x_test)
@@ -87,9 +89,9 @@ def test_main(INPUT_CSV: str,
         D = new_D
         x_test = new_x_df.reset_index(drop=True)
         y_test = new_y.reset_index(drop=True)
-        CIDs.reset_index(drop=True, inplace=True)
+        CIDs_test.reset_index(drop=True, inplace=True)
 
-    a_score_test = dt_tools.set_a_q(x_test, y_test, CIDs_test, a_score_test)
+    a_score_test = dt_tools.set_a_q(x_test, y_test_input, CIDs_test, a_score_test)
 
     # 4. 結果
     a_score_train = a_score.to_numpy()
@@ -101,10 +103,14 @@ def test_main(INPUT_CSV: str,
     ROCAUC_test_score = roc_auc_score(y_true_test, a_score_test)
     BACC_test_score = balanced_accuracy_score(y_true_test, a_score_test)
 
+    print(f"depth = {depths}")
     # print("======================================================")
-    # print(train_data)
-    print(f"ROC/AUC train score : {ROCAUC_train_score}")
-    print(f"ROC/AUC test score : {ROCAUC_test_score}")
+    # print(INPUT_CSV)
+    # print(f"ROC/AUC train score : {ROCAUC_train_score}")
+    # print(f"ROC/AUC test score : {ROCAUC_test_score}")
+    # print(f"BACC train score : {BACC_train_score}")
+    # print(f"BACC test score : {BACC_test_score}")
+    # print("======================================================")
 
     return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score
 
@@ -133,11 +139,20 @@ def main(rho_arg, theta_arg, INPUT_CSV, INPUT_TXT, INPUT_TEST_CSV, INPUT_TEST_TX
                                                                                rho_arg=rho_arg,
                                                                                theta_arg=theta_arg)
 
+    
     ROCAUC_train_score = statistics.median([train_score1, train_score2])
     ROCAUC_test_score = statistics.median([test_score1, test_score2])
     BACC_train_score = statistics.median([bacc_train_score1, bacc_train_score2])
     BACC_test_score = statistics.median([bacc_test_score1, bacc_test_score2])
 
+    print("======================================================")
+    print(INPUT_CSV)
+    print(f"ROC/AUC train score : {ROCAUC_train_score}")
+    print(f"ROC/AUC test score : {ROCAUC_test_score}")
+    print(f"BACC train score : {BACC_train_score}")
+    print(f"BACC test score : {BACC_test_score}")
+    print("======================================================")
+    
     dt_tools.output_xlx(ws, 1, INPUT_CSV, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score)
     wb.save(wbname)
 

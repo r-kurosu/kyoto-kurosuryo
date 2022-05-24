@@ -24,7 +24,8 @@ THETA = 0.1
 N_LEAST = 10
 
 
-TIMES = 10 # CVの回数（実験は10で行う）
+TIMES = 2 # CVの回数（実験は10で行う）
+SEED = 0
 
 
 def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
@@ -51,7 +52,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
         # print("-----------------------------------------------")
         # print(f"{times+1}回目の交差実験")
         # 5-foldCVによる分析
-        kf = KFold(n_splits=5, shuffle=True, random_state=times)
+        kf = KFold(n_splits=5, shuffle=True, random_state=times+SEED)
         # kf = KFold(n_splits=5, shuffle=True, random_state=times+1000)
 
         for train_id, test_id in kf.split(x_df):
@@ -76,6 +77,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
             b_p = []
             c_p_A = []
             c_p_B = []
+            depths  = []
 
             while D > N_least:
                 p += 1
@@ -88,6 +90,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
             q = p+1
 
             a_score_train = dt_tools.set_a_q(x_train, y_train, CIDs_train, a_score_train)
+            depths.append(len(b_p))
 
 
             # 3. test ---------------------------------------------
@@ -113,16 +116,16 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
             bacc_train_score = balanced_accuracy_score(y_true_train, a_score_train)
             train_scores.append(train_score)
             train_scores_bacc.append(bacc_train_score)
-            print(f"ROC/AUC train score: {train_score}")
-            print(f"BACC train score: {bacc_train_score}")
+            # print(f"ROC/AUC train score: {train_score}")
+            # print(f"BACC train score: {bacc_train_score}")
 
             a_score_test = a_score_test.to_numpy()
             test_score = roc_auc_score(y_true_test, a_score_test)
             bacc_test_score = balanced_accuracy_score(y_true_test, a_score_test)
             test_scores.append(test_score)
             test_scores_bacc.append(bacc_test_score)
-            print(f"ROC/AUC test score: {test_score}")
-            print(f"BACC test score: {bacc_test_score}")
+            # print(f"ROC/AUC test score: {test_score}")
+            # print(f"BACC test score: {bacc_test_score}")
             # -----------------------------------------
         # 5foldCV終了
 
@@ -135,6 +138,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
 
     print("======================================================")
     print(data_csv)
+    print(f"max depth : {max(depths)}")
     print(f"ROC/AUC train score (median): {ROCAUC_train_score}")
     print(f"ROC/AUC test score (median): {ROCAUC_test_score}")
     print(f"ROC/AUC train score (median): {BACC_train_score}")

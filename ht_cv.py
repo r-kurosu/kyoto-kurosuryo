@@ -13,10 +13,10 @@ import io
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-# rho_list = [0.01, 0.03, 0.05, 0.07, 0.1, 0.5, 0.7, 1]
-# theta_list = [0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1]
-rho_list = [0.05]
-theta_list = [0.1]
+rho_list = [0.01, 0.03, 0.05, 0.07, 0.1, 0.5, 0.7, 1]
+theta_list = [0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1]
+# rho_list = [0.05]
+# theta_list = [0.1]
 
 
 def wright_columns(ws, dataset):

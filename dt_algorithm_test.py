@@ -488,7 +488,7 @@ def main(rho_arg, theta_arg):
     wright_parameter(ws)
 
     # 1.　全てのデータを実験--------------------------------------------------
-    TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT = read_data_list()
+    TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT = dt_tools.read_data_list()
     results = []
     # for i in range(len(TRAIN_CSV)):
     for i in range(1):

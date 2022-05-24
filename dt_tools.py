@@ -45,7 +45,7 @@ def find_separator(x_df, y, D, K, w_p, b_p, CIDs):
     # 変数定義
     b = pulp.LpVariable("b", cat=pulp.LpContinuous)
     w = [pulp.LpVariable("w_{}".format(i), cat=pulp.LpContinuous) for i in range(K)]
-    eps = pulp.LpVariable('eps', 0, cat=pulp.LpContinuous)
+    eps = pulp.LpVariable('eps', lowBound=0, cat=pulp.LpContinuous)
     # 目的関数
     model += eps
     # 制約条件
