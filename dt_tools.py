@@ -42,20 +42,28 @@ def read_dataset(data_csv, value_txt):
 
 def find_separator(x_df, y, D, K, w_p, b_p, CIDs):
     model = pulp.LpProblem("Linear_Separator", pulp.LpMinimize)
+
     # 変数定義
-    b = pulp.LpVariable("b", cat=pulp.LpContinuous)
-    w = [pulp.LpVariable("w_{}".format(i), cat=pulp.LpContinuous) for i in range(K)]
+    # b = pulp.LpVariable("b", cat=pulp.LpContinuous)
+    b = pulp.LpVariable("b", lowBound=0,  cat=pulp.LpContinuous)
+    b_ = pulp.LpVariable("b", lowBound=0, cat=pulp.LpContinuous)
+
+    # w = [pulp.LpVariable("w_{}".format(i), cat=pulp.LpContinuous) for i in range(K)]
+    w = [pulp.LpVariable("w_{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(K)]
+    w_ = [pulp.LpVariable("w__{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(K)]
+
     eps = pulp.LpVariable('eps', lowBound=0, cat=pulp.LpContinuous)
+
     # 目的関数
     model += eps
+
     # 制約条件
     for i in range(D):
         if y.loc[i] == 0:
-            model += pulp.lpDot(w, x_df.loc[i]) - b <= -1 + eps
+            model += pulp.lpDot(pulp.lpSum(w[j] - w_[j] for j in range(K)), x_df.loc[i]) - (b - b_) <= -1 + eps
         else:
-            model += pulp.lpDot(w, x_df.loc[i]) - b >= 1 - eps
-    # model += abs(b) + abs(1-eps) > 0
-
+            model += pulp.lpDot(pulp.lpSum(w[j] - w_[j] for j in range(K)), x_df.loc[i]) - (b-b_) >= 1 - eps
+    model += pulp.lpSum(w) + pulp.lpSum(w_) + b + b_ != 0
 
     status = model.solve(pulp.CPLEX(path=CPLEX_PATH, msg=0))
 
