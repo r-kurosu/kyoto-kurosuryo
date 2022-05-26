@@ -54,10 +54,13 @@ def find_separator(x_df, y, D, K, w_p, b_p, CIDs):
             model += pulp.lpDot(w, x_df.loc[i]) - b <= -1 + eps
         else:
             model += pulp.lpDot(w, x_df.loc[i]) - b >= 1 - eps
+    # model += abs(b) + abs(1-eps) > 0
+
 
     status = model.solve(pulp.CPLEX(path=CPLEX_PATH, msg=0))
 
     # 出力
+
     if status == pulp.LpStatusOptimal:
         w_ast = [w[i].value() for i in range(len(w))]
         b_ast = b.value()
