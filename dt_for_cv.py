@@ -24,7 +24,7 @@ THETA = 0.1
 N_LEAST = 10
 
 
-TIMES = 2 # CVの回数（実験は10で行う）
+TIMES = 1 # CVの回数（実験は10で行う）
 SEED = 0
 
 

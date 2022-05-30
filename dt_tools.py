@@ -6,9 +6,15 @@ import time, copy, itertools, math, warnings, os, sys
 import openpyxl as excel
 import datetime
 import pathlib
+# import cplex
+
+import sys
+# sys.path.append("/Applications/CPLEX_Studio221/cplex/python/3.9/x86-64_osx")
+# print(sys.path)
+# import cplex
 
 CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
-
+GUROBI_PATH = "/Users/kurosuryou/gurobi.lic"
 
 
 def read_dataset(data_csv, value_txt):
@@ -44,13 +50,13 @@ def find_separator(x_df, y, D, K, w_p, b_p, CIDs):
     model = pulp.LpProblem("Linear_Separator", pulp.LpMinimize)
 
     # 変数定義
-    # b = pulp.LpVariable("b", cat=pulp.LpContinuous)
-    b = pulp.LpVariable("b", lowBound=0,  cat=pulp.LpContinuous)
-    b_ = pulp.LpVariable("b", lowBound=0, cat=pulp.LpContinuous)
+    b = pulp.LpVariable("b", cat=pulp.LpContinuous)
+    # b = pulp.LpVariable("b", lowBound=0,  cat=pulp.LpContinuous)
+    # b_ = pulp.LpVariable("b_", lowBound=0, cat=pulp.LpContinuous)
 
-    # w = [pulp.LpVariable("w_{}".format(i), cat=pulp.LpContinuous) for i in range(K)]
-    w = [pulp.LpVariable("w_{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(K)]
-    w_ = [pulp.LpVariable("w__{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(K)]
+    w = [pulp.LpVariable("w_{}".format(i), cat=pulp.LpContinuous) for i in range(K)]
+    # w = [pulp.LpVariable("w_{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(K)]
+    # w_ = [pulp.LpVariable("w__{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(K)]
 
     eps = pulp.LpVariable('eps', lowBound=0, cat=pulp.LpContinuous)
 
@@ -58,20 +64,27 @@ def find_separator(x_df, y, D, K, w_p, b_p, CIDs):
     model += eps
 
     # 制約条件
+    delta = 0.0001
     for i in range(D):
         if y.loc[i] == 0:
-            model += pulp.lpDot(pulp.lpSum(w[j] - w_[j] for j in range(K)), x_df.loc[i]) - (b - b_) <= -1 + eps
+            model += pulp.lpDot(w, x_df.loc[i]) - b <= -1 + eps
+            # model += pulp.lpDot(w, x_df.loc[i]) - pulp.lpDot(w_, x_df.loc[i]) - b <= -1 + eps
         else:
-            model += pulp.lpDot(pulp.lpSum(w[j] - w_[j] for j in range(K)), x_df.loc[i]) - (b-b_) >= 1 - eps
-    model += pulp.lpSum(w) + pulp.lpSum(w_) + b + b_ != 0
+            model += pulp.lpDot(w, x_df.loc[i]) - b >= 1 - eps
+            # model += pulp.lpDot(w, x_df.loc[i]) - pulp.lpDot(w_, x_df.loc[i]) - b >= 1 - eps
 
-    status = model.solve(pulp.CPLEX(path=CPLEX_PATH, msg=0))
+    # model += pulp.lpSum(w) + pulp.lpSum(w_) >= delta
+
+    # status = model.solve(pulp.CPLEX(path=CPLEX_PATH, msg=0, options=[""]))
+    status = model.solve(pulp.GUROBI(path=GUROBI_PATH))
 
     # 出力
 
     if status == pulp.LpStatusOptimal:
         w_ast = [w[i].value() for i in range(len(w))]
+        # w_ast = [w[i].value() - w_[i].value() for i in range(len(w))]
         b_ast = b.value()
+        # b_ast = b.value() - b_.value()
         eps_ast = eps.value()
         w_p.append(w_ast)
         b_p.append(b_ast)
@@ -84,6 +97,56 @@ def find_separator(x_df, y, D, K, w_p, b_p, CIDs):
         print('FindSeparator infeasible')
         return None, None, None
 
+
+def find_separator_by_GUROBI(x_df, y, D, K, w_p, b_p):
+    model = pulp.LpProblem("Linear_Separator", pulp.LpMinimize)
+
+    # 変数定義
+    b = pulp.LpVariable("b", cat=pulp.LpContinuous)
+    # b = pulp.LpVariable("b", lowBound=0,  cat=pulp.LpContinuous)
+    # b_ = pulp.LpVariable("b", lowBound=0, cat=pulp.LpContinuous)
+
+    w = [pulp.LpVariable("w_{}".format(i), cat=pulp.LpContinuous) for i in range(K)]
+    # w = [pulp.LpVariable("w_{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(K)]
+    # w_ = [pulp.LpVariable("w__{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(K)]
+
+    eps = pulp.LpVariable('eps', lowBound=0, cat=pulp.LpContinuous)
+
+    # 目的関数
+    model += eps
+
+    # 制約条件
+    delta = 0.0000000000000000000001
+    for i in range(D):
+        if y.loc[i] == 0:
+            model += pulp.lpDot(w, x_df.loc[i]) - b <= -1 + eps
+            # model += pulp.lpDot(w, x_df.loc[i]) - pulp.lpDot(w_, x_df.loc[i]) - b <= -1 + eps
+        else:
+            model += pulp.lpDot(w, x_df.loc[i]) - b >= 1 - eps
+            # model += pulp.lpDot(w, x_df.loc[i]) - pulp.lpDot(w_, x_df.loc[i]) - b >= 1 - eps
+
+    # model += pulp.lpSum(w) + pulp.lpSum(w_) >= delta
+
+    # status = model.solve(pulp.CPLEX(path=CPLEX_PATH, msg=0))
+    status = model.solve(pulp.GUROBI(path=GUROBI_PATH, msg=0))
+
+    # 出力
+
+    if status == pulp.LpStatusOptimal:
+        w_ast = [w[i].value() for i in range(len(w))]
+        # w_ast = [w[i].value() - w_[i].value() for i in range(len(w))]
+        b_ast = b.value()
+        eps_ast = eps.value()
+        w_p.append(w_ast)
+        b_p.append(b_ast)
+        for i in range(len(w_ast)):
+            if w_ast[i] is None:
+                w_ast[i] = 0
+
+        return w_ast, b_ast, eps_ast
+    else:
+        print('FindSeparator infeasible')
+        return None, None, None
 
 
 def count_s(y):
@@ -259,6 +322,9 @@ def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_scor
     print(f"w={w}")
     print(f"b={b}")
     print(f"eps={eps}")
+    for w_i in w:
+        if w_i != 0:
+            print(w_i)
 
     # 3. 決定木の実装
     # 3.1 s, s'を数える
