@@ -10,13 +10,13 @@ def read_data_list_for_cv():
     # h_list = [50, 100, 200]
     # for i in range(len(df)):
     #     for size in l_or_s:
-    #         # all linear desc
-    #         INPUT_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_desc_norm.csv")
-    #         INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) +"_values.txt")
-
-            # for h in h_list:
-            #     INPUT_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-            #     INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
+    #         # # all linear desc
+    #         # INPUT_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_desc_norm.csv")
+    #         # INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) +"_values.txt")
+    #
+    #         for h in h_list:
+    #             INPUT_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[-i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
+    #             INPUT_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[-i, 0]) + "_" + str(size) + "_values.txt")
 
     # INPUT_CSV = [
     #     "dataset/classification_var0_5000_42922/AhR_large_var0_desc_norm.csv",
