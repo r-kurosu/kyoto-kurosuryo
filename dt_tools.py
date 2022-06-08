@@ -6,6 +6,7 @@ import time, copy, itertools, math, warnings, os, sys
 import openpyxl as excel
 import datetime
 import pathlib
+from scipy.spatial import distance
 # import cplex
 # import gurobipy as gp
 
@@ -48,18 +49,26 @@ def read_dataset(data_csv, value_txt):
 
 
 def pre_problem(x, y, D, K):
-    temp_max = 0
+    st_time1 = time.time()
+    index_A = []
+    index_B = []
     for i in range(D):
-        if y.loc[i] != 0:
-            continue
-        for j in range(D):
-            if y.loc[j] != 1:
-                continue
-            temp = sum((x.iloc[i, k] - x.iloc[j, k])**2 for k in range(K))
+        if y.loc[i] == 0:
+            index_A.append(i)
+        else:
+            index_B.append(i)
+
+    temp_max = 0
+    for i in index_A:
+        for j in index_B:
+            temp = distance.euclidean(x.loc[i], x.loc[j])
             if temp_max <= temp:
                 temp_max = temp
                 x_a = x.loc[i]
                 x_b = x.loc[j]
+
+    ed_time1 = time.time()
+    print("pre_proc_time = {:.1f}".format(ed_time1-st_time1))
 
     return x_a, x_b
 
@@ -90,7 +99,7 @@ def find_separator(x_df, y, D, K, w_p, b_p, x_a, x_b):
 
     # 制約条件
     delta = 0.0001
-    model += pulp.lpDot(w, x_a) - b <= 1
+    model += pulp.lpDot(w, x_a) - b <= -1
     model += pulp.lpDot(w, x_b) - b >= 1
 
     for i in range(D):
@@ -103,7 +112,7 @@ def find_separator(x_df, y, D, K, w_p, b_p, x_a, x_b):
 
     # model += pulp.lpSum(w) + pulp.lpSum(w_) >= delta
 
-    status = model.solve(pulp.CPLEX_CMD(path=CPLEX_PATH, msg=0, options=['set mip submip scale -1']))
+    status = model.solve(pulp.CPLEX_CMD(path=CPLEX_PATH, msg=0))
     # status = model.solve(pulp.GUROBI(path=GUROBI_PATH, msg=0))
 
     # 出力
