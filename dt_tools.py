@@ -389,6 +389,9 @@ def find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg):
 
 def siki_1(l, z, z_p, r, r_p, s, s_p, rho):
     temp = 0  # |l|
+    print(r_p, s_p)
+    print(len(z_p))
+    print(len(z))
     for j in range(r_p + 1, s_p):
         if z_p[j] <= z[l]:
             temp += 1

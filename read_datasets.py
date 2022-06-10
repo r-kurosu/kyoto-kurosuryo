@@ -23,8 +23,14 @@ def read_data_list_for_cv():
         "dataset/FV/MUTAG_values.txt",
         "dataset/FV/MUTAG_values.txt",
     ]
-    # INPUT_CSV = ["dataset/FV/ARE_5elem_desc_norm.csv"]
-    # INPUT_TXT = ["dataset/FV/ARE_values.txt"]
+    INPUT_CSV = ["dataset/test_set/BHL_small_var0_desc_norm.csv",
+                 "dataset/test_set/Fp_small_var0_desc_norm.csv",
+                 "dataset/test_set/Vp_small_var0_desc_norm.csv"
+                 ]
+    INPUT_TXT = ["dataset/test_set/BHL_small_norm_values.txt",
+                 "dataset/test_set/Fp_small_norm_values.txt",
+                 "dataset/test_set/Vp_small_norm_values.txt"
+                 ]
 
     return INPUT_CSV, INPUT_TXT
 

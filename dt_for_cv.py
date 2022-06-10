@@ -25,7 +25,7 @@ N_LEAST = 10
 
 
 TIMES = 1 # CVの回数（実験は10で行う）
-SEED = 0
+SEED = 0 # 予備実験:0, 評価実験: 1000
 
 
 def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
