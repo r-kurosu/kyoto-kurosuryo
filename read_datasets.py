@@ -3,26 +3,26 @@ import pandas as pd
 
 
 def read_data_list_for_cv():
-    # df = pd.read_csv("dataset.csv")
-    # INPUT_CSV = []
-    # INPUT_TXT = []
-    # size_list = ["3elem", "5elem", "allelem"]
-    # for i in range(len(df)):
-    #     for size in size_list:
-    #         INPUT_CSV.append("dataset/FV/" + str(df.iloc[i, 0]) + "_" + str(size) + "_desc_norm.csv")
-    #         INPUT_TXT.append("dataset/FV/" + str(df.iloc[i, 0]) + "_values.txt")
+    df = pd.read_csv("dataset.csv")
+    INPUT_CSV = []
+    INPUT_TXT = []
+    size_list = ["3elem", "5elem", "allelem"]
+    for i in range(len(df)):
+        for size in size_list:
+            INPUT_CSV.append("dataset/FV/" + str(df.iloc[i, 0]) + "_" + str(size) + "_desc_norm.csv")
+            INPUT_TXT.append("dataset/FV/" + str(df.iloc[i, 0]) + "_values.txt")
 
 
-    INPUT_CSV = [
-        "dataset/FV/MUTAG_3elem_desc_norm.csv",
-        "dataset/FV/MUTAG_5elem_desc_norm.csv",
-        "dataset/FV/MUTAG_allelem_desc_norm.csv",
-    ]
-    INPUT_TXT =[
-        "dataset/FV/MUTAG_values.txt",
-        "dataset/FV/MUTAG_values.txt",
-        "dataset/FV/MUTAG_values.txt",
-    ]
+    # INPUT_CSV = [
+    #     "dataset/FV/MUTAG_3elem_desc_norm.csv",
+    #     "dataset/FV/MUTAG_5elem_desc_norm.csv",
+    #     "dataset/FV/MUTAG_allelem_desc_norm.csv",
+    # ]
+    # INPUT_TXT =[
+    #     "dataset/FV/MUTAG_values.txt",
+    #     "dataset/FV/MUTAG_values.txt",
+    #     "dataset/FV/MUTAG_values.txt",
+    # ]
 
     return INPUT_CSV, INPUT_TXT
 

@@ -184,5 +184,6 @@ if __name__ == "__main__":
              cv_times=TIMES
              )
         dt_tools.output_xlx(ws_all, i, INPUT_CSV[i], ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth)
+        ws_all["A1"] = SEED
 
     wb_all.save(wbname_all)

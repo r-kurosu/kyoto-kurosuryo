@@ -389,9 +389,9 @@ def find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg):
 def siki_1(l, z, z_p, r, r_p, s, s_p, rho):
     temp = 0  # |l|
     # print(r_p, s_p)
-    # print(z_p)
-    # print(z)
-    for j in range(r_p + 1, s_p + 1):
+    # print(len(z))
+    # print(len(z_p))
+    for j in range(r_p + 1, s_p):
         if z_p[j] <= z[l]:
             temp += 1
     if temp / l <= rho * s_p / s:
@@ -402,7 +402,7 @@ def siki_1(l, z, z_p, r, r_p, s, s_p, rho):
 
 def siki_2(l, z, z_p, r, r_p, s, s_p, rho):
     temp = 0
-    for j in range(r + 1, s + 1):
+    for j in range(r + 1, s):
         if z[j] >= z_p[l]:
             temp += 1
     if temp / l <= rho * s / s_p:
