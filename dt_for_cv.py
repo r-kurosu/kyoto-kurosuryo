@@ -81,7 +81,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
 
             while D > N_least:
                 p += 1
-                print(f"|D|={D}", f"p={p}")
+                print(f"n={D}", f"p={p}")
                 new_D, new_x_df, new_y = dt_tools.constructing_DT_based_HP(x_train, y_train, D, K, w_p, b_p, c_p_A, c_p_B, CIDs_train, a_score_train, rho_arg, theta_arg)
                 D = new_D
                 x_train = new_x_df.reset_index(drop=True)
@@ -135,18 +135,18 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
     ROCAUC_test_score = statistics.median(test_scores)
     BACC_train_score = statistics.median(train_scores_bacc)
     BACC_test_score = statistics.median(test_scores_bacc)
-
+    max_depth = max(depths)
     print("======================================================")
     print(data_csv)
     print(f"max depth : {max(depths)}")
-    print(f"ROC/AUC train score (median): {ROCAUC_train_score}")
-    print(f"ROC/AUC test score (median): {ROCAUC_test_score}")
-    print(f"ROC/AUC train score (median): {BACC_train_score}")
-    print(f"ROC/AUC test score (median): {BACC_test_score}")
+    # print(f"ROC/AUC train score (median): {ROCAUC_train_score}")
+    # print(f"ROC/AUC test score (median): {ROCAUC_test_score}")
+    # print(f"ROC/AUC train score (median): {BACC_train_score}")
+    # print(f"ROC/AUC test score (median): {BACC_test_score}")
     print("計算時間 : {:.1f}".format(ed_time - st_time))
     print("======================================================")
 
-    return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score
+    return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth
 
 
 def main(rho_arg, theta_arg, INPUT_CSV, INPUT_TXT, cv_times):
@@ -154,35 +154,35 @@ def main(rho_arg, theta_arg, INPUT_CSV, INPUT_TXT, cv_times):
         return
 
     # エクセルシートを用意
-    wbname = dt_tools.prepare_output_file_for_ht_memo()
-    wb = excel.Workbook()
-    ws = wb.active
-    dt_tools.wright_columns(ws)
-    dt_tools.wright_parameter(ws, rho_arg, theta_arg, N_LEAST)
+    # wbname = dt_tools.prepare_output_file_for_ht_memo()
+    # wb = excel.Workbook()
+    # ws = wb.active
+    # dt_tools.wright_columns(ws)
+    # dt_tools.wright_parameter(ws, rho_arg, theta_arg, N_LEAST)
 
-    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score = test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg)
-    dt_tools.output_xlx(ws, 1, INPUT_CSV, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score)
-    wb.save(wbname)
+    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth = test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg)
+    # dt_tools.output_xlx(ws, 1, INPUT_CSV, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score)
+    # wb.save(wbname)
 
-    return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score
+    return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth
 
 
 if __name__ == "__main__":
     INPUT_CSV, INPUT_TXT = read_datasets.read_data_list_for_cv()
     # エクセルシートを用意
-    wbname_all = dt_tools.prepare_output_file_for_ht_memo()
+    wbname_all = dt_tools.prepare_output_file_for_sum()
     wb_all = excel.Workbook()
     ws_all = wb_all.active
     dt_tools.wright_columns(ws_all)
     dt_tools.wright_parameter(ws_all, RHO, THETA, N_LEAST)
     for i in range(len(INPUT_CSV)):
-        ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score\
+        ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth\
             = main(rho_arg=RHO,
              theta_arg=THETA,
              INPUT_CSV=INPUT_CSV[i],
              INPUT_TXT=INPUT_TXT[i],
              cv_times=TIMES
              )
-        dt_tools.output_xlx(ws_all, 1, INPUT_CSV[i], ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score)
+        dt_tools.output_xlx(ws_all, i, INPUT_CSV[i], ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth)
 
     wb_all.save(wbname_all)

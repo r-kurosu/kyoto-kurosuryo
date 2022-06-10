@@ -7,6 +7,7 @@ import openpyxl as excel
 import datetime
 import pathlib
 from scipy.spatial import distance
+from math import dist
 # import cplex
 # import gurobipy as gp
 
@@ -52,13 +53,31 @@ def pre_problem(x, y, D, K):
     st_time1 = time.time()
     index_A = []
     index_B = []
+    temp_max = 0
+
     for i in range(D):
         if y.loc[i] == 0:
             index_A.append(i)
         else:
             index_B.append(i)
 
-    temp_max = 0
+    if len(index_A) == 0:
+        for j in index_B:
+            temp = distance.euclidean(0, x.loc[j])
+            if temp_max <= temp:
+                temp_max = temp
+                x_a = [0]*K
+                x_b = x.loc[j]
+                return x_a, x_b
+    if len(index_B) == 0:
+        for i in index_A:
+            temp = distance.euclidean(x.loc[i], 0)
+            if temp_max <= temp:
+                temp_max = temp
+                x_a = x.loc[i]
+                x_b = [0]*K
+                return x_a, x_b
+
     for i in index_A:
         for j in index_B:
             temp = distance.euclidean(x.loc[i], x.loc[j])
@@ -490,12 +509,13 @@ def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_scor
     return D, x_df, y
 
 
-def output_xlx(ws, i, data_name, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score):
+def output_xlx(ws, i, data_name, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, depth):
     ws["A"+str(i+2)] = data_name
     ws["B"+str(i+2)] = ROCAUC_train_score
     ws["C"+str(i+2)] = ROCAUC_test_score
     ws["D"+str(i+2)] = BACC_train_score
     ws["E"+str(i+2)] = BACC_test_score
+    ws["F"+str(i+2)] = depth
 
     return
 
@@ -505,6 +525,7 @@ def wright_columns(ws):
     ws["C1"] = "test score ROC/AOC"
     ws["D1"] = "train score BACC"
     ws["E1"] = "test score BACC"
+    ws["F1"] = "max depth"
 
     return
 
@@ -558,6 +579,17 @@ def prepare_output_file_for_ht_memo():
     date_time = now_time.strftime('%Y%m%d-%H%M%S')
 
     file_name = f"outputfile/CV/{y_m_d}/ht_memo/{date_time}.xlsx"
+
+    return file_name
+
+
+def prepare_output_file_for_sum():
+    # 出力用のファイルを準備
+    now_time = datetime.datetime.now()
+    y_m_d = make_dir(now_time)
+    date_time = now_time.strftime('%Y%m%d-%H%M%S')
+
+    file_name = f"outputfile/CV/{y_m_d}/ht_memo/{date_time}_sum.xlsx"
 
     return file_name
 
