@@ -318,7 +318,6 @@ def count_s(y):
 
 def sort_dataset(x_df, y, w, b):
     z, z_p = [], []
-
     for index, a in y.iteritems():
         if a == 0:
             z.append(naiseki(w, x_df.loc[index]) - b)
@@ -343,7 +342,7 @@ def naiseki(a, b):
 
 
 def find_r(z, z_p):
-    r, r_p = -1, -1
+    r, r_p = 0, 0
     for i in range(len(z)):
         if z[i] < 0:
             r = i
@@ -354,7 +353,7 @@ def find_r(z, z_p):
         if z_p[i] > 0:
             r_p = i
         else:
-            # print('all z is smaller than 0')
+            # print('all z is less than 0')
             break
 
     return r, r_p
@@ -389,10 +388,10 @@ def find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg):
 
 def siki_1(l, z, z_p, r, r_p, s, s_p, rho):
     temp = 0  # |l|
-    print(r_p, s_p)
-    print(len(z_p))
-    print(len(z))
-    for j in range(r_p + 1, s_p):
+    # print(r_p, s_p)
+    # print(z_p)
+    # print(z)
+    for j in range(r_p + 1, s_p + 1):
         if z_p[j] <= z[l]:
             temp += 1
     if temp / l <= rho * s_p / s:
@@ -403,7 +402,7 @@ def siki_1(l, z, z_p, r, r_p, s, s_p, rho):
 
 def siki_2(l, z, z_p, r, r_p, s, s_p, rho):
     temp = 0
-    for j in range(r + 1, s):
+    for j in range(r + 1, s + 1):
         if z[j] >= z_p[l]:
             temp += 1
     if temp / l <= rho * s / s_p:
