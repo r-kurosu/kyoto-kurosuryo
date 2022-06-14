@@ -24,8 +24,8 @@ THETA = 0.1
 N_LEAST = 10
 
 
-TIMES = 1 # CVの回数（実験は10で行う）
-SEED = 0 # 予備実験:0, 評価実験: 1000
+TIMES = 10 # CVの回数（実験は10で行う）
+SEED = 1000 # 予備実験:0, 評価実験: 1000
 
 
 def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
@@ -45,8 +45,8 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
     # (TIMES)回 5-fold回す
     test_scores = []
     train_scores = []
-    test_scores_bacc = []
-    train_scores_bacc = []
+    bacc_test_scores = []
+    bacc_train_scores = []
     st_time = time.time()
     for times in range(cv_times):
         # print("-----------------------------------------------")
@@ -115,7 +115,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
             train_score = roc_auc_score(y_true_train, a_score_train)
             bacc_train_score = balanced_accuracy_score(y_true_train, a_score_train)
             train_scores.append(train_score)
-            train_scores_bacc.append(bacc_train_score)
+            bacc_train_scores.append(bacc_train_score)
             # print(f"ROC/AUC train score: {train_score}")
             # print(f"BACC train score: {bacc_train_score}")
 
@@ -123,7 +123,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
             test_score = roc_auc_score(y_true_test, a_score_test)
             bacc_test_score = balanced_accuracy_score(y_true_test, a_score_test)
             test_scores.append(test_score)
-            test_scores_bacc.append(bacc_test_score)
+            bacc_test_scores.append(bacc_test_score)
             # print(f"ROC/AUC test score: {test_score}")
             # print(f"BACC test score: {bacc_test_score}")
             # -----------------------------------------
@@ -133,16 +133,16 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
     ed_time = time.time()
     ROCAUC_train_score = statistics.median(train_scores)
     ROCAUC_test_score = statistics.median(test_scores)
-    BACC_train_score = statistics.median(train_scores_bacc)
-    BACC_test_score = statistics.median(test_scores_bacc)
+    BACC_train_score = statistics.median(bacc_train_scores)
+    BACC_test_score = statistics.median(bacc_test_scores)
     max_depth = max(depths)
     print("======================================================")
     print(data_csv)
     print(f"max depth : {max(depths)}")
-    # print(f"ROC/AUC train score (median): {ROCAUC_train_score}")
-    # print(f"ROC/AUC test score (median): {ROCAUC_test_score}")
-    # print(f"ROC/AUC train score (median): {BACC_train_score}")
-    # print(f"ROC/AUC test score (median): {BACC_test_score}")
+    print(f"ROC/AUC train score (median): {ROCAUC_train_score}")
+    print(f"ROC/AUC test score (median): {ROCAUC_test_score}")
+    print(f"BACC train score (median): {BACC_train_score}")
+    print(f"BACC test score (median): {BACC_test_score}")
     print("計算時間 : {:.1f}".format(ed_time - st_time))
     print("======================================================")
 
@@ -161,7 +161,7 @@ def main(rho_arg, theta_arg, INPUT_CSV, INPUT_TXT, cv_times):
     # dt_tools.wright_parameter(ws, rho_arg, theta_arg, N_LEAST)
 
     ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth = test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg)
-    # dt_tools.output_xlx(ws, 1, INPUT_CSV, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score)
+    # dt_tools.output_xlx(ws, 1, INPUT_CSV, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth)
     # wb.save(wbname)
 
     return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth

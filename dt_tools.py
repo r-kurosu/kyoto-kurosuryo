@@ -591,7 +591,7 @@ def prepare_output_file_for_sum():
     y_m_d = make_dir(now_time)
     date_time = now_time.strftime('%Y%m%d-%H%M%S')
 
-    file_name = f"outputfile/CV/{y_m_d}/ht_memo/{date_time}_sum.xlsx"
+    file_name = f"outputfile/CV/{y_m_d}/{date_time}_sum.xlsx"
 
     return file_name
 

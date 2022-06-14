@@ -3,10 +3,13 @@ import pandas as pd
 
 
 def read_data_list_for_cv():
-    df = pd.read_csv("dataset.csv")
+    # df = pd.read_csv("dataset.csv")
+    df = pd.read_csv("dataset3.csv")
+
     INPUT_CSV = []
     INPUT_TXT = []
-    size_list = ["3elem", "5elem", "allelem"]
+    # size_list = ["allelem", "5elem", "3elem"]
+    size_list = ["allelem", "3elem"]
     for i in range(len(df)):
         for size in size_list:
             INPUT_CSV.append("dataset/FV/" + str(df.iloc[i, 0]) + "_" + str(size) + "_desc_norm.csv")
@@ -56,27 +59,6 @@ def read_data_list_for_test():
     #     "dataset/FV/MUTAG_5elem_desc_norm.csv",
     #     "dataset/FV/MUTAG_allelem_desc.csv",
     #     "dataset/FV/MUTAG_allelem_desc_norm.csv",
-    # ]
-    # TRAIN_TXT = [
-    #     "dataset/classification_var0_5000_42922/AhR_large_values.txt",
-    #     "dataset/classification_var0_5000_42922/ATAD5_large_values.txt",
-    #     "dataset/classification_var0_5000_42922/PPAR_gamma_small_values.txt",
-    #     "dataset/classification_var0_5000_42922/PTC_MR_large_values.txt",
-    #     "dataset/classification_var0_5000_42922/PTC_MR_small_values.txt"
-    # ]
-    # TEST_CSV = [
-    #     "dataset/classification_test_var0_5000_42922/AhR_large_var0_desc_norm.csv",
-    #     "dataset/classification_test_var0_5000_42922/ATAD5_large_var0_quadratic_h_100_desc_norm.csv",
-    #     "dataset/classification_test_var0_5000_42922/PPAR_gamma_small_h200_var0_desc_norm.csv",
-    #     "dataset/classification_test_var0_5000_42922/PTC_MR_large_var0_desc_norm.csv",
-    #     "dataset/classification_test_var0_5000_42922/PTC_MR_small_var0_quadratic_h50_desc_norm.csv"
-    # ]
-    # TEST_TXT = [
-    #     "dataset/classification_test_var0_5000_42922/AhR_large_values.txt",
-    #     "dataset/classification_test_var0_5000_42922/ATAD5_large_values.txt",
-    #     "dataset/classification_test_var0_5000_42922/PPAR_gamma_small_values.txt",
-    #     "dataset/classification_test_var0_5000_42922/PTC_MR_large_values.txt",
-    #     "dataset/classification_test_var0_5000_42922/PTC_MR_small_values.txt"
     # ]
 
     return TRAIN_CSV, TRAIN_TXT, TEST_CSV, TEST_TXT
