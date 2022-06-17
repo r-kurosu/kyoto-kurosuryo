@@ -80,7 +80,7 @@ def main():
             for j, theta in enumerate(theta_list):
                 st_time = time.time()
                 print(f"rho:{rho},theta:{theta}")
-                ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score \
+                ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth \
                     = dt_for_cv.main(rho, theta, INPUT_CSV[k], INPUT_TXT[k], 2)
 
                 ws.cell(row=j + 2, column=i + 2).value = ROCAUC_test_score

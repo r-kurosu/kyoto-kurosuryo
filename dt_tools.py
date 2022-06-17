@@ -16,6 +16,7 @@ import sys
 # print(sys.path)
 # import cplex
 
+
 CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 GUROBI_PATH = "/Users/kurosuryou/gurobi.lic"
 

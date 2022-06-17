@@ -4,12 +4,13 @@ import pandas as pd
 
 def read_data_list_for_cv():
     # df = pd.read_csv("dataset.csv")
-    df = pd.read_csv("dataset3.csv")
+    df = pd.read_csv("dataset2.csv")
 
     INPUT_CSV = []
     INPUT_TXT = []
     # size_list = ["allelem", "5elem", "3elem"]
-    size_list = ["allelem", "3elem"]
+    # size_list = ["allelem", "3elem"]
+    size_list = ["allelem"]
     for i in range(len(df)):
         for size in size_list:
             INPUT_CSV.append("dataset/FV/" + str(df.iloc[i, 0]) + "_" + str(size) + "_desc_norm.csv")
@@ -36,21 +37,20 @@ def read_data_list_for_test():
     TRAIN_TXT = []
     TEST_CSV = []
     TEST_TXT = []
-    l_or_s = ["large", "small"]
-    h_list = [50, 100, 200]
+    # size_list = ["allelem", "5elem", "3elem"]
+    size_list = ["allelem", "3elem"]
     for i in range(len(df)):
-        for size in l_or_s:
+        for size in size_list:
             # # all linear descs
             # TRAIN_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_desc_norm.csv")
             # TEST_CSV.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_desc_norm.csv")
             # TRAIN_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
             # TEST_TXT.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
 
-            for h in h_list:
-                TRAIN_CSV.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-                TEST_CSV.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
-                TRAIN_TXT.append("dataset/classification_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
-                TEST_TXT.append("dataset/classification_test_var0_5000_42922/" + str(df.iloc[i, 0]) + "_" + str(size) + "_values.txt")
+            TRAIN_CSV.append("dataset/FV/" + str(df.iloc[i, 0]) + "_test_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
+            TEST_CSV.append("dataset/FV/" + str(df.iloc[i, 0]) + "_test_" + str(size) + "_var0_quadratic_h" + str(h) + "_desc_norm.csv")
+            TRAIN_TXT.append("dataset/FV/" + str(df.iloc[i, 0]) + "_test_" + str(size) + "_values.txt")
+            TEST_TXT.append("dataset/FV/" + str(df.iloc[i, 0]) + "_test_" + str(size) + "_values.txt")
 
     # TRAIN_CSV = [
     #     "dataset/FV/MUTAG_3elem_desc.csv",
