@@ -9,7 +9,8 @@ import openpyxl as excel
 import datetime
 import pathlib
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
-from sklearn.metrics import roc_auc_score, balanced_accuracy_score
+from sklearn.metrics import roc_auc_score, balanced_accuracy_score, roc_curve
+import matplotlib.pyplot as plt
 
 import dt_tools, read_datasets
 import io, sys
@@ -24,8 +25,8 @@ THETA = 0.1
 N_LEAST = 10
 
 
-TIMES = 2 # CVの回数（実験は10で行う）
-SEED = 0
+TIMES = 1 # CVの回数（実験は10で行う）
+SEED = 0 # 予備実験:0, 評価実験: 1000
 
 
 def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
@@ -45,15 +46,14 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
     # (TIMES)回 5-fold回す
     test_scores = []
     train_scores = []
-    test_scores_bacc = []
-    train_scores_bacc = []
+    bacc_test_scores = []
+    bacc_train_scores = []
     st_time = time.time()
     for times in range(cv_times):
         # print("-----------------------------------------------")
         # print(f"{times+1}回目の交差実験")
         # 5-foldCVによる分析
         kf = KFold(n_splits=5, shuffle=True, random_state=times+SEED)
-        # kf = KFold(n_splits=5, shuffle=True, random_state=times+1000)
 
         for train_id, test_id in kf.split(x_df):
             x_train, x_test = x_df.iloc[train_id], x_df.iloc[test_id]
@@ -77,11 +77,11 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
             b_p = []
             c_p_A = []
             c_p_B = []
-            depths  = []
+            depths = []
 
             while D > N_least:
                 p += 1
-                print(f"|D|={D}", f"p={p}")
+                print(f"n={D}", f"p={p}")
                 new_D, new_x_df, new_y = dt_tools.constructing_DT_based_HP(x_train, y_train, D, K, w_p, b_p, c_p_A, c_p_B, CIDs_train, a_score_train, rho_arg, theta_arg)
                 D = new_D
                 x_train = new_x_df.reset_index(drop=True)
@@ -89,8 +89,12 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
                 CIDs_train.reset_index(drop=True, inplace=True)
             q = p+1
 
+            # print(f"true  : {y_true_train}")
+            # print(f"expect: {a_score_train}")
+
             a_score_train = dt_tools.set_a_q(x_train, y_train, CIDs_train, a_score_train)
             depths.append(len(b_p))
+            # print(f"expect: {a_score_train}")
 
 
             # 3. test ---------------------------------------------
@@ -108,14 +112,27 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
                 y_test = new_y.reset_index(drop=True)
                 CIDs_test.reset_index(drop=True, inplace=True)
 
+            # print(f"true  : {y_true_test}")
+            # print(f"expect: {a_score_test}")
             a_score_test = dt_tools.set_a_q(x_test, y_test, CIDs, a_score_test)
+            # print(f"true  : {y_true_test}")
+            # print(f"expect: {a_score_test}")
+
+            roc = roc_curve(y_true_test, a_score_test)
+            fpr, tpr, thresholds = roc_curve(y_true_test, a_score_test)
+            print(fpr, tpr, thresholds)
+            plt.plot(fpr, tpr, marker='o')
+            plt.xlabel('FPR: False positive rate')
+            plt.ylabel('TPR: True positive rate')
+            plt.grid()
+            plt.savefig('sklearn_roc_curve.png')
 
             # 4. 結果 -------------------------------
             a_score_train = a_score_train.to_numpy()
-            train_score = roc_auc_score(y_true_train, a_score_train)
-            bacc_train_score = balanced_accuracy_score(y_true_train, a_score_train)
+            train_score = roc_auc_score(y_true_train.tolist(), a_score_train.tolist())
+            bacc_train_score = balanced_accuracy_score(y_true_train.tolist(), a_score_train.tolist())
             train_scores.append(train_score)
-            train_scores_bacc.append(bacc_train_score)
+            bacc_train_scores.append(bacc_train_score)
             # print(f"ROC/AUC train score: {train_score}")
             # print(f"BACC train score: {bacc_train_score}")
 
@@ -123,7 +140,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
             test_score = roc_auc_score(y_true_test, a_score_test)
             bacc_test_score = balanced_accuracy_score(y_true_test, a_score_test)
             test_scores.append(test_score)
-            test_scores_bacc.append(bacc_test_score)
+            bacc_test_scores.append(bacc_test_score)
             # print(f"ROC/AUC test score: {test_score}")
             # print(f"BACC test score: {bacc_test_score}")
             # -----------------------------------------
@@ -133,20 +150,20 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
     ed_time = time.time()
     ROCAUC_train_score = statistics.median(train_scores)
     ROCAUC_test_score = statistics.median(test_scores)
-    BACC_train_score = statistics.median(train_scores_bacc)
-    BACC_test_score = statistics.median(test_scores_bacc)
-
+    BACC_train_score = statistics.median(bacc_train_scores)
+    BACC_test_score = statistics.median(bacc_test_scores)
+    max_depth = max(depths)
     print("======================================================")
     print(data_csv)
     print(f"max depth : {max(depths)}")
     print(f"ROC/AUC train score (median): {ROCAUC_train_score}")
     print(f"ROC/AUC test score (median): {ROCAUC_test_score}")
-    print(f"ROC/AUC train score (median): {BACC_train_score}")
-    print(f"ROC/AUC test score (median): {BACC_test_score}")
+    print(f"BACC train score (median): {BACC_train_score}")
+    print(f"BACC test score (median): {BACC_test_score}")
     print("計算時間 : {:.1f}".format(ed_time - st_time))
     print("======================================================")
 
-    return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score
+    return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth
 
 
 def main(rho_arg, theta_arg, INPUT_CSV, INPUT_TXT, cv_times):
@@ -154,35 +171,36 @@ def main(rho_arg, theta_arg, INPUT_CSV, INPUT_TXT, cv_times):
         return
 
     # エクセルシートを用意
-    wbname = dt_tools.prepare_output_file_for_ht_memo()
-    wb = excel.Workbook()
-    ws = wb.active
-    dt_tools.wright_columns(ws)
-    dt_tools.wright_parameter(ws, rho_arg, theta_arg, N_LEAST)
+    # wbname = dt_tools.prepare_output_file_for_ht_memo()
+    # wb = excel.Workbook()
+    # ws = wb.active
+    # dt_tools.wright_columns(ws)
+    # dt_tools.wright_parameter(ws, rho_arg, theta_arg, N_LEAST)
 
-    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score = test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg)
-    dt_tools.output_xlx(ws, 1, INPUT_CSV, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score)
-    wb.save(wbname)
+    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth = test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg)
+    # dt_tools.output_xlx(ws, 1, INPUT_CSV, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth)
+    # wb.save(wbname)
 
-    return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score
+    return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth
 
 
 if __name__ == "__main__":
     INPUT_CSV, INPUT_TXT = read_datasets.read_data_list_for_cv()
     # エクセルシートを用意
-    wbname_all = dt_tools.prepare_output_file_for_ht_memo()
+    wbname_all = dt_tools.prepare_output_file_for_sum()
     wb_all = excel.Workbook()
     ws_all = wb_all.active
     dt_tools.wright_columns(ws_all)
     dt_tools.wright_parameter(ws_all, RHO, THETA, N_LEAST)
     for i in range(len(INPUT_CSV)):
-        ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score\
+        ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth\
             = main(rho_arg=RHO,
              theta_arg=THETA,
              INPUT_CSV=INPUT_CSV[i],
              INPUT_TXT=INPUT_TXT[i],
              cv_times=TIMES
              )
-        dt_tools.output_xlx(ws_all, 1, INPUT_CSV[i], ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score)
+        dt_tools.output_xlx(ws_all, i, INPUT_CSV[i], ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth)
+        ws_all["A1"] = SEED
 
     wb_all.save(wbname_all)
