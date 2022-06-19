@@ -48,6 +48,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
     train_scores = []
     bacc_test_scores = []
     bacc_train_scores = []
+    train_depths = []
     st_time = time.time()
     for times in range(cv_times):
         # print("-----------------------------------------------")
@@ -93,7 +94,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
             # print(f"expect: {a_score_train}")
 
             a_score_train = dt_tools.set_a_q(x_train, y_train, CIDs_train, a_score_train)
-            depths.append(len(b_p))
+            train_depths.append(len(b_p))
             # print(f"expect: {a_score_train}")
 
 
@@ -118,14 +119,14 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
             # print(f"true  : {y_true_test}")
             # print(f"expect: {a_score_test}")
 
-            roc = roc_curve(y_true_test, a_score_test)
-            fpr, tpr, thresholds = roc_curve(y_true_test, a_score_test)
-            print(fpr, tpr, thresholds)
-            plt.plot(fpr, tpr, marker='o')
-            plt.xlabel('FPR: False positive rate')
-            plt.ylabel('TPR: True positive rate')
-            plt.grid()
-            plt.savefig('sklearn_roc_curve.png')
+            # roc = roc_curve(y_true_test, a_score_test)
+            # fpr, tpr, thresholds = roc_curve(y_true_test, a_score_test)
+            # print(fpr, tpr, thresholds)
+            # plt.plot(fpr, tpr, marker='o')
+            # plt.xlabel('FPR: False positive rate')
+            # plt.ylabel('TPR: True positive rate')
+            # plt.grid()
+            # plt.savefig('sklearn_roc_curve.png')
 
             # 4. 結果 -------------------------------
             a_score_train = a_score_train.to_numpy()
@@ -152,10 +153,11 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
     ROCAUC_test_score = statistics.median(test_scores)
     BACC_train_score = statistics.median(bacc_train_scores)
     BACC_test_score = statistics.median(bacc_test_scores)
-    max_depth = max(depths)
+    max_depth = max(train_depths)
+
     print("======================================================")
     print(data_csv)
-    print(f"max depth : {max(depths)}")
+    print(f"max depth : {max_depth}")
     print(f"ROC/AUC train score (median): {ROCAUC_train_score}")
     print(f"ROC/AUC test score (median): {ROCAUC_test_score}")
     print(f"BACC train score (median): {BACC_train_score}")
