@@ -71,7 +71,9 @@ def pre_problem(x, y, D, K):
                 temp_max = temp
                 x_a = [0]*K
                 x_b = x.loc[j]
-                return x_a, x_b
+        ed_time1 = time.time()
+        print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
+        return x_a, x_b
     if len(index_B) == 0:
         for i in index_A:
             temp = distance.euclidean(x.loc[i], 0)
@@ -79,7 +81,9 @@ def pre_problem(x, y, D, K):
                 temp_max = temp
                 x_a = x.loc[i]
                 x_b = [0]*K
-                return x_a, x_b
+        ed_time1 = time.time()
+        print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
+        return x_a, x_b
 
     for i in index_A:
         for j in index_B:
@@ -414,9 +418,10 @@ def siki_2(l, z, z_p, r, r_p, s, s_p, rho):
     return False
 
 
-def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score):
+def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg):
     # LAMBDA: int = 20
-    LAMBDA: int = math.floor(len(y)/5)
+    LAMBDA: int = math.floor(len(y)/3)
+    LAMBDA: int = math.floor(len(y)/lambda_arg)
 
     z = [0]*len(x)
     for i in range(len(x)):
@@ -468,9 +473,8 @@ def set_a_q(x_df, y, CIDs, a_score):
     return a_score
 
 
-def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, theta_arg):
-    # LAMBDA_test: int = len(y_test)/5
-    LAMBDA_test: int = len(y_test)
+def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, theta_arg, lambda_arg):
+    lambda_arg: int = len(y_test)
 
     # 3.1 s, s'を数える
     s, s_p = count_s(y_test)
@@ -481,13 +485,13 @@ def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, thet
     # 3.4 index(l)を探す
     c_A, c_B = find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg)
     # 3.5 振り分け
-    D, x_test, y_test = redefine_func(x_test, y_test, w, b, c_A, c_B, CIDs_test, a_score_test)
+    D, x_test, y_test = redefine_func(x_test, y_test, w, b, c_A, c_B, CIDs_test, a_score_test, lambda_arg)
 
     new_D = len(x_test)
     return new_D, x_test, y_test
 
 
-def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_score, rho_arg, theta_arg):
+def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_score, rho_arg, theta_arg, lambda_arg):
     # 2. 超平面（hyper plane）を探す
     x_a, x_b = pre_problem(x_df, y, D, K)
 
@@ -520,7 +524,7 @@ def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_scor
     # print(c_A, c_B)
 
     # 3.5 関数Φとデータセットの再定義
-    D, x_df, y = redefine_func(x_df, y, w, b, c_A, c_B, CIDs, a_score)
+    D, x_df, y = redefine_func(x_df, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg)
 
     return D, x_df, y
 

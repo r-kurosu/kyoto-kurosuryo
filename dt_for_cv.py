@@ -23,13 +23,13 @@ CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 RHO = 0.05
 THETA = 0.1
 N_LEAST = 10
-
+LAMBDA = 2
 
 TIMES = 1 # CVの回数（実験は10で行う）
 SEED = 0 # 予備実験:0, 評価実験: 1000
 
 
-def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
+def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
     # 1. read data set
     data_csv = INPUT_CSV
     value_text = INPUT_TXT
@@ -83,7 +83,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
             while D > N_least:
                 p += 1
                 print(f"n={D}", f"p={p}")
-                new_D, new_x_df, new_y = dt_tools.constructing_DT_based_HP(x_train, y_train, D, K, w_p, b_p, c_p_A, c_p_B, CIDs_train, a_score_train, rho_arg, theta_arg)
+                new_D, new_x_df, new_y = dt_tools.constructing_DT_based_HP(x_train, y_train, D, K, w_p, b_p, c_p_A, c_p_B, CIDs_train, a_score_train, rho_arg, theta_arg, lambda_arg)
                 D = new_D
                 x_train = new_x_df.reset_index(drop=True)
                 y_train = new_y.reset_index(drop=True)
@@ -107,7 +107,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
 
             # print(len(b_p))
             for p in range(len(b_p)):
-                new_D, new_x_df, new_y = dt_tools.experiment_test(x_test, y_test, w_p[p], b_p[p], CIDs_test, a_score_test, rho_arg, theta_arg)
+                new_D, new_x_df, new_y = dt_tools.experiment_test(x_test, y_test, w_p[p], b_p[p], CIDs_test, a_score_test, rho_arg, theta_arg, lambda_arg)
                 D = new_D
                 x_test = new_x_df.reset_index(drop=True)
                 y_test = new_y.reset_index(drop=True)
@@ -168,7 +168,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg):
     return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth
 
 
-def main(rho_arg, theta_arg, INPUT_CSV, INPUT_TXT, cv_times):
+def main(rho_arg, theta_arg, lambda_arg, INPUT_CSV, INPUT_TXT, cv_times):
     if not dt_tools.check_exist_dataset_for_cv(INPUT_CSV, INPUT_TXT):
         return
 
@@ -179,7 +179,7 @@ def main(rho_arg, theta_arg, INPUT_CSV, INPUT_TXT, cv_times):
     # dt_tools.wright_columns(ws)
     # dt_tools.wright_parameter(ws, rho_arg, theta_arg, N_LEAST)
 
-    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth = test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg)
+    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth = test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg)
     # dt_tools.output_xlx(ws, 1, INPUT_CSV, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth)
     # wb.save(wbname)
 
@@ -198,6 +198,7 @@ if __name__ == "__main__":
         ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth\
             = main(rho_arg=RHO,
              theta_arg=THETA,
+             lambda_arg=LAMBDA,
              INPUT_CSV=INPUT_CSV[i],
              INPUT_TXT=INPUT_TXT[i],
              cv_times=TIMES
