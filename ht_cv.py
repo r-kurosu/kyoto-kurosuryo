@@ -13,10 +13,11 @@ import io
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-rho_list = [0.01, 0.03, 0.05, 0.07, 0.1, 0.5, 0.7, 1]
-theta_list = [0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1]
-# rho_list = [0.05]
-# theta_list = [0.1]
+# rho_list = [0.01, 0.03, 0.05, 0.07, 0.1, 0.5, 0.7, 1]
+# theta_list = [0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1]
+lambda_list = [1, 2, 3, 4, 5]
+rho_list = [0.05]
+theta_list = [0.1]
 
 
 def wright_columns(ws, dataset):
@@ -78,18 +79,25 @@ def main():
         # --
         for i, rho in enumerate(rho_list):
             for j, theta in enumerate(theta_list):
-                st_time = time.time()
-                print(f"rho:{rho},theta:{theta}")
-                ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth \
-                    = dt_for_cv.main(rho, theta, INPUT_CSV[k], INPUT_TXT[k], 2)
+                for l, lambd in enumerate(lambda_list):
+                    st_time = time.time()
+                    print(f"rho:{rho},theta:{theta}, lambda:{lambd}")
+                    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth \
+                        = dt_for_cv.main(rho, theta, lambd, INPUT_CSV[k], INPUT_TXT[k], 2)
 
-                ws.cell(row=j + 2, column=i + 2).value = ROCAUC_test_score
-                ws_train_score.cell(row=j + 2, column=i + 2).value = ROCAUC_train_score
-                score_data_test[i][j] = ROCAUC_test_score
-                score_data_train[i][j] = ROCAUC_train_score
+                    # ws.cell(row=j + 2, column=i + 2).value = ROCAUC_test_score
+                    # ws_train_score.cell(row=j + 2, column=i + 2).value = ROCAUC_train_score
 
-                ed_time = time.time()
-                print("time {:.1f}".format(ed_time - st_time))
+                    # lambda の出力
+                    ws.cell(row=l + 2, column=j + 2).value = ROCAUC_test_score
+                    ws_train_score.cell(row=l + 2, column=i + 2).value = ROCAUC_train_score
+
+                    score_data_test[i][j] = ROCAUC_test_score
+                    score_data_train[i][j] = ROCAUC_train_score
+
+
+                    ed_time = time.time()
+                    print("time {:.1f}".format(ed_time - st_time))
 
         wb.save(wb_name[k])
         print(score_data_train)

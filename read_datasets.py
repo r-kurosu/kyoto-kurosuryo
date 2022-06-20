@@ -3,14 +3,15 @@ import pandas as pd
 
 
 def read_data_list_for_cv():
-    # df = pd.read_csv("dataset.csv")
-    df = pd.read_csv("dataset2.csv")
+    df = pd.read_csv("dataset.csv")
+    # df = pd.read_csv("dataset2.csv")
 
     INPUT_CSV = []
     INPUT_TXT = []
     # size_list = ["allelem", "5elem", "3elem"]
     # size_list = ["allelem", "3elem"]
     size_list = ["3elem"]
+    # size_list = ["allelem"]
     for i in range(len(df)):
         for size in size_list:
             INPUT_CSV.append("dataset/FV/" + str(df.iloc[i, 0]) + "_" + str(size) + "_desc_norm.csv")

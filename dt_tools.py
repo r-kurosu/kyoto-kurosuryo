@@ -369,6 +369,12 @@ def find_r(z, z_p):
 def find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg):
     rho = rho_arg
     theta = theta_arg
+
+    if r <= 0:
+        c_A = 0
+    if r_p <= 0:
+        c_B = 0
+
     for l in range(r, 0, -1):
         if siki_1(l, z, z_p, r, r_p, s, s_p, rho) == True:
             # print(f"l={l}")
@@ -384,11 +390,6 @@ def find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg):
             c_B = -z_p[l]
             break
         c_B = -z_p[math.floor(r_p * theta)]
-
-    if r <= 0:
-        c_A = 0
-    if r_p <= 0:
-        c_B = 0
 
     return c_A, c_B
 
@@ -419,9 +420,6 @@ def siki_2(l, z, z_p, r, r_p, s, s_p, rho):
 
 
 def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg):
-    # LAMBDA: int = 20
-    LAMBDA: int = math.floor(len(y)/3)
-    LAMBDA: int = math.floor(len(y)/lambda_arg)
 
     z = [0]*len(x)
     for i in range(len(x)):
@@ -430,15 +428,15 @@ def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg):
     order = np.argsort(z_array)
     order_list = order.tolist()
 
-    indexes_0 = order_list[0:LAMBDA]
-    indexes_1 = order_list[len(y):len(y) - LAMBDA:-1]
+    indexes_0 = order_list[0:lambda_arg]
+    indexes_1 = order_list[len(y):len(y) - lambda_arg:-1]
 
     for i in indexes_0:
-        if z[i] > 0:
+        if z[i] > -c_A:
             indexes_0 = indexes_0[0:i]
             break
     for i in indexes_1:
-        if z[i] < 0:
+        if z[i] < c_B:
             indexes_1 = indexes_1[0:i]
             break
 
@@ -455,7 +453,7 @@ def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg):
 
     D = len(y)
 
-    return D, x, y
+    return D, x, y, a_score
 
 
 def set_a_q(x_df, y, CIDs, a_score):
@@ -474,8 +472,9 @@ def set_a_q(x_df, y, CIDs, a_score):
 
 
 def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, theta_arg, lambda_arg):
-    lambda_arg: int = len(y_test)
+    # lambda_arg: int = 1 # 1の時、test時の各ノードの個数に関する制約をなくす
 
+    # print(a_score_test)
     # 3.1 s, s'を数える
     s, s_p = count_s(y_test)
     # 3.2 ソートする
@@ -485,9 +484,10 @@ def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, thet
     # 3.4 index(l)を探す
     c_A, c_B = find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg)
     # 3.5 振り分け
-    D, x_test, y_test = redefine_func(x_test, y_test, w, b, c_A, c_B, CIDs_test, a_score_test, lambda_arg)
-
+    D, x_test, y_test, a_score_test = redefine_func(x_test, y_test, w, b, c_A, c_B, CIDs_test, a_score_test, lambda_arg)
+    # print(a_score_test)
     new_D = len(x_test)
+
     return new_D, x_test, y_test
 
 
@@ -524,7 +524,7 @@ def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_scor
     # print(c_A, c_B)
 
     # 3.5 関数Φとデータセットの再定義
-    D, x_df, y = redefine_func(x_df, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg)
+    D, x_df, y, a_score = redefine_func(x_df, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg)
 
     return D, x_df, y
 

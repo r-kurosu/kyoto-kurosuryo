@@ -23,7 +23,7 @@ CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 RHO = 0.05
 THETA = 0.1
 N_LEAST = 10
-LAMBDA = 2
+LAMBDA = 5
 
 TIMES = 1 # CVの回数（実験は10で行う）
 SEED = 0 # 予備実験:0, 評価実験: 1000
@@ -67,11 +67,17 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
             y_true_train = copy.deepcopy(y_train)
             y_train = y_train.reset_index(drop=True)
             CIDs_train.reset_index(drop=True, inplace=True)
+            # print(x_train)
+            # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            # print(y_train)
+            # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            # print(CIDs_train)
 
             # マクロ変数
             D = len(y_train)  # データの数
             K = len(x_df.columns)  # ベクトルサイズ（記述示の数）
             N_least = N_LEAST  # 許容
+            LAMBDA_arg: int = math.floor(D / lambda_arg)
             p = 0
 
             w_p = []
@@ -83,11 +89,16 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
             while D > N_least:
                 p += 1
                 print(f"n={D}", f"p={p}")
-                new_D, new_x_df, new_y = dt_tools.constructing_DT_based_HP(x_train, y_train, D, K, w_p, b_p, c_p_A, c_p_B, CIDs_train, a_score_train, rho_arg, theta_arg, lambda_arg)
+                new_D, new_x_df, new_y = dt_tools.constructing_DT_based_HP(x_train, y_train, D, K, w_p, b_p, c_p_A, c_p_B, CIDs_train, a_score_train, rho_arg, theta_arg, LAMBDA_arg)
                 D = new_D
                 x_train = new_x_df.reset_index(drop=True)
                 y_train = new_y.reset_index(drop=True)
                 CIDs_train.reset_index(drop=True, inplace=True)
+                # print(x_train)
+                # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                # print(y_train)
+                # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                # print(CIDs_train)
             q = p+1
 
             # print(f"true  : {y_true_train}")
@@ -105,13 +116,15 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
             y_test = y_test.reset_index(drop=True)
             CIDs_test.reset_index(drop=True, inplace=True)
 
-            # print(len(b_p))
+            LAMBDA_arg: int = math.floor(D / lambda_arg)
+
             for p in range(len(b_p)):
-                new_D, new_x_df, new_y = dt_tools.experiment_test(x_test, y_test, w_p[p], b_p[p], CIDs_test, a_score_test, rho_arg, theta_arg, lambda_arg)
+                new_D, new_x_df, new_y = dt_tools.experiment_test(x_test, y_test, w_p[p], b_p[p], CIDs_test, a_score_test, rho_arg, theta_arg, LAMBDA_arg)
                 D = new_D
                 x_test = new_x_df.reset_index(drop=True)
                 y_test = new_y.reset_index(drop=True)
                 CIDs_test.reset_index(drop=True, inplace=True)
+                print(f"remain data = {(a_score_test == -1).sum()}")
 
             # print(f"true  : {y_true_test}")
             # print(f"expect: {a_score_test}")
