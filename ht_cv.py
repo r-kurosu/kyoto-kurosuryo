@@ -1,5 +1,7 @@
 import time
 
+import numpy as np
+
 import dt_temp, read_datasets, dt_tools, dt_for_cv
 import pathlib
 import openpyxl as excel
@@ -15,19 +17,26 @@ import io
 
 # rho_list = [0.01, 0.03, 0.05, 0.07, 0.1, 0.5, 0.7, 1]
 # theta_list = [0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1]
-lambda_list = [1, 2, 3, 4, 5]
+lambda_list = [1, 2, 3, 4, 5, 6]
 rho_list = [0.05]
 theta_list = [0.1]
+# lambda_list = [1]
 
 
 def wright_columns(ws, dataset):
+    ws.cell(row=1, column=2).value = "test"
+    ws.cell(row=1, column=2 + 10).value = "train"
+
     for i in range(len(rho_list)):
-        ws.cell(row=1, column=i + 2).value = rho_list[i]
+        ws.cell(row=2, column=i + 2).value = rho_list[i]
+        ws.cell(row=2, column=i + 2 + 10).value = rho_list[i]
+
     for i in range(len(theta_list)):
-        ws.cell(row=i + 2, column=1).value = theta_list[i]
-    ws.cell(row=12, column=1).value = "theta"
-    ws.cell(row=1, column=12).value = "rho"
-    ws.cell(row=13, column=2).value = dataset
+        ws.cell(row=i + 3, column=1).value = theta_list[i]
+        ws.cell(row=i + 3, column=1 + 10).value = theta_list[i]
+    ws.cell(row=11, column=1).value = "theta"
+    ws.cell(row=1, column=10).value = "rho"
+    ws.cell(row=12, column=2).value = dataset
 
     return
 
@@ -69,13 +78,14 @@ def main():
         wb_name[k] = prepare_output_file(data_name=data)
         wb = excel.Workbook()
         ws = wb.active
-        ws.title = "test score"
+        ws.title = "score"
         wright_columns(ws, data)
-        wb.create_sheet(title="train_score")
-        ws_train_score = wb["train_score"]
-        wright_columns(ws_train_score, data)
-        score_data_test = [[0]*len(rho_list)]*len(theta_list)
-        score_data_train = [[0]*len(rho_list)]*len(theta_list)
+        # wb.create_sheet(title="train_score")
+        # ws_train_score = wb["train_score"]
+        # wright_columns(ws_train_score, data)
+        score_data_test = np.zeros((len(rho_list), len(theta_list), len(lambda_list)))
+        score_data_train = np.zeros((len(rho_list), len(theta_list), len(lambda_list)))
+
         # --
         for i, rho in enumerate(rho_list):
             for j, theta in enumerate(theta_list):
@@ -89,11 +99,12 @@ def main():
                     # ws_train_score.cell(row=j + 2, column=i + 2).value = ROCAUC_train_score
 
                     # lambda の出力
-                    ws.cell(row=l + 2, column=j + 2).value = ROCAUC_test_score
-                    ws_train_score.cell(row=l + 2, column=i + 2).value = ROCAUC_train_score
+                    ws.cell(row=l + 3, column=j + 2).value = ROCAUC_test_score
+                    ws.cell(row=l + 3, column=j + 2 + 10).value = ROCAUC_train_score
+                    # ws_train_score.cell(row=l + 2, column=i + 2).value = ROCAUC_train_score
 
-                    score_data_test[i][j] = ROCAUC_test_score
-                    score_data_train[i][j] = ROCAUC_train_score
+                    score_data_test[i, j, l] = ROCAUC_test_score
+                    score_data_train[i, j, l] = ROCAUC_train_score
 
 
                     ed_time = time.time()

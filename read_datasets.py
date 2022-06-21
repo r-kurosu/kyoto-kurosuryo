@@ -3,8 +3,8 @@ import pandas as pd
 
 
 def read_data_list_for_cv():
-    df = pd.read_csv("dataset.csv")
-    # df = pd.read_csv("dataset2.csv")
+    # df = pd.read_csv("dataset.csv")
+    df = pd.read_csv("dataset2.csv")
 
     INPUT_CSV = []
     INPUT_TXT = []

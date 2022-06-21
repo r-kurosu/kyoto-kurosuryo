@@ -124,13 +124,13 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
                 x_test = new_x_df.reset_index(drop=True)
                 y_test = new_y.reset_index(drop=True)
                 CIDs_test.reset_index(drop=True, inplace=True)
-                print(f"remain data = {(a_score_test == -1).sum()}")
+                remain_data = (a_score_test == -1).sum()
+                if remain_data <= N_LEAST:
+                    break
+                # print(f"this is {p+1} 回目の分類 of test")
+                # print(f"remain data = {remain_data}")
 
-            # print(f"true  : {y_true_test}")
-            # print(f"expect: {a_score_test}")
             a_score_test = dt_tools.set_a_q(x_test, y_test, CIDs, a_score_test)
-            # print(f"true  : {y_true_test}")
-            # print(f"expect: {a_score_test}")
 
             # roc = roc_curve(y_true_test, a_score_test)
             # fpr, tpr, thresholds = roc_curve(y_true_test, a_score_test)
