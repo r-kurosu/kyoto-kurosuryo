@@ -15,28 +15,56 @@ import io
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-# rho_list = [0.01, 0.03, 0.05, 0.07, 0.1, 0.5, 0.7, 1]
-# theta_list = [0.01, 0.05, 0.1, 0.2, 0.3, 0.5, 0.7, 1]
-lambda_list = [1, 2, 3, 4, 5, 6]
-rho_list = [0.05]
-theta_list = [0.1]
+rho_list = [0.01, 0.05, 0.1, 0.5, 1]
+theta_list = [0.01, 0.1, 0.3, 0.5, 1]
+lambda_list = [1, 2, 3, 4, 5]
+# rho_list = [0.05, 1]
+# theta_list = [0.1, 1]
+# lambda_list = [1, 2]
+# rho_list = [0.05]
+# theta_list = [0.1]
 # lambda_list = [1]
 
 
 def wright_columns(ws, dataset):
+    gap = 10
     ws.cell(row=1, column=2).value = "test"
-    ws.cell(row=1, column=2 + 10).value = "train"
+    ws.cell(row=1, column=2 + gap).value = "train"
 
+    # 1
+    ws.cell(row=2, column=1).value = "theta/rho"
+    ws.cell(row=2, column=1 + gap).value = "theta/rho"
     for i in range(len(rho_list)):
         ws.cell(row=2, column=i + 2).value = rho_list[i]
-        ws.cell(row=2, column=i + 2 + 10).value = rho_list[i]
-
+        ws.cell(row=2, column=i + 2 + gap).value = rho_list[i]
     for i in range(len(theta_list)):
         ws.cell(row=i + 3, column=1).value = theta_list[i]
-        ws.cell(row=i + 3, column=1 + 10).value = theta_list[i]
-    ws.cell(row=11, column=1).value = "theta"
-    ws.cell(row=1, column=10).value = "rho"
-    ws.cell(row=12, column=2).value = dataset
+        ws.cell(row=i + 3, column=1 + gap).value = theta_list[i]
+    ws.cell(row=3 + len(theta_list), column=2).value = "(lambda=1)"
+
+    # 2
+    ws.cell(row=2 + gap, column=1).value = "rho/lambda"
+    ws.cell(row=2 + gap, column=1 + gap).value = "rho/lambda"
+    for i in range(len(lambda_list)):
+        ws.cell(row=2 + gap, column=i + 2).value = lambda_list[i]
+        ws.cell(row=2 + gap, column=i + 2 + gap).value = lambda_list[i]
+    for i in range(len(rho_list)):
+        ws.cell(row=i + 3 + gap, column=1).value = rho_list[i]
+        ws.cell(row=i + 3 + gap, column=1 + gap).value = rho_list[i]
+    ws.cell(row=3 + gap + len(rho_list), column=2).value = "(rho=0.05)"
+
+    # 3
+    ws.cell(row=2 + gap*2, column=1).value = "lambda/theta"
+    ws.cell(row=2 + gap*2, column=1 + gap).value = "lambda/theta"
+    for i in range(len(theta_list)):
+        ws.cell(row=2 + gap*2, column=i + 2).value = theta_list[i]
+        ws.cell(row=2 + gap*2, column=i + 2 + gap).value = theta_list[i]
+    for i in range(len(lambda_list)):
+        ws.cell(row=i + 3 + gap*2, column=1).value = lambda_list[i]
+        ws.cell(row=i + 3 + gap*2, column=1 + gap).value = lambda_list[i]
+    ws.cell(row=3 + gap*2 + len(lambda_list), column=2).value = "(theta=0.1)"
+
+    # ws.cell(row=12, column=2).value = dataset
 
     return
 
@@ -72,8 +100,11 @@ def prepare_output_file(data_name):
 def main():
     INPUT_CSV, INPUT_TXT = read_datasets.read_data_list_for_cv()
     wb_name = [0]*len(INPUT_CSV)
+    gap = 10
 
     for k, data in enumerate(INPUT_CSV):
+        ht_start_time = time.time()
+
         # エクセルシートを用意
         wb_name[k] = prepare_output_file(data_name=data)
         wb = excel.Workbook()
@@ -98,10 +129,18 @@ def main():
                     # ws.cell(row=j + 2, column=i + 2).value = ROCAUC_test_score
                     # ws_train_score.cell(row=j + 2, column=i + 2).value = ROCAUC_train_score
 
-                    # lambda の出力
-                    ws.cell(row=l + 3, column=j + 2).value = ROCAUC_test_score
-                    ws.cell(row=l + 3, column=j + 2 + 10).value = ROCAUC_train_score
-                    # ws_train_score.cell(row=l + 2, column=i + 2).value = ROCAUC_train_score
+                    # 出力
+                    if lambd == 1:
+                        ws.cell(row=i + 3, column=j + 2).value = ROCAUC_test_score
+                        ws.cell(row=i + 3, column=j + 2 + gap).value = ROCAUC_train_score
+
+                    if rho == 0.05:
+                        ws.cell(row=j + 3 + gap, column=l + 2).value = ROCAUC_test_score
+                        ws.cell(row=j + 3 + gap, column=l + 2 + gap).value = ROCAUC_train_score
+
+                    if theta == 0.1:
+                        ws.cell(row=l + 3 + gap*2, column=i + 2).value = ROCAUC_test_score
+                        ws.cell(row=l + 3 + gap*2, column=i + 2 + gap).value = ROCAUC_train_score
 
                     score_data_test[i, j, l] = ROCAUC_test_score
                     score_data_train[i, j, l] = ROCAUC_train_score
@@ -111,8 +150,27 @@ def main():
                     print("time {:.1f}".format(ed_time - st_time))
 
         wb.save(wb_name[k])
-        print(score_data_train)
-        print(score_data_test)
+
+        max_test_index = np.unravel_index(np.argmax(score_data_test), score_data_test.shape)
+        max_train_index = np.unravel_index(np.argmax(score_data_train), score_data_train.shape)
+
+        print(max_test_index, max_train_index)
+        max_test_score = score_data_test[max_test_index]
+        max_train_score = score_data_train[max_train_index]
+        print(max_test_score, max_train_score)
+
+        # print(score_data_train)
+        # print(score_data_test)
+
+        ht_end_time = time.time()
+
+        print("*"*50)
+        print(f"{data}")
+        print(f"max train score = {max_train_score}, (rho={rho_list[max_train_index[0]]}, theta={theta_list[max_train_index[1]]}, lambda={lambda_list[max_train_index[2]]})")
+        print(f"max test score = {max_test_score}, (rho={rho_list[max_test_index[0]]}, theta={theta_list[max_test_index[1]]}, lambda={lambda_list[max_test_index[2]]})")
+        print("計算時間 {:.1f}".format(ht_end_time - ht_start_time))
+        print("*"*50)
+
     return
 
 
