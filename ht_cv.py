@@ -154,11 +154,10 @@ def main():
         max_test_index = np.unravel_index(np.argmax(score_data_test), score_data_test.shape)
         max_train_index = np.unravel_index(np.argmax(score_data_train), score_data_train.shape)
 
-        print(max_test_index, max_train_index)
+        # print(max_test_index, max_train_index)
         max_test_score = score_data_test[max_test_index]
         max_train_score = score_data_train[max_train_index]
-        print(max_test_score, max_train_score)
-
+        # print(max_test_score, max_train_score)
         # print(score_data_train)
         # print(score_data_test)
 

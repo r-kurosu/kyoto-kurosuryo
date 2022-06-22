@@ -1,4 +1,5 @@
 import statistics
+from numpy.ctypeslib import ndpointer
 import numpy as np
 import pandas as pd
 import pulp
@@ -10,6 +11,7 @@ from scipy.spatial import distance
 from math import dist
 # import cplex
 # import gurobipy as gp
+import listpModule as lpm
 
 import sys
 # sys.path.append("/Applications/CPLEX_Studio221/cplex/python/3.9/x86-64_osx")
@@ -53,6 +55,8 @@ def read_dataset(data_csv, value_txt):
 
 
 def pre_problem(x, y, D, K):
+    # from scipy.spatial import distance
+
     st_time1 = time.time()
     index_A = []
     index_B = []
@@ -72,7 +76,7 @@ def pre_problem(x, y, D, K):
                 x_a = [0]*K
                 x_b = x.loc[j]
         ed_time1 = time.time()
-        print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
+        # print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
         return x_a, x_b
     if len(index_B) == 0:
         for i in index_A:
@@ -82,12 +86,26 @@ def pre_problem(x, y, D, K):
                 x_a = x.loc[i]
                 x_b = [0]*K
         ed_time1 = time.time()
-        print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
+        # print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
         return x_a, x_b
 
+    temp = 0
+    # print(K)
     for i in index_A:
         for j in index_B:
-            temp = distance.euclidean(x.loc[i], x.loc[j])
+            # temp = distance.euclidean(x.loc[i], x.loc[j])
+            # temp = np.linalg.norm(x.loc[i]-x.loc[j])
+
+            x_i = x.iloc[i].tolist()
+            x_j = x.iloc[j].tolist()
+            x_list = x_i + x_j
+            temp = lpm.sum_list(x_list)
+
+            # print(len(x_i), len(x_j), len(x_list))
+            # print(x_list)
+            # print(type(x_list[0]))
+            # print(temp)
+
             if temp_max <= temp:
                 temp_max = temp
                 x_a = x.loc[i]
