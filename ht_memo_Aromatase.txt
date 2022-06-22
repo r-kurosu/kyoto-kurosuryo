@@ -1,0 +1,436 @@
+rho:0.01,theta:0.01, lambda:1
+n=2776 p=1
+n=1373 p=2
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=546 p=2
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=615 p=2
+n=320 p=3
+n=72 p=4
+======================================================
+dataset/FV/Aromatase_3elem_desc_norm.csv
+max depth : 4
+ROC/AUC train score (median): 0.5617919820136001
+ROC/AUC test score (median): 0.5503220611916264
+BACC train score (median): 0.5617919820136001
+BACC test score (median): 0.5503220611916264
+計算時間 : 1716.4
+======================================================
+time 1716.4
+rho:0.01,theta:0.01, lambda:2
+n=2776 p=1
+n=647 p=2
+n=93 p=3
+n=22 p=4
+n=2776 p=1
+n=2776 p=1
+n=388 p=2
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=666 p=2
+n=291 p=3
+n=116 p=4
+n=29 p=5
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=397 p=2
+======================================================
+dataset/FV/Aromatase_3elem_desc_norm.csv
+max depth : 5
+ROC/AUC train score (median): 0.5687294869660816
+ROC/AUC test score (median): 0.5507839419095101
+BACC train score (median): 0.5687294869660816
+BACC test score (median): 0.5507839419095101
+計算時間 : 1611.9
+======================================================
+time 1612.0
+rho:0.01,theta:0.01, lambda:3
+n=2776 p=1
+n=927 p=2
+n=2776 p=1
+n=927 p=2
+n=117 p=3
+n=2776 p=1
+n=927 p=2
+n=910 p=3
+n=267 p=4
+n=216 p=5
+n=2776 p=1
+n=927 p=2
+n=803 p=3
+n=465 p=4
+n=105 p=5
+n=19 p=6
+n=2776 p=1
+n=927 p=2
+n=2776 p=1
+n=927 p=2
+n=2776 p=1
+n=927 p=2
+n=17 p=3
+n=2776 p=1
+n=927 p=2
+n=239 p=3
+n=2776 p=1
+n=927 p=2
+n=2776 p=1
+n=927 p=2
+======================================================
+dataset/FV/Aromatase_3elem_desc_norm.csv
+max depth : 6
+ROC/AUC train score (median): 0.6228744810157778
+ROC/AUC test score (median): 0.5489744026635308
+BACC train score (median): 0.6228744810157778
+BACC test score (median): 0.5489744026635308
+計算時間 : 2041.8
+======================================================
+time 2042.0
+rho:0.01,theta:0.01, lambda:4
+n=2776 p=1
+n=1389 p=2
+n=595 p=3
+n=191 p=4
+n=19 p=5
+n=2776 p=1
+n=1389 p=2
+n=2776 p=1
+n=1389 p=2
+n=619 p=3
+n=354 p=4
+n=2776 p=1
+n=1389 p=2
+n=2776 p=1
+n=1389 p=2
+n=2776 p=1
+n=1389 p=2
+n=2776 p=1
+n=1389 p=2
+n=128 p=3
+n=19 p=4
+n=2776 p=1
+n=1389 p=2
+n=262 p=3
+n=2776 p=1
+n=1389 p=2
+n=511 p=3
+n=193 p=4
+n=2776 p=1
+n=1389 p=2
+n=181 p=3
+======================================================
+dataset/FV/Aromatase_3elem_desc_norm.csv
+max depth : 5
+ROC/AUC train score (median): 0.6739705234678828
+ROC/AUC test score (median): 0.5607027193776927
+BACC train score (median): 0.6739705234678828
+BACC test score (median): 0.5607027193776928
+計算時間 : 2123.6
+======================================================
+time 2123.7
+rho:0.01,theta:0.01, lambda:5
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=59 p=4
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=243 p=4
+n=98 p=5
+n=77 p=6
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=525 p=4
+n=374 p=5
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=79 p=4
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=234 p=4
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+======================================================
+dataset/FV/Aromatase_3elem_desc_norm.csv
+max depth : 6
+ROC/AUC train score (median): 0.7132256389736225
+ROC/AUC test score (median): 0.562253685593344
+BACC train score (median): 0.7132256389736223
+BACC test score (median): 0.562253685593344
+計算時間 : 2336.9
+======================================================
+time 2337.0
+rho:0.01,theta:0.1, lambda:1
+n=2776 p=1
+n=1373 p=2
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=546 p=2
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=615 p=2
+n=30 p=3
+======================================================
+dataset/FV/Aromatase_3elem_desc_norm.csv
+max depth : 3
+ROC/AUC train score (median): 0.5617919820136001
+ROC/AUC test score (median): 0.5480880503163006
+BACC train score (median): 0.5617919820136001
+BACC test score (median): 0.5480880503163006
+計算時間 : 1509.0
+======================================================
+time 1509.1
+rho:0.01,theta:0.1, lambda:2
+n=2776 p=1
+n=647 p=2
+n=93 p=3
+n=22 p=4
+n=2776 p=1
+n=2776 p=1
+n=388 p=2
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=666 p=2
+n=291 p=3
+n=116 p=4
+n=29 p=5
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=397 p=2
+======================================================
+dataset/FV/Aromatase_3elem_desc_norm.csv
+max depth : 5
+ROC/AUC train score (median): 0.5687294869660816
+ROC/AUC test score (median): 0.5507839419095101
+BACC train score (median): 0.5687294869660816
+BACC test score (median): 0.5507839419095101
+計算時間 : 1482.5
+======================================================
+time 1482.6
+rho:0.01,theta:0.1, lambda:3
+n=2776 p=1
+n=927 p=2
+n=2776 p=1
+n=927 p=2
+n=117 p=3
+n=2776 p=1
+n=927 p=2
+n=910 p=3
+n=267 p=4
+n=216 p=5
+n=2776 p=1
+n=927 p=2
+n=803 p=3
+n=465 p=4
+n=105 p=5
+n=19 p=6
+n=2776 p=1
+n=927 p=2
+n=2776 p=1
+n=927 p=2
+n=2776 p=1
+n=927 p=2
+n=17 p=3
+n=2776 p=1
+n=927 p=2
+n=239 p=3
+n=2776 p=1
+n=927 p=2
+n=2776 p=1
+n=927 p=2
+======================================================
+dataset/FV/Aromatase_3elem_desc_norm.csv
+max depth : 6
+ROC/AUC train score (median): 0.6228744810157778
+ROC/AUC test score (median): 0.5489744026635308
+BACC train score (median): 0.6228744810157778
+BACC test score (median): 0.5489744026635308
+計算時間 : 1849.5
+======================================================
+time 1849.6
+rho:0.01,theta:0.1, lambda:4
+n=2776 p=1
+n=1389 p=2
+n=595 p=3
+n=191 p=4
+n=19 p=5
+n=2776 p=1
+n=1389 p=2
+n=2776 p=1
+n=1389 p=2
+n=619 p=3
+n=354 p=4
+n=2776 p=1
+n=1389 p=2
+n=2776 p=1
+n=1389 p=2
+n=2776 p=1
+n=1389 p=2
+n=2776 p=1
+n=1389 p=2
+n=128 p=3
+n=19 p=4
+n=2776 p=1
+n=1389 p=2
+n=262 p=3
+n=2776 p=1
+n=1389 p=2
+n=511 p=3
+n=193 p=4
+n=2776 p=1
+n=1389 p=2
+n=181 p=3
+======================================================
+dataset/FV/Aromatase_3elem_desc_norm.csv
+max depth : 5
+ROC/AUC train score (median): 0.6739705234678828
+ROC/AUC test score (median): 0.5607027193776927
+BACC train score (median): 0.6739705234678828
+BACC test score (median): 0.5607027193776928
+計算時間 : 2616.7
+======================================================
+time 2616.8
+rho:0.01,theta:0.1, lambda:5
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=59 p=4
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=243 p=4
+n=98 p=5
+n=77 p=6
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=525 p=4
+n=374 p=5
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=79 p=4
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=234 p=4
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+n=2776 p=1
+n=1667 p=2
+n=558 p=3
+======================================================
+dataset/FV/Aromatase_3elem_desc_norm.csv
+max depth : 6
+ROC/AUC train score (median): 0.7132256389736225
+ROC/AUC test score (median): 0.562253685593344
+BACC train score (median): 0.7132256389736223
+BACC test score (median): 0.562253685593344
+計算時間 : 3157.5
+======================================================
+time 3157.6
+rho:0.01,theta:0.3, lambda:1
+n=2776 p=1
+n=1373 p=2
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=546 p=2
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=615 p=2
+n=100 p=3
+======================================================
+dataset/FV/Aromatase_3elem_desc_norm.csv
+max depth : 3
+ROC/AUC train score (median): 0.5617919820136001
+ROC/AUC test score (median): 0.5422058587011831
+BACC train score (median): 0.5617919820136001
+BACC test score (median): 0.5422058587011831
+計算時間 : 1669.7
+======================================================
+time 1669.8
+rho:0.01,theta:0.3, lambda:2
+n=2776 p=1
+n=647 p=2
+n=93 p=3
+n=22 p=4
+n=2776 p=1
+n=2776 p=1
+n=388 p=2
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=666 p=2
+n=291 p=3
+n=116 p=4
+n=29 p=5
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=2776 p=1
+n=397 p=2
+======================================================
+dataset/FV/Aromatase_3elem_desc_norm.csv
+max depth : 5
+ROC/AUC train score (median): 0.5687294869660816
+ROC/AUC test score (median): 0.5507839419095101
+BACC train score (median): 0.5687294869660816
+BACC test score (median): 0.5507839419095101
+計算時間 : 7003.0
+======================================================
+time 7003.1
+rho:0.01,theta:0.3, lambda:3
+n=2776 p=1
+n=927 p=2
+n=2776 p=1
+n=927 p=2
+n=117 p=3
