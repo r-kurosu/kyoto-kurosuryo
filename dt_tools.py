@@ -94,12 +94,17 @@ def pre_problem(x, y, D, K):
     for i in index_A:
         for j in index_B:
             # temp = distance.euclidean(x.loc[i], x.loc[j])
+            # temp = distance.sqeuclidean(x.loc[i], x.loc[j], 1)
             # temp = np.linalg.norm(x.loc[i]-x.loc[j])
+            # temp = np.sqrt(np.power(x.loc[i] - x.loc[j], 2).sum())
 
-            x_i = x.iloc[i].tolist()
-            x_j = x.iloc[j].tolist()
+            x_i = x.loc[i].values.tolist()
+            x_j = x.loc[j].values.tolist()
+            # print(len(x_i), len(x_j))
             x_list = x_i + x_j
+            # print(len(x_list))
             temp = lpm.sum_list(x_list)
+            # print(x_list)
 
             # print(len(x_i), len(x_j), len(x_list))
             # print(x_list)
@@ -110,7 +115,7 @@ def pre_problem(x, y, D, K):
                 temp_max = temp
                 x_a = x.loc[i]
                 x_b = x.loc[j]
-
+    print("hey")
     ed_time1 = time.time()
     print("pre_proc_time = {:.1f}".format(ed_time1-st_time1))
 
