@@ -93,17 +93,18 @@ def pre_problem(x, y, D, K):
     # print(K)
     for i in index_A:
         for j in index_B:
-            # temp = distance.euclidean(x.loc[i], x.loc[j])
+            temp = distance.euclidean(x.loc[i], x.loc[j])
             # temp = distance.sqeuclidean(x.loc[i], x.loc[j], 1)
             # temp = np.linalg.norm(x.loc[i]-x.loc[j])
             # temp = np.sqrt(np.power(x.loc[i] - x.loc[j], 2).sum())
 
-            x_i = x.loc[i].values.tolist()
-            x_j = x.loc[j].values.tolist()
+            # x_i = x.loc[i].values.tolist()
+            # x_j = x.loc[j].values.tolist()
+            # x_list = x_i + x_j
+            # temp = lpm.sum_list(x_list)
             # print(len(x_i), len(x_j))
-            x_list = x_i + x_j
+            # x_list = x_i + x_j
             # print(len(x_list))
-            temp = lpm.sum_list(x_list)
             # print(x_list)
 
             # print(len(x_i), len(x_j), len(x_list))
@@ -115,7 +116,7 @@ def pre_problem(x, y, D, K):
                 temp_max = temp
                 x_a = x.loc[i]
                 x_b = x.loc[j]
-    print("hey")
+    # print("hey")
     ed_time1 = time.time()
     print("pre_proc_time = {:.1f}".format(ed_time1-st_time1))
 
@@ -452,7 +453,9 @@ def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg):
     order_list = order.tolist()
 
     indexes_0 = order_list[0:lambda_arg]
-    indexes_1 = order_list[len(y):len(y) - lambda_arg:-1]
+    # indexes_1 = order_list[len(y):len(y) - lambda_arg:-1]
+    indexes_1 = order_list[len(y)-1:len(y)-1 - lambda_arg:-1]
+
 
     for i in indexes_0:
         if z[i] > -c_A:
