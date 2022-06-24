@@ -458,11 +458,11 @@ def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg):
 
 
     for i in indexes_0:
-        if z[i] > -c_A:
+        if z[i] >= -c_A:
             indexes_0 = indexes_0[0:i]
             break
     for i in indexes_1:
-        if z[i] < c_B:
+        if z[i] <= c_B:
             indexes_1 = indexes_1[0:i]
             break
 
