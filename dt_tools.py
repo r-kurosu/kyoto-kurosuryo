@@ -449,30 +449,31 @@ def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg):
     for i in range(len(x)):
         z[i] = naiseki(w, x.loc[i]) - b
     z_array = np.array(z)
+
     order = np.argsort(z_array)
     order_list = order.tolist()
-
     indexes_0 = order_list[0:lambda_arg]
-    # indexes_1 = order_list[len(y):len(y) - lambda_arg:-1]
     indexes_1 = order_list[len(y)-1:len(y)-1 - lambda_arg:-1]
 
-
+    new_index_0 = []
+    new_index_1 = []
     for i in indexes_0:
-        if z[i] >= -c_A:
-            indexes_0 = indexes_0[0:i]
+        new_index_0.append(i)
+        if z[i] > -c_A:
             break
     for i in indexes_1:
-        if z[i] <= c_B:
-            indexes_1 = indexes_1[0:i]
+        new_index_1.append(i)
+        if z[i] < c_B:
             break
 
-    for i in indexes_0:
+    for i in new_index_0:
         a_score[CIDs.loc[i]] = 0
-    for i in indexes_1:
+    for i in new_index_1:
         a_score[CIDs.loc[i]] = 1
 
-    indexes_0.extend(indexes_1)
-    drop_index_list = indexes_0
+    new_index_0.extend(new_index_1)
+    drop_index_list = new_index_0
+
     x.drop(drop_index_list, axis=0, inplace=True)
     y.drop(drop_index_list, inplace=True)
     CIDs.drop(drop_index_list, inplace=True)
