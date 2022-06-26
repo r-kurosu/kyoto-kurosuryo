@@ -18,6 +18,7 @@ static PyObject* c_list_param(PyObject* self, PyObject* args)
     if (!PyArg_ParseTuple(args, "O", &c_list)){
         return NULL;
     }
+    Py_INCREF(c_list); // Decrement the reference count
 
     // Check list
     if (PyList_Check(c_list)){
@@ -31,9 +32,11 @@ static PyObject* c_list_param(PyObject* self, PyObject* args)
     // Calculate list sum -> calculate euclid dist
     for (int i = 0; i < n/2; i++){
         item_x = PyList_GetItem(c_list, i);
+        Py_INCREF(item_x);
         a = PyFloat_AsDouble(item_x); // Increment the reference count
 
         item_y = PyList_GetItem(c_list, i + n/2);
+        Py_INCREF(item_y); // Decrement the reference count
         b = PyFloat_AsDouble(item_y); // Increment the reference count
 
         sum = sum + pow((a-b), 2.0);
@@ -45,8 +48,8 @@ static PyObject* c_list_param(PyObject* self, PyObject* args)
     }
 
     Py_DECREF(c_list); // Decrement the reference count
-//    Py_DECREF(y_list); // Decrement the reference count
-//    printf("Hello world\n");
+
+
 
     return Py_BuildValue("d", sum);
 }

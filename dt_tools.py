@@ -90,7 +90,6 @@ def pre_problem(x, y, D, K):
         return x_a, x_b
 
     temp = 0
-    # print(K)
     for i in index_A:
         for j in index_B:
             temp = distance.euclidean(x.loc[i], x.loc[j])
@@ -98,25 +97,19 @@ def pre_problem(x, y, D, K):
             # temp = np.linalg.norm(x.loc[i]-x.loc[j])
             # temp = np.sqrt(np.power(x.loc[i] - x.loc[j], 2).sum())
 
+            # time1 = time.time()
             # x_i = x.loc[i].values.tolist()
             # x_j = x.loc[j].values.tolist()
             # x_list = x_i + x_j
             # temp = lpm.sum_list(x_list)
-            # print(len(x_i), len(x_j))
-            # x_list = x_i + x_j
-            # print(len(x_list))
-            # print(x_list)
-
-            # print(len(x_i), len(x_j), len(x_list))
-            # print(x_list)
-            # print(type(x_list[0]))
-            # print(temp)
+            # print("pre_proc_time = {:.1f}".format(time.time() - time1))
 
             if temp_max <= temp:
                 temp_max = temp
                 x_a = x.loc[i]
                 x_b = x.loc[j]
-    # print("hey")
+    # print(x_a, x_b)
+
     ed_time1 = time.time()
     print("pre_proc_time = {:.1f}".format(ed_time1-st_time1))
 

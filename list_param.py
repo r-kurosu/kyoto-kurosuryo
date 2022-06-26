@@ -1,6 +1,5 @@
 import listpModule as lpm
 import ctypes
-import gdb
 
 py_list1 = [1, 2, 3]
 py_list2 = [2, 3, 4]
@@ -12,16 +11,29 @@ py_list6 = [0.0854701, 0.181818, 0.126437, 0.383007, 0.0, 0.130435, 0.0909091, 0
 sum: float = 0.0
 # print(type(sum))
 
-# for i in range(len(py_list5)):
-#     py_list5[i] = ctypes.c_double(py_list5[i])
-
-# sum = lpm.sum_list(py_list3)
-# sum = lpm.sum_list(py_list4)
-# sum = lpm.sum_list(py_list6)
-# print(type(sum))
-
+# print(py_list3)
+# print(py_list4)
+# print(py_list5)
 for pylist in [py_list3, py_list4, py_list5, py_list6]:
     sum = lpm.sum_list(pylist)
     print(sum, type(sum))
 
+
+# print(py_list3, len(py_list3))
+for pylist in py_list3:
+    sum = lpm.sum_list(pylist)
+    print(sum, type(sum))
+
+# print(py_list4)
+# for pylist in py_list4:
+#     sum = lpm.sum_list(pylist)
+#     print(sum, type(sum))
+
+# print(py_list5)
+# for pylist in py_list5:
+#     sum = lpm.sum_list(pylist)
+#     print(sum, type(sum))
+
+
 print(sum)
+print(type(sum))
