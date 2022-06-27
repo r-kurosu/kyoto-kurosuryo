@@ -15,16 +15,17 @@ import io
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-rho_list = [0.01, 0.05, 0.1, 0.5, 1]
-theta_list = [0.01, 0.1, 0.3, 0.5, 1]
-lambda_list = [1, 2, 3, 4, 5]
+# rho_list = [0.01, 0.05, 0.1, 0.5, 1]
+# theta_list = [0.01, 0.1, 0.3, 0.5, 1]
+# lambda_list = [1, 2, 3, 4, 5, 6]
 # rho_list = [0.05, 1]
 # theta_list = [0.1, 1]
 # lambda_list = [1, 2]
-# rho_list = [0.05]
-# theta_list = [0.1]
-# lambda_list = [1]
+rho_list = [0.01]
+theta_list = [0.01]
+lambda_list = [1]
 
+CV_TIMES = 1
 
 def wright_columns(ws, dataset):
     gap = 10
@@ -124,10 +125,7 @@ def main():
                     st_time = time.time()
                     print(f"rho:{rho},theta:{theta}, lambda:{lambd}")
                     ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth \
-                        = dt_for_cv.main(rho, theta, lambd, INPUT_CSV[k], INPUT_TXT[k], 2)
-
-                    # ws.cell(row=j + 2, column=i + 2).value = ROCAUC_test_score
-                    # ws_train_score.cell(row=j + 2, column=i + 2).value = ROCAUC_train_score
+                        = dt_for_cv.main(rho, theta, lambd, INPUT_CSV[k], INPUT_TXT[k], CV_TIMES)
 
                     # 出力
                     if lambd == 1:
