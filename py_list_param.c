@@ -39,7 +39,10 @@ static PyObject* c_list_param(PyObject* self, PyObject* args)
         Py_INCREF(item_y); // Decrement the reference count
         b = PyFloat_AsDouble(item_y); // Increment the reference count
 
-        sum = sum + pow((a-b), 2.0);
+//        sum = sum + pow((a-b), 2.0);
+        sum = sum + sqrt(pow((a-b), 2.0));
+//        sum = sum + (a-b)*(a-b);
+//        sum = sum + sqrt((a-b)*(a-b));
 //        printf("%d\n", i);
 //        printf("Hello world\n");
 
