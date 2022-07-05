@@ -1,4 +1,5 @@
 import statistics
+from numpy.ctypeslib import ndpointer
 import numpy as np
 import pandas as pd
 import pulp
@@ -10,6 +11,7 @@ from scipy.spatial import distance
 from math import dist
 # import cplex
 # import gurobipy as gp
+import listpModule as lpm
 
 import sys
 # sys.path.append("/Applications/CPLEX_Studio221/cplex/python/3.9/x86-64_osx")
@@ -19,6 +21,8 @@ import sys
 
 CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 GUROBI_PATH = "/Users/kurosuryou/gurobi.lic"
+
+# LAMBDA = 10
 
 
 def read_dataset(data_csv, value_txt):
@@ -51,6 +55,8 @@ def read_dataset(data_csv, value_txt):
 
 
 def pre_problem(x, y, D, K):
+    # from scipy.spatial import distance
+
     st_time1 = time.time()
     index_A = []
     index_B = []
@@ -69,7 +75,9 @@ def pre_problem(x, y, D, K):
                 temp_max = temp
                 x_a = [0]*K
                 x_b = x.loc[j]
-                return x_a, x_b
+        ed_time1 = time.time()
+        # print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
+        return x_a, x_b
     if len(index_B) == 0:
         for i in index_A:
             temp = distance.euclidean(x.loc[i], 0)
@@ -77,15 +85,30 @@ def pre_problem(x, y, D, K):
                 temp_max = temp
                 x_a = x.loc[i]
                 x_b = [0]*K
-                return x_a, x_b
+        ed_time1 = time.time()
+        # print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
+        return x_a, x_b
 
+    temp = 0
     for i in index_A:
         for j in index_B:
             temp = distance.euclidean(x.loc[i], x.loc[j])
+            # temp = distance.sqeuclidean(x.loc[i], x.loc[j], 1)
+            # temp = np.linalg.norm(x.loc[i]-x.loc[j])
+            # temp = np.sqrt(np.power(x.loc[i] - x.loc[j], 2).sum())
+
+            # time1 = time.time()
+            # x_i = x.loc[i].values.tolist()
+            # x_j = x.loc[j].values.tolist()
+            # x_list = x_i + x_j
+            # temp = lpm.sum_list(x_list)
+            # print("pre_proc_time = {:.1f}".format(time.time() - time1))
+
             if temp_max <= temp:
                 temp_max = temp
                 x_a = x.loc[i]
                 x_b = x.loc[j]
+    # print(x_a, x_b)
 
     ed_time1 = time.time()
     print("pre_proc_time = {:.1f}".format(ed_time1-st_time1))
@@ -95,8 +118,8 @@ def pre_problem(x, y, D, K):
 
 def find_separator(x_df, y, D, K, w_p, b_p, x_a, x_b):
     model = pulp.LpProblem("Linear_Separator", pulp.LpMinimize)
-    print(f"K={K}")
-    print(f"n={D}")
+    # print(f"K={K}")
+    # print(f"n={D}")
     param = 1
 
     # 変数定義
@@ -155,27 +178,27 @@ def find_separator(x_df, y, D, K, w_p, b_p, x_a, x_b):
         return None, None, None
 
 
-def find_separator_by_CPLEX(x_df, y, D, K, w_p, b_p, CIDs):
-    model = cplex.Cplex()
-    model.set_problem_type(model.problem_type.MILP)
-    model.objective.set_sense(model.objective.sense.minimize)
-    model.set_problem_name("MILP")
-    
-    # 変数定義
-    model.variables.add(names="b", types = "C")
-    [model.variables.add(names=f"w_{i}", types = "C") for i in range(K)]
-    model.variables.add(names="eps", lb=0, types="C")
+# def find_separator_by_CPLEX(x_df, y, D, K, w_p, b_p, CIDs):
+#     model = cplex.Cplex()
+#     model.set_problem_type(model.problem_type.MILP)
+#     model.objective.set_sense(model.objective.sense.minimize)
+#     model.set_problem_name("MILP")
+#
+#     # 変数定義
+#     model.variables.add(names="b", types = "C")
+#     [model.variables.add(names=f"w_{i}", types = "C") for i in range(K)]
+#     model.variables.add(names="eps", lb=0, types="C")
+#
+#     # 目的関数
+#     model.objective.set_linear("eps", 1)
+#
+#     # 制約条件
+#
+#     return
 
-    # 目的関数
-    model.objective.set_linear("eps", 1)
 
-    # 制約条件
-
-    return
-
-
-def find_separator_by_GUROBI(x_df, y, D, K, w_p, b_p, CIDs):
-    model = gp.Model(name = "MILP")
+# def find_separator_by_GUROBI(x_df, y, D, K, w_p, b_p, CIDs):
+#     model = gp.Model(name = "MILP")
     
     # ノーマルバージョン -----------------------------------------------------------------------
     # w = [0]*K
@@ -217,93 +240,93 @@ def find_separator_by_GUROBI(x_df, y, D, K, w_p, b_p, CIDs):
     # ----------------------------------------------------------------------------------------
 
 
-    # 新しい定式化---
-    w = [0]*K
-    for i in range(K):
-        # w[i] = model.addVar(vtype=gp.GRB.CONTINUOUS)
-        w[i] = model.addVar(vtype=gp.GRB.CONTINUOUS)
+    # # 新しい定式化---
+    # w = [0]*K
+    # for i in range(K):
+    #     # w[i] = model.addVar(vtype=gp.GRB.CONTINUOUS)
+    #     w[i] = model.addVar(vtype=gp.GRB.CONTINUOUS)
+    # # b = model.addVar(vtype=gp.GRB.CONTINUOUS)
     # b = model.addVar(vtype=gp.GRB.CONTINUOUS)
-    b = model.addVar(vtype=gp.GRB.CONTINUOUS)
-    
-    # 目的関数
-    # model.setObjective(eps, sense=gp.GRB.MINIMIZE)
-    model.setObjective(sum((naiseki(w, x_df.loc[i])-b - y.loc[i])**2 for i in range(D)))
-
-    # 求解
-    model.update
-    model.params.NonConvex = 2
-    model.Params.NumericFocus = 3
-    model.Params.OutputFlag == 0
-    model.Params.MIPFocus = 3
-    model.optimize()
-    
-    if model.Status == gp.GRB.OPTIMAL:
-        w_ast = [w[i].X for i in range(len(w))]
-        b_ast = b.X
-        # eps_ast = eps.X
-        eps_ast = 1
-        w_p.append(w_ast)
-        b_p.append(b_ast)
-        for i in range(len(w_ast)):
-            if w_ast[i] is None:
-                w_ast[i] = 0
-
-        return w_ast, b_ast, eps_ast
-    else:
-        print('FindSeparator infeasible')
-        return None, None, None
-    return
-
-
-def find_separator_b(x, y, D, K, w_p, b_p, CIDs):
-    y_obs = 1/2
-    # x_df, y, D, K, w_p, b_p, CIDs
-    MILP = pulp.LpProblem("find_hyperplane", pulp.LpMinimize)
-
-
-    # w = {i: pulp.LpVariable(f"w({i})", cat=pulp.LpContinuous) for i in range(K)}
-    # w = {i: pulp.LpVariable(f"w({i})", -1, 1, cat=pulp.LpContinuous) for i in range(K)}
-    w = [pulp.LpVariable(f"w_{i}", cat=pulp.LpContinuous) for i in range(K)]
-    b = pulp.LpVariable("b", cat=pulp.LpContinuous)
-    eps = pulp.LpVariable("epsilon", 0, cat=pulp.LpContinuous)
-
-    MILP += eps
-
-    # for (_x, _y) in zip(x, y):
-    for i in range(D):
-        _x = x.loc[i]
-        _y = y.loc[i]
-        if _y <= y_obs:
-            # MILP += pulp.lpSum(w[i] * _x[i] for i in range(K)) - b <= 1/4 + eps
-            MILP += pulp.lpDot(w, _x) - b <= -1 + eps
-        else:
-            # MILP += pulp.lpSum(w[i] * _x[i] for i in range(K)) - b >= -0.25 - eps
-            MILP += pulp.lpDot(w, _x) - b >= 1 - eps
-
-    # MILP.writeLP("test.lp")
-
-    # Solve MILP
-    solve_begin = time.time()
-    CPLEX = pulp.CPLEX(path = CPLEX_PATH, msg = 0)
-        # else:
-        #     CPLEX = pulp.CPLEX(path = CPLEX_PATH,
-        #                        msg = 0)
-        # print("Start Solving Using CPLEX...")
-    status = MILP.solve(CPLEX)
-    solve_end = time.time()
+    #
+    # # 目的関数
+    # # model.setObjective(eps, sense=gp.GRB.MINIMIZE)
+    # model.setObjective(sum((naiseki(w, x_df.loc[i])-b - y.loc[i])**2 for i in range(D)))
+    #
+    # # 求解
+    # model.update
+    # model.params.NonConvex = 2
+    # model.Params.NumericFocus = 3
+    # model.Params.OutputFlag == 0
+    # model.Params.MIPFocus = 3
+    # model.optimize()
+    #
+    # if model.Status == gp.GRB.OPTIMAL:
+    #     w_ast = [w[i].X for i in range(len(w))]
+    #     b_ast = b.X
+    #     # eps_ast = eps.X
+    #     eps_ast = 1
+    #     w_p.append(w_ast)
+    #     b_p.append(b_ast)
+    #     for i in range(len(w_ast)):
+    #         if w_ast[i] is None:
+    #             w_ast[i] = 0
+    #
+    #     return w_ast, b_ast, eps_ast
     # else:
-    #     # print("Start Solving Using Coin-OR...")
-    #     solver = pulp.COIN_CMD(msg = CPLEX_MSG)
-    #     MILP.solve(solver)
-    #     solve_end = time.time()
-    if status == pulp.LpStatusOptimal:
+    #     print('FindSeparator infeasible')
+    #     return None, None, None
+    # return
 
-        w_value = {i: w[i].value() if w[i].value() is not None else 0 for i in range(K)}
-        b_value = b.value()
 
-        eps_value = eps.value()
-
-    return w_value, b_value, eps_value
+# def find_separator_b(x, y, D, K, w_p, b_p, CIDs):
+#     y_obs = 1/2
+#     # x_df, y, D, K, w_p, b_p, CIDs
+#     MILP = pulp.LpProblem("find_hyperplane", pulp.LpMinimize)
+#
+#
+#     # w = {i: pulp.LpVariable(f"w({i})", cat=pulp.LpContinuous) for i in range(K)}
+#     # w = {i: pulp.LpVariable(f"w({i})", -1, 1, cat=pulp.LpContinuous) for i in range(K)}
+#     w = [pulp.LpVariable(f"w_{i}", cat=pulp.LpContinuous) for i in range(K)]
+#     b = pulp.LpVariable("b", cat=pulp.LpContinuous)
+#     eps = pulp.LpVariable("epsilon", 0, cat=pulp.LpContinuous)
+#
+#     MILP += eps
+#
+#     # for (_x, _y) in zip(x, y):
+#     for i in range(D):
+#         _x = x.loc[i]
+#         _y = y.loc[i]
+#         if _y <= y_obs:
+#             # MILP += pulp.lpSum(w[i] * _x[i] for i in range(K)) - b <= 1/4 + eps
+#             MILP += pulp.lpDot(w, _x) - b <= -1 + eps
+#         else:
+#             # MILP += pulp.lpSum(w[i] * _x[i] for i in range(K)) - b >= -0.25 - eps
+#             MILP += pulp.lpDot(w, _x) - b >= 1 - eps
+#
+#     # MILP.writeLP("test.lp")
+#
+#     # Solve MILP
+#     solve_begin = time.time()
+#     CPLEX = pulp.CPLEX(path = CPLEX_PATH, msg = 0)
+#         # else:
+#         #     CPLEX = pulp.CPLEX(path = CPLEX_PATH,
+#         #                        msg = 0)
+#         # print("Start Solving Using CPLEX...")
+#     status = MILP.solve(CPLEX)
+#     solve_end = time.time()
+#     # else:
+#     #     # print("Start Solving Using Coin-OR...")
+#     #     solver = pulp.COIN_CMD(msg = CPLEX_MSG)
+#     #     MILP.solve(solver)
+#     #     solve_end = time.time()
+#     if status == pulp.LpStatusOptimal:
+#
+#         w_value = {i: w[i].value() if w[i].value() is not None else 0 for i in range(K)}
+#         b_value = b.value()
+#
+#         eps_value = eps.value()
+#
+#     return w_value, b_value, eps_value
 
 
 def count_s(y):
@@ -363,6 +386,12 @@ def find_r(z, z_p):
 def find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg):
     rho = rho_arg
     theta = theta_arg
+
+    if r <= 0:
+        c_A = 0
+    if r_p <= 0:
+        c_B = 0
+
     for l in range(r, 0, -1):
         if siki_1(l, z, z_p, r, r_p, s, s_p, rho) == True:
             # print(f"l={l}")
@@ -378,11 +407,6 @@ def find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg):
             c_B = -z_p[l]
             break
         c_B = -z_p[math.floor(r_p * theta)]
-
-    if r <= 0:
-        c_A = 0
-    if r_p <= 0:
-        c_B = 0
 
     return c_A, c_B
 
@@ -412,24 +436,44 @@ def siki_2(l, z, z_p, r, r_p, s, s_p, rho):
     return False
 
 
-def redefine_func(x_df, y, w, b, c_A, c_B, CIDs, a_score):
-    for index, vector_x in x_df.iterrows():
-        # ver2. 正解を気にしない
-        if naiseki(w, vector_x) - b <= -c_A:
-            x_df.drop(index, axis=0, inplace=True)
-            y.drop(index, inplace=True)
-            a_score[CIDs.loc[index]] = 0
-            CIDs.drop(index, inplace=True)
+def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg):
 
-        elif naiseki(w, vector_x) - b >= c_B:
-            x_df.drop(index, axis=0, inplace=True)
-            y.drop(index, inplace=True)
-            a_score[CIDs.loc[index]] = 1
-            CIDs.drop(index, inplace=True)
+    z = [0]*len(x)
+    for i in range(len(x)):
+        z[i] = naiseki(w, x.loc[i]) - b
+    z_array = np.array(z)
+
+    order = np.argsort(z_array)
+    order_list = order.tolist()
+    indexes_0 = order_list[0:lambda_arg]
+    indexes_1 = order_list[len(y)-1:len(y)-1 - lambda_arg:-1]
+
+    new_index_0 = []
+    new_index_1 = []
+    for i in indexes_0:
+        new_index_0.append(i)
+        if z[i] > -c_A:
+            break
+    for i in indexes_1:
+        new_index_1.append(i)
+        if z[i] < c_B:
+            break
+
+    for i in new_index_0:
+        a_score[CIDs.loc[i]] = 0
+    for i in new_index_1:
+        a_score[CIDs.loc[i]] = 1
+
+    new_index_0.extend(new_index_1)
+    drop_index_list = new_index_0
+
+    x.drop(drop_index_list, axis=0, inplace=True)
+    y.drop(drop_index_list, inplace=True)
+    CIDs.drop(drop_index_list, inplace=True)
 
     D = len(y)
 
-    return D, x_df, y
+    return D, x, y, a_score
 
 
 def set_a_q(x_df, y, CIDs, a_score):
@@ -447,7 +491,10 @@ def set_a_q(x_df, y, CIDs, a_score):
     return a_score
 
 
-def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, theta_arg):
+def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, theta_arg, lambda_arg):
+    # lambda_arg: int = 1 # 1の時、test時の各ノードの個数に関する制約をなくす
+
+    # print(a_score_test)
     # 3.1 s, s'を数える
     s, s_p = count_s(y_test)
     # 3.2 ソートする
@@ -457,32 +504,22 @@ def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, thet
     # 3.4 index(l)を探す
     c_A, c_B = find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg)
     # 3.5 振り分け
-    for index, vector_x in x_test.iterrows():
-        if naiseki(w, vector_x) - b <= -c_A:
-            x_test.drop(index, axis=0, inplace=True)
-            y_test.drop(index, inplace=True)
-            a_score_test[CIDs_test.loc[index]] = 0
-            CIDs_test.drop(index, inplace=True)
-
-        elif naiseki(w, vector_x) - b >= c_B:
-            x_test.drop(index, axis=0, inplace=True)
-            y_test.drop(index, inplace=True)
-            a_score_test[CIDs_test.loc[index]] = 1
-            CIDs_test.drop(index, inplace=True)
-
+    D, x_test, y_test, a_score_test = redefine_func(x_test, y_test, w, b, c_A, c_B, CIDs_test, a_score_test, lambda_arg)
+    # print(a_score_test)
     new_D = len(x_test)
+
     return new_D, x_test, y_test
 
 
-def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_score, rho_arg, theta_arg):
+def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_score, rho_arg, theta_arg, lambda_arg):
     # 2. 超平面（hyper plane）を探す
     x_a, x_b = pre_problem(x_df, y, D, K)
 
     w, b, eps = find_separator(x_df, y, D, K, w_p, b_p, x_a, x_b)
 
-    print(f"w={w}")
-    print(f"b={b}")
-    print(f"eps={eps}")
+    # print(f"w={w}")
+    # print(f"b={b}")
+    # print(f"eps={eps}")
     # for w_i in w:
     #     if w_i != 0:
     #         print(w_i)
@@ -507,7 +544,7 @@ def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_scor
     # print(c_A, c_B)
 
     # 3.5 関数Φとデータセットの再定義
-    D, x_df, y = redefine_func(x_df, y, w, b, c_A, c_B, CIDs, a_score)
+    D, x_df, y, a_score = redefine_func(x_df, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg)
 
     return D, x_df, y
 

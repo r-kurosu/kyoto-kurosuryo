@@ -1,0 +1,1653 @@
+rho:0.01,theta:0.01, lambda:1
+n=3046 p=1
+pre_proc_time = 103.7
+n=337 p=2
+pre_proc_time = 4.7
+n=15 p=3
+n=3046 p=1
+pre_proc_time = 105.3
+n=3046 p=1
+pre_proc_time = 115.6
+n=3047 p=1
+pre_proc_time = 112.8
+n=3047 p=1
+pre_proc_time = 109.0
+n=3046 p=1
+pre_proc_time = 110.7
+n=3046 p=1
+pre_proc_time = 106.7
+n=3046 p=1
+pre_proc_time = 107.8
+n=1136 p=2
+pre_proc_time = 14.4
+n=3047 p=1
+pre_proc_time = 105.6
+n=1067 p=2
+pre_proc_time = 23.3
+n=21 p=3
+pre_proc_time = 0.0
+n=19 p=4
+pre_proc_time = 0.0
+n=17 p=5
+pre_proc_time = 0.0
+n=15 p=6
+pre_proc_time = 0.0
+n=13 p=7
+pre_proc_time = 0.0
+n=3047 p=1
+pre_proc_time = 105.8
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 7
+ROC/AUC train score (median): 0.5031927769291387
+ROC/AUC test score (median): 0.5057835263929986
+BACC train score (median): 0.5031927769291387
+BACC test score (median): 0.5057835263929986
+計算時間 : 1217.6
+======================================================
+time 1217.7
+rho:0.01,theta:0.01, lambda:2
+n=3046 p=1
+pre_proc_time = 102.9
+n=621 p=2
+pre_proc_time = 10.4
+n=3046 p=1
+pre_proc_time = 104.2
+n=3046 p=1
+pre_proc_time = 110.1
+n=3047 p=1
+pre_proc_time = 110.7
+n=3047 p=1
+pre_proc_time = 107.3
+n=3046 p=1
+pre_proc_time = 111.1
+n=3046 p=1
+pre_proc_time = 111.2
+n=3046 p=1
+pre_proc_time = 112.8
+n=106 p=2
+pre_proc_time = 0.1
+n=3047 p=1
+pre_proc_time = 110.6
+n=728 p=2
+pre_proc_time = 14.3
+n=172 p=3
+pre_proc_time = 0.2
+n=3047 p=1
+pre_proc_time = 111.2
+n=164 p=2
+pre_proc_time = 0.3
+n=48 p=3
+pre_proc_time = 0.0
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 3
+ROC/AUC train score (median): 0.48509443526168616
+ROC/AUC test score (median): 0.5194559412145605
+BACC train score (median): 0.48509443526168616
+BACC test score (median): 0.5194559412145605
+計算時間 : 1208.6
+======================================================
+time 1208.7
+rho:0.01,theta:0.01, lambda:3
+n=3046 p=1
+pre_proc_time = 107.4
+n=1017 p=2
+pre_proc_time = 22.7
+n=3046 p=1
+pre_proc_time = 109.2
+n=1017 p=2
+pre_proc_time = 18.1
+n=3046 p=1
+pre_proc_time = 118.4
+n=1017 p=2
+pre_proc_time = 13.1
+n=3047 p=1
+pre_proc_time = 116.4
+n=1018 p=2
+pre_proc_time = 15.1
+n=129 p=3
+n=3047 p=1
+pre_proc_time = 110.0
+n=1018 p=2
+pre_proc_time = 13.3
+n=3046 p=1
+pre_proc_time = 113.0
+n=1017 p=2
+pre_proc_time = 10.9
+n=3046 p=1
+pre_proc_time = 111.7
+n=1017 p=2
+pre_proc_time = 22.3
+n=36 p=3
+pre_proc_time = 0.0
+n=3046 p=1
+pre_proc_time = 112.2
+n=1017 p=2
+pre_proc_time = 9.7
+n=3047 p=1
+pre_proc_time = 113.7
+n=1236 p=2
+pre_proc_time = 31.2
+n=3047 p=1
+pre_proc_time = 112.1
+n=1018 p=2
+pre_proc_time = 7.6
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 3
+ROC/AUC train score (median): 0.5216020157550513
+ROC/AUC test score (median): 0.5006409716568883
+BACC train score (median): 0.5216020157550513
+BACC test score (median): 0.5006409716568883
+計算時間 : 1406.8
+======================================================
+time 1406.8
+rho:0.01,theta:0.01, lambda:4
+n=3046 p=1
+pre_proc_time = 108.1
+n=1525 p=2
+pre_proc_time = 42.9
+n=316 p=3
+pre_proc_time = 4.5
+n=156 p=4
+pre_proc_time = 1.4
+n=3046 p=1
+pre_proc_time = 108.3
+n=1525 p=2
+pre_proc_time = 32.1
+n=456 p=3
+pre_proc_time = 6.0
+n=152 p=4
+pre_proc_time = 0.6
+n=11 p=5
+n=3046 p=1
+pre_proc_time = 113.8
+n=1525 p=2
+pre_proc_time = 28.3
+n=3047 p=1
+pre_proc_time = 114.5
+n=1526 p=2
+pre_proc_time = 43.0
+n=766 p=3
+pre_proc_time = 10.9
+n=3047 p=1
+pre_proc_time = 108.9
+n=1526 p=2
+pre_proc_time = 41.4
+n=3046 p=1
+pre_proc_time = 112.7
+n=1525 p=2
+pre_proc_time = 26.9
+n=380 p=3
+pre_proc_time = 4.2
+n=135 p=4
+pre_proc_time = 0.9
+n=3046 p=1
+pre_proc_time = 109.7
+n=1525 p=2
+pre_proc_time = 39.7
+n=3046 p=1
+pre_proc_time = 110.7
+n=1525 p=2
+pre_proc_time = 41.8
+n=3047 p=1
+pre_proc_time = 108.7
+n=1526 p=2
+pre_proc_time = 42.5
+n=3047 p=1
+pre_proc_time = 113.6
+n=1526 p=2
+pre_proc_time = 17.9
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 5
+ROC/AUC train score (median): 0.5679261377679203
+ROC/AUC test score (median): 0.5243289595013734
+BACC train score (median): 0.5679261377679203
+BACC test score (median): 0.5243289595013734
+計算時間 : 1632.4
+======================================================
+time 1632.5
+rho:0.01,theta:0.01, lambda:5
+n=3046 p=1
+pre_proc_time = 109.7
+n=1829 p=2
+pre_proc_time = 56.1
+n=612 p=3
+pre_proc_time = 12.8
+n=3046 p=1
+pre_proc_time = 111.4
+n=1829 p=2
+pre_proc_time = 43.4
+n=612 p=3
+pre_proc_time = 9.3
+n=3046 p=1
+pre_proc_time = 116.3
+n=1829 p=2
+pre_proc_time = 40.5
+n=612 p=3
+pre_proc_time = 9.6
+n=556 p=4
+pre_proc_time = 7.9
+n=177 p=5
+pre_proc_time = 0.4
+n=62 p=6
+n=3047 p=1
+pre_proc_time = 115.9
+n=1830 p=2
+pre_proc_time = 54.2
+n=613 p=3
+pre_proc_time = 10.0
+n=3047 p=1
+pre_proc_time = 109.7
+n=1830 p=2
+pre_proc_time = 54.9
+n=613 p=3
+pre_proc_time = 11.2
+n=3046 p=1
+pre_proc_time = 113.7
+n=1829 p=2
+pre_proc_time = 40.8
+n=612 p=3
+pre_proc_time = 9.3
+n=3046 p=1
+pre_proc_time = 110.4
+n=1829 p=2
+pre_proc_time = 51.0
+n=612 p=3
+pre_proc_time = 11.9
+n=3046 p=1
+pre_proc_time = 112.9
+n=1829 p=2
+pre_proc_time = 56.1
+n=612 p=3
+pre_proc_time = 11.7
+n=3047 p=1
+pre_proc_time = 109.9
+n=1830 p=2
+pre_proc_time = 54.0
+n=1222 p=3
+pre_proc_time = 25.6
+n=372 p=4
+pre_proc_time = 5.0
+n=3047 p=1
+pre_proc_time = 111.7
+n=1830 p=2
+pre_proc_time = 27.2
+n=613 p=3
+pre_proc_time = 1.4
+n=135 p=4
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 6
+ROC/AUC train score (median): 0.621856185555629
+ROC/AUC test score (median): 0.5143135012677205
+BACC train score (median): 0.621856185555629
+BACC test score (median): 0.5143135012677205
+計算時間 : 1889.9
+======================================================
+time 1890.0
+rho:0.01,theta:0.1, lambda:1
+n=3046 p=1
+pre_proc_time = 107.8
+n=337 p=2
+pre_proc_time = 4.8
+n=15 p=3
+n=3046 p=1
+pre_proc_time = 109.6
+n=3046 p=1
+pre_proc_time = 115.7
+n=3047 p=1
+pre_proc_time = 117.6
+n=3047 p=1
+pre_proc_time = 110.4
+n=3046 p=1
+pre_proc_time = 114.6
+n=3046 p=1
+pre_proc_time = 113.5
+n=3046 p=1
+pre_proc_time = 115.5
+n=1136 p=2
+pre_proc_time = 15.3
+n=3047 p=1
+pre_proc_time = 110.6
+n=1067 p=2
+pre_proc_time = 24.5
+n=21 p=3
+pre_proc_time = 0.0
+n=19 p=4
+pre_proc_time = 0.0
+n=17 p=5
+pre_proc_time = 0.0
+n=15 p=6
+pre_proc_time = 0.0
+n=13 p=7
+pre_proc_time = 0.0
+n=3047 p=1
+pre_proc_time = 111.8
+n=1161 p=2
+pre_proc_time = 8.3
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 7
+ROC/AUC train score (median): 0.5031927769291387
+ROC/AUC test score (median): 0.5060206649986658
+BACC train score (median): 0.5031927769291387
+BACC test score (median): 0.5060206649986658
+計算時間 : 1279.5
+======================================================
+time 1279.5
+rho:0.01,theta:0.1, lambda:2
+n=3046 p=1
+pre_proc_time = 110.7
+n=621 p=2
+pre_proc_time = 11.0
+n=3046 p=1
+pre_proc_time = 111.3
+n=3046 p=1
+pre_proc_time = 117.1
+n=3047 p=1
+pre_proc_time = 117.4
+n=3047 p=1
+pre_proc_time = 112.2
+n=3046 p=1
+pre_proc_time = 115.7
+n=3046 p=1
+pre_proc_time = 539.7
+n=3046 p=1
+pre_proc_time = 846.5
+n=106 p=2
+pre_proc_time = 0.1
+n=3047 p=1
+pre_proc_time = 171.1
+n=728 p=2
+pre_proc_time = 30.1
+n=172 p=3
+pre_proc_time = 0.5
+n=3047 p=1
+pre_proc_time = 337.8
+n=164 p=2
+pre_proc_time = 0.7
+n=48 p=3
+pre_proc_time = 0.1
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 3
+ROC/AUC train score (median): 0.48509443526168616
+ROC/AUC test score (median): 0.5194559412145605
+BACC train score (median): 0.48509443526168616
+BACC test score (median): 0.5194559412145605
+計算時間 : 2745.1
+======================================================
+time 2745.2
+rho:0.01,theta:0.1, lambda:3
+n=3046 p=1
+pre_proc_time = 267.2
+n=1017 p=2
+pre_proc_time = 57.4
+n=3046 p=1
+pre_proc_time = 275.6
+n=1017 p=2
+pre_proc_time = 45.6
+n=3046 p=1
+pre_proc_time = 292.4
+n=1017 p=2
+pre_proc_time = 32.7
+n=3047 p=1
+pre_proc_time = 298.6
+n=1018 p=2
+pre_proc_time = 39.1
+n=345 p=3
+pre_proc_time = 1.9
+n=107 p=4
+pre_proc_time = 0.2
+n=3047 p=1
+pre_proc_time = 278.5
+n=1018 p=2
+pre_proc_time = 32.8
+n=3046 p=1
+pre_proc_time = 282.1
+n=1017 p=2
+pre_proc_time = 26.8
+n=3046 p=1
+pre_proc_time = 274.7
+n=1017 p=2
+pre_proc_time = 55.1
+n=36 p=3
+pre_proc_time = 0.1
+n=3046 p=1
+pre_proc_time = 282.8
+n=1017 p=2
+pre_proc_time = 25.5
+n=3047 p=1
+pre_proc_time = 283.1
+n=1236 p=2
+pre_proc_time = 77.5
+n=3047 p=1
+pre_proc_time = 275.8
+n=1018 p=2
+pre_proc_time = 20.2
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 4
+ROC/AUC train score (median): 0.5216020157550513
+ROC/AUC test score (median): 0.5006409716568883
+BACC train score (median): 0.5216020157550513
+BACC test score (median): 0.5006409716568883
+計算時間 : 3530.2
+======================================================
+time 3530.3
+rho:0.01,theta:0.1, lambda:4
+n=3046 p=1
+pre_proc_time = 270.8
+n=1525 p=2
+pre_proc_time = 105.9
+n=316 p=3
+pre_proc_time = 11.4
+n=156 p=4
+pre_proc_time = 3.3
+n=3046 p=1
+pre_proc_time = 264.5
+n=1525 p=2
+pre_proc_time = 78.1
+n=456 p=3
+pre_proc_time = 15.6
+n=152 p=4
+pre_proc_time = 1.6
+n=11 p=5
+n=3046 p=1
+pre_proc_time = 291.0
+n=1525 p=2
+pre_proc_time = 71.5
+n=3047 p=1
+pre_proc_time = 289.4
+n=1526 p=2
+pre_proc_time = 106.6
+n=766 p=3
+pre_proc_time = 27.2
+n=3047 p=1
+pre_proc_time = 279.6
+n=1526 p=2
+pre_proc_time = 103.2
+n=3046 p=1
+pre_proc_time = 289.6
+n=1525 p=2
+pre_proc_time = 70.7
+n=380 p=3
+pre_proc_time = 11.1
+n=135 p=4
+pre_proc_time = 2.3
+n=3046 p=1
+pre_proc_time = 276.4
+n=1525 p=2
+pre_proc_time = 97.8
+n=3046 p=1
+pre_proc_time = 280.9
+n=1525 p=2
+pre_proc_time = 110.2
+n=3047 p=1
+pre_proc_time = 280.7
+n=1526 p=2
+pre_proc_time = 113.2
+n=3047 p=1
+pre_proc_time = 297.5
+n=1526 p=2
+pre_proc_time = 49.0
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 5
+ROC/AUC train score (median): 0.5679261377679203
+ROC/AUC test score (median): 0.5243289595013734
+BACC train score (median): 0.5679261377679203
+BACC test score (median): 0.5243289595013734
+計算時間 : 4151.9
+======================================================
+time 4152.1
+rho:0.01,theta:0.1, lambda:5
+n=3046 p=1
+pre_proc_time = 294.3
+n=1829 p=2
+pre_proc_time = 153.4
+n=612 p=3
+pre_proc_time = 35.1
+n=3046 p=1
+pre_proc_time = 298.5
+n=1829 p=2
+pre_proc_time = 118.7
+n=612 p=3
+pre_proc_time = 26.4
+n=3046 p=1
+pre_proc_time = 317.7
+n=1829 p=2
+pre_proc_time = 113.5
+n=612 p=3
+pre_proc_time = 27.3
+n=556 p=4
+pre_proc_time = 22.4
+n=177 p=5
+pre_proc_time = 1.1
+n=62 p=6
+n=3047 p=1
+pre_proc_time = 323.4
+n=1830 p=2
+pre_proc_time = 151.2
+n=613 p=3
+pre_proc_time = 28.2
+n=3047 p=1
+pre_proc_time = 307.5
+n=1830 p=2
+pre_proc_time = 152.7
+n=613 p=3
+pre_proc_time = 32.2
+n=3046 p=1
+pre_proc_time = 316.6
+n=1829 p=2
+pre_proc_time = 114.6
+n=612 p=3
+pre_proc_time = 26.5
+n=3046 p=1
+pre_proc_time = 311.7
+n=1829 p=2
+pre_proc_time = 143.8
+n=612 p=3
+pre_proc_time = 33.3
+n=3046 p=1
+pre_proc_time = 317.4
+n=1829 p=2
+pre_proc_time = 161.1
+n=612 p=3
+pre_proc_time = 33.8
+n=3047 p=1
+pre_proc_time = 308.0
+n=1830 p=2
+pre_proc_time = 153.6
+n=1222 p=3
+pre_proc_time = 72.4
+n=372 p=4
+pre_proc_time = 14.3
+n=3047 p=1
+pre_proc_time = 309.8
+n=1830 p=2
+pre_proc_time = 79.4
+n=613 p=3
+pre_proc_time = 4.0
+n=135 p=4
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 6
+ROC/AUC train score (median): 0.621856185555629
+ROC/AUC test score (median): 0.5143135012677205
+BACC train score (median): 0.621856185555629
+BACC test score (median): 0.5143135012677205
+計算時間 : 5274.4
+======================================================
+time 5274.5
+rho:0.01,theta:0.3, lambda:1
+n=3046 p=1
+pre_proc_time = 300.4
+n=337 p=2
+pre_proc_time = 13.7
+n=15 p=3
+n=3046 p=1
+pre_proc_time = 307.1
+n=3046 p=1
+pre_proc_time = 323.5
+n=3047 p=1
+pre_proc_time = 329.4
+n=3047 p=1
+pre_proc_time = 313.0
+n=3046 p=1
+pre_proc_time = 318.6
+n=3046 p=1
+pre_proc_time = 315.7
+n=3046 p=1
+pre_proc_time = 320.8
+n=1136 p=2
+pre_proc_time = 42.5
+n=3047 p=1
+pre_proc_time = 311.9
+n=1067 p=2
+pre_proc_time = 67.9
+n=21 p=3
+pre_proc_time = 0.0
+n=19 p=4
+pre_proc_time = 0.0
+n=17 p=5
+pre_proc_time = 0.0
+n=15 p=6
+pre_proc_time = 0.0
+n=13 p=7
+pre_proc_time = 0.0
+n=3047 p=1
+pre_proc_time = 291.1
+n=533 p=2
+pre_proc_time = 5.2
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 7
+ROC/AUC train score (median): 0.5031927769291387
+ROC/AUC test score (median): 0.5007045961585109
+BACC train score (median): 0.5031927769291387
+BACC test score (median): 0.5007045961585108
+計算時間 : 3536.2
+======================================================
+time 3536.3
+rho:0.01,theta:0.3, lambda:2
+n=3046 p=1
+pre_proc_time = 276.4
+n=621 p=2
+pre_proc_time = 28.6
+n=3046 p=1
+pre_proc_time = 279.9
+n=3046 p=1
+pre_proc_time = 302.3
+n=3047 p=1
+pre_proc_time = 292.6
+n=3047 p=1
+pre_proc_time = 281.0
+n=3046 p=1
+pre_proc_time = 290.8
+n=3046 p=1
+pre_proc_time = 291.5
+n=3046 p=1
+pre_proc_time = 285.7
+n=106 p=2
+pre_proc_time = 0.2
+n=3047 p=1
+pre_proc_time = 278.1
+n=728 p=2
+pre_proc_time = 36.4
+n=172 p=3
+pre_proc_time = 0.5
+n=3047 p=1
+pre_proc_time = 286.9
+n=164 p=2
+pre_proc_time = 0.7
+n=48 p=3
+pre_proc_time = 0.1
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 3
+ROC/AUC train score (median): 0.48509443526168616
+ROC/AUC test score (median): 0.5194559412145605
+BACC train score (median): 0.48509443526168616
+BACC test score (median): 0.5194559412145605
+計算時間 : 3176.9
+======================================================
+time 3177.1
+rho:0.01,theta:0.3, lambda:3
+n=3046 p=1
+pre_proc_time = 279.1
+n=1017 p=2
+pre_proc_time = 61.2
+n=3046 p=1
+pre_proc_time = 299.2
+n=1017 p=2
+pre_proc_time = 51.0
+n=3046 p=1
+pre_proc_time = 318.1
+n=1017 p=2
+pre_proc_time = 35.8
+n=3047 p=1
+pre_proc_time = 317.0
+n=1018 p=2
+pre_proc_time = 42.1
+n=190 p=3
+pre_proc_time = 0.3
+n=3047 p=1
+pre_proc_time = 306.0
+n=1018 p=2
+pre_proc_time = 36.7
+n=3046 p=1
+pre_proc_time = 317.6
+n=1017 p=2
+pre_proc_time = 31.4
+n=3046 p=1
+pre_proc_time = 307.7
+n=1017 p=2
+pre_proc_time = 63.3
+n=36 p=3
+pre_proc_time = 0.1
+n=3046 p=1
+pre_proc_time = 311.8
+n=1017 p=2
+pre_proc_time = 27.7
+n=3047 p=1
+pre_proc_time = 307.3
+n=1236 p=2
+pre_proc_time = 87.9
+n=3047 p=1
+pre_proc_time = 311.6
+n=1018 p=2
+pre_proc_time = 21.3
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 3
+ROC/AUC train score (median): 0.5216020157550513
+ROC/AUC test score (median): 0.5006409716568883
+BACC train score (median): 0.5216020157550513
+BACC test score (median): 0.5006409716568883
+計算時間 : 3867.8
+======================================================
+time 3868.0
+rho:0.01,theta:0.3, lambda:4
+n=3046 p=1
+pre_proc_time = 301.0
+n=1525 p=2
+pre_proc_time = 121.1
+n=316 p=3
+pre_proc_time = 13.0
+n=156 p=4
+pre_proc_time = 3.9
+n=3046 p=1
+pre_proc_time = 303.7
+n=1525 p=2
+pre_proc_time = 91.6
+n=456 p=3
+pre_proc_time = 17.4
+n=152 p=4
+pre_proc_time = 1.8
+n=11 p=5
+n=3046 p=1
+pre_proc_time = 330.0
+n=1525 p=2
+pre_proc_time = 79.6
+n=3047 p=1
+pre_proc_time = 326.0
+n=1526 p=2
+pre_proc_time = 123.1
+n=766 p=3
+pre_proc_time = 31.4
+n=3047 p=1
+pre_proc_time = 314.8
+n=1526 p=2
+pre_proc_time = 120.1
+n=3046 p=1
+pre_proc_time = 324.4
+n=1525 p=2
+pre_proc_time = 79.4
+n=380 p=3
+pre_proc_time = 12.2
+n=135 p=4
+pre_proc_time = 2.6
+n=3046 p=1
+pre_proc_time = 322.2
+n=1525 p=2
+pre_proc_time = 115.5
+n=3046 p=1
+pre_proc_time = 329.7
+n=1525 p=2
+pre_proc_time = 123.2
+n=3047 p=1
+pre_proc_time = 319.3
+n=1526 p=2
+pre_proc_time = 125.6
+n=3047 p=1
+pre_proc_time = 317.1
+n=1526 p=2
+pre_proc_time = 53.0
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 5
+ROC/AUC train score (median): 0.5679261377679203
+ROC/AUC test score (median): 0.5243289595013734
+BACC train score (median): 0.5679261377679203
+BACC test score (median): 0.5243289595013734
+計算時間 : 4707.8
+======================================================
+time 4708.0
+rho:0.01,theta:0.3, lambda:5
+n=3046 p=1
+pre_proc_time = 307.6
+n=1829 p=2
+pre_proc_time = 163.7
+n=612 p=3
+pre_proc_time = 37.4
+n=3046 p=1
+pre_proc_time = 215.5
+n=1829 p=2
+pre_proc_time = 42.7
+n=612 p=3
+pre_proc_time = 9.4
+n=3046 p=1
+pre_proc_time = 115.6
+n=1829 p=2
+pre_proc_time = 40.1
+n=612 p=3
+pre_proc_time = 9.6
+n=556 p=4
+pre_proc_time = 7.9
+n=177 p=5
+pre_proc_time = 0.4
+n=62 p=6
+n=3047 p=1
+pre_proc_time = 116.3
+n=1830 p=2
+pre_proc_time = 55.9
+n=613 p=3
+pre_proc_time = 10.3
+n=3047 p=1
+pre_proc_time = 112.3
+n=1830 p=2
+pre_proc_time = 55.2
+n=613 p=3
+pre_proc_time = 11.2
+n=3046 p=1
+pre_proc_time = 115.8
+n=1829 p=2
+pre_proc_time = 40.9
+n=612 p=3
+pre_proc_time = 9.4
+n=3046 p=1
+pre_proc_time = 113.5
+n=1829 p=2
+pre_proc_time = 52.0
+n=612 p=3
+pre_proc_time = 11.7
+n=3046 p=1
+pre_proc_time = 113.6
+n=1829 p=2
+pre_proc_time = 55.9
+n=612 p=3
+pre_proc_time = 11.8
+n=3047 p=1
+pre_proc_time = 111.2
+n=1830 p=2
+pre_proc_time = 54.5
+n=1222 p=3
+pre_proc_time = 25.6
+n=372 p=4
+pre_proc_time = 5.0
+n=3047 p=1
+pre_proc_time = 112.4
+n=1830 p=2
+pre_proc_time = 27.2
+n=613 p=3
+pre_proc_time = 1.4
+n=135 p=4
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 6
+ROC/AUC train score (median): 0.621856185555629
+ROC/AUC test score (median): 0.5143135012677205
+BACC train score (median): 0.621856185555629
+BACC test score (median): 0.5143135012677205
+計算時間 : 2369.1
+======================================================
+time 2369.3
+rho:0.01,theta:0.5, lambda:1
+n=3046 p=1
+pre_proc_time = 108.9
+n=337 p=2
+pre_proc_time = 4.8
+n=15 p=3
+n=3046 p=1
+pre_proc_time = 111.2
+n=359 p=2
+pre_proc_time = 4.1
+n=3046 p=1
+pre_proc_time = 117.4
+n=3047 p=1
+pre_proc_time = 118.0
+n=3047 p=1
+pre_proc_time = 112.8
+n=3046 p=1
+pre_proc_time = 115.7
+n=3046 p=1
+pre_proc_time = 113.4
+n=3046 p=1
+pre_proc_time = 115.3
+n=1136 p=2
+pre_proc_time = 15.0
+n=3047 p=1
+pre_proc_time = 109.7
+n=1067 p=2
+pre_proc_time = 24.1
+n=21 p=3
+pre_proc_time = 0.0
+n=19 p=4
+pre_proc_time = 0.0
+n=17 p=5
+pre_proc_time = 0.0
+n=15 p=6
+pre_proc_time = 0.0
+n=13 p=7
+pre_proc_time = 0.0
+n=3047 p=1
+pre_proc_time = 110.1
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 7
+ROC/AUC train score (median): 0.5002435817247934
+ROC/AUC test score (median): 0.5101486960538685
+BACC train score (median): 0.5002435817247934
+BACC test score (median): 0.5101486960538685
+計算時間 : 1276.2
+======================================================
+time 1276.3
+rho:0.01,theta:0.5, lambda:2
+n=3046 p=1
+pre_proc_time = 107.6
+n=621 p=2
+pre_proc_time = 10.8
+n=3046 p=1
+pre_proc_time = 107.8
+n=3046 p=1
+pre_proc_time = 115.3
+n=3047 p=1
+pre_proc_time = 115.3
+n=3047 p=1
+pre_proc_time = 110.0
+n=3046 p=1
+pre_proc_time = 113.5
+n=3046 p=1
+pre_proc_time = 110.8
+n=3046 p=1
+pre_proc_time = 111.5
+n=106 p=2
+pre_proc_time = 0.1
+n=3047 p=1
+pre_proc_time = 110.3
+n=728 p=2
+pre_proc_time = 14.4
+n=172 p=3
+pre_proc_time = 0.2
+n=3047 p=1
+pre_proc_time = 113.0
+n=164 p=2
+pre_proc_time = 0.3
+n=48 p=3
+pre_proc_time = 0.0
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 3
+ROC/AUC train score (median): 0.48509443526168616
+ROC/AUC test score (median): 0.5194559412145605
+BACC train score (median): 0.48509443526168616
+BACC test score (median): 0.5194559412145605
+計算時間 : 1233.6
+======================================================
+time 1233.7
+rho:0.01,theta:0.5, lambda:3
+n=3046 p=1
+pre_proc_time = 108.7
+n=1017 p=2
+pre_proc_time = 22.7
+n=3046 p=1
+pre_proc_time = 106.9
+n=1017 p=2
+pre_proc_time = 18.1
+n=3046 p=1
+pre_proc_time = 114.2
+n=1017 p=2
+pre_proc_time = 12.8
+n=3047 p=1
+pre_proc_time = 114.3
+n=1018 p=2
+pre_proc_time = 15.3
+n=3047 p=1
+pre_proc_time = 109.6
+n=1018 p=2
+pre_proc_time = 13.1
+n=3046 p=1
+pre_proc_time = 112.3
+n=1017 p=2
+pre_proc_time = 11.1
+n=3046 p=1
+pre_proc_time = 113.1
+n=1017 p=2
+pre_proc_time = 23.0
+n=36 p=3
+pre_proc_time = 0.0
+n=3046 p=1
+pre_proc_time = 115.3
+n=1017 p=2
+pre_proc_time = 9.9
+n=3047 p=1
+pre_proc_time = 112.6
+n=1236 p=2
+pre_proc_time = 31.4
+n=3047 p=1
+pre_proc_time = 115.0
+n=1018 p=2
+pre_proc_time = 7.6
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 3
+ROC/AUC train score (median): 0.5216020157550513
+ROC/AUC test score (median): 0.4979273091370859
+BACC train score (median): 0.5216020157550513
+BACC test score (median): 0.4979273091370859
+計算時間 : 1405.4
+======================================================
+time 1405.5
+rho:0.01,theta:0.5, lambda:4
+n=3046 p=1
+pre_proc_time = 110.3
+n=1525 p=2
+pre_proc_time = 44.3
+n=316 p=3
+pre_proc_time = 4.6
+n=156 p=4
+pre_proc_time = 1.4
+n=3046 p=1
+pre_proc_time = 109.8
+n=1525 p=2
+pre_proc_time = 34.0
+n=456 p=3
+pre_proc_time = 6.1
+n=152 p=4
+pre_proc_time = 0.6
+n=11 p=5
+n=3046 p=1
+pre_proc_time = 119.6
+n=1525 p=2
+pre_proc_time = 28.8
+n=3047 p=1
+pre_proc_time = 118.3
+n=1526 p=2
+pre_proc_time = 43.9
+n=766 p=3
+pre_proc_time = 11.3
+n=3047 p=1
+pre_proc_time = 112.9
+n=1526 p=2
+pre_proc_time = 42.3
+n=3046 p=1
+pre_proc_time = 115.7
+n=1525 p=2
+pre_proc_time = 27.5
+n=380 p=3
+pre_proc_time = 4.3
+n=135 p=4
+pre_proc_time = 0.9
+n=3046 p=1
+pre_proc_time = 112.7
+n=1525 p=2
+pre_proc_time = 41.0
+n=3046 p=1
+pre_proc_time = 114.4
+n=1525 p=2
+pre_proc_time = 42.6
+n=3047 p=1
+pre_proc_time = 110.8
+n=1526 p=2
+pre_proc_time = 43.3
+n=3047 p=1
+pre_proc_time = 112.7
+n=1526 p=2
+pre_proc_time = 18.2
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 5
+ROC/AUC train score (median): 0.5679261377679203
+ROC/AUC test score (median): 0.5135833863420071
+BACC train score (median): 0.5679261377679203
+BACC test score (median): 0.5135833863420071
+計算時間 : 1672.1
+======================================================
+time 1672.2
+rho:0.01,theta:0.5, lambda:5
+n=3046 p=1
+pre_proc_time = 107.6
+n=1829 p=2
+pre_proc_time = 56.6
+n=612 p=3
+pre_proc_time = 12.6
+n=3046 p=1
+pre_proc_time = 109.4
+n=1829 p=2
+pre_proc_time = 42.4
+n=612 p=3
+pre_proc_time = 9.4
+n=3046 p=1
+pre_proc_time = 115.4
+n=1829 p=2
+pre_proc_time = 40.3
+n=612 p=3
+pre_proc_time = 9.6
+n=556 p=4
+pre_proc_time = 8.0
+n=177 p=5
+pre_proc_time = 0.4
+n=62 p=6
+n=3047 p=1
+pre_proc_time = 115.8
+n=1830 p=2
+pre_proc_time = 54.3
+n=613 p=3
+pre_proc_time = 10.1
+n=3047 p=1
+pre_proc_time = 111.5
+n=1830 p=2
+pre_proc_time = 55.5
+n=613 p=3
+pre_proc_time = 11.2
+n=3046 p=1
+pre_proc_time = 115.4
+n=1829 p=2
+pre_proc_time = 40.9
+n=612 p=3
+pre_proc_time = 9.4
+n=212 p=4
+pre_proc_time = 1.0
+n=3046 p=1
+pre_proc_time = 111.4
+n=1829 p=2
+pre_proc_time = 51.5
+n=612 p=3
+pre_proc_time = 11.8
+n=3046 p=1
+pre_proc_time = 112.0
+n=1829 p=2
+pre_proc_time = 56.0
+n=612 p=3
+pre_proc_time = 11.7
+n=3047 p=1
+pre_proc_time = 111.2
+n=1830 p=2
+pre_proc_time = 56.3
+n=1222 p=3
+pre_proc_time = 26.0
+n=372 p=4
+pre_proc_time = 5.0
+n=3047 p=1
+pre_proc_time = 112.8
+n=1830 p=2
+pre_proc_time = 29.2
+n=613 p=3
+pre_proc_time = 1.6
+n=135 p=4
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 6
+ROC/AUC train score (median): 0.621856185555629
+ROC/AUC test score (median): 0.50653576844144
+BACC train score (median): 0.621856185555629
+BACC test score (median): 0.50653576844144
+計算時間 : 1899.5
+======================================================
+time 1899.5
+rho:0.01,theta:1, lambda:1
+n=3046 p=1
+pre_proc_time = 109.6
+n=337 p=2
+pre_proc_time = 4.8
+n=15 p=3
+n=3046 p=1
+pre_proc_time = 111.7
+n=170 p=2
+pre_proc_time = 1.5
+n=45 p=3
+pre_proc_time = 0.1
+n=22 p=4
+pre_proc_time = 0.0
+n=3046 p=1
+pre_proc_time = 119.6
+n=3047 p=1
+pre_proc_time = 269.2
+n=3047 p=1
+pre_proc_time = 235.2
+n=3046 p=1
+pre_proc_time = 117.7
+n=3046 p=1
+pre_proc_time = 114.7
+n=3046 p=1
+pre_proc_time = 114.8
+n=1136 p=2
+pre_proc_time = 15.0
+n=3047 p=1
+pre_proc_time = 113.0
+n=1067 p=2
+pre_proc_time = 24.2
+n=21 p=3
+pre_proc_time = 0.0
+n=19 p=4
+pre_proc_time = 0.0
+n=17 p=5
+pre_proc_time = 0.0
+n=15 p=6
+pre_proc_time = 0.0
+n=13 p=7
+pre_proc_time = 0.0
+n=3047 p=1
+pre_proc_time = 111.5
+n=1369 p=2
+pre_proc_time = 12.9
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 7
+ROC/AUC train score (median): 0.4994468186948158
+ROC/AUC test score (median): 0.5190524753024752
+BACC train score (median): 0.4994468186948158
+BACC test score (median): 0.5190524753024752
+計算時間 : 1809.6
+======================================================
+time 1809.7
+rho:0.01,theta:1, lambda:2
+n=3046 p=1
+pre_proc_time = 108.7
+n=621 p=2
+pre_proc_time = 10.9
+n=3046 p=1
+pre_proc_time = 111.7
+n=262 p=2
+pre_proc_time = 2.5
+n=3046 p=1
+pre_proc_time = 117.6
+n=3047 p=1
+pre_proc_time = 117.2
+n=3047 p=1
+pre_proc_time = 112.9
+n=3046 p=1
+pre_proc_time = 117.0
+n=3046 p=1
+pre_proc_time = 114.6
+n=3046 p=1
+pre_proc_time = 114.3
+n=106 p=2
+pre_proc_time = 0.1
+n=3047 p=1
+pre_proc_time = 113.5
+n=728 p=2
+pre_proc_time = 14.5
+n=172 p=3
+pre_proc_time = 0.2
+n=3047 p=1
+pre_proc_time = 114.3
+n=1369 p=2
+pre_proc_time = 12.5
+n=292 p=3
+pre_proc_time = 0.7
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 3
+ROC/AUC train score (median): 0.48509443526168616
+ROC/AUC test score (median): 0.5246233940258835
+BACC train score (median): 0.48509443526168616
+BACC test score (median): 0.5246233940258835
+計算時間 : 1281.8
+======================================================
+time 1281.9
+rho:0.01,theta:1, lambda:3
+n=3046 p=1
+pre_proc_time = 111.3
+n=1017 p=2
+pre_proc_time = 23.0
+n=3046 p=1
+pre_proc_time = 111.6
+n=1017 p=2
+pre_proc_time = 18.4
+n=3046 p=1
+pre_proc_time = 117.6
+n=1017 p=2
+pre_proc_time = 12.9
+n=3047 p=1
+pre_proc_time = 117.2
+n=1018 p=2
+pre_proc_time = 15.6
+n=164 p=3
+pre_proc_time = 0.1
+n=22 p=4
+n=3047 p=1
+pre_proc_time = 112.4
+n=1018 p=2
+pre_proc_time = 13.2
+n=3046 p=1
+pre_proc_time = 116.3
+n=1017 p=2
+pre_proc_time = 11.1
+n=3046 p=1
+pre_proc_time = 113.1
+n=1017 p=2
+pre_proc_time = 22.6
+n=36 p=3
+pre_proc_time = 0.0
+n=3046 p=1
+pre_proc_time = 114.1
+n=1017 p=2
+pre_proc_time = 9.8
+n=3047 p=1
+pre_proc_time = 110.9
+n=1236 p=2
+pre_proc_time = 31.0
+n=3047 p=1
+pre_proc_time = 112.9
+n=1018 p=2
+pre_proc_time = 7.5
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 4
+ROC/AUC train score (median): 0.5216020157550513
+ROC/AUC test score (median): 0.5006409716568883
+BACC train score (median): 0.5216020157550513
+BACC test score (median): 0.5006409716568883
+計算時間 : 1421.6
+======================================================
+time 1421.6
+rho:0.01,theta:1, lambda:4
+n=3046 p=1
+pre_proc_time = 108.8
+n=1525 p=2
+pre_proc_time = 43.6
+n=316 p=3
+pre_proc_time = 4.6
+n=156 p=4
+pre_proc_time = 1.4
+n=3046 p=1
+pre_proc_time = 110.8
+n=1525 p=2
+pre_proc_time = 33.2
+n=456 p=3
+pre_proc_time = 6.2
+n=152 p=4
+pre_proc_time = 0.6
+n=11 p=5
+n=3046 p=1
+pre_proc_time = 118.7
+n=1525 p=2
+pre_proc_time = 28.6
+n=3047 p=1
+pre_proc_time = 119.5
+n=1526 p=2
+pre_proc_time = 43.8
+n=766 p=3
+pre_proc_time = 11.3
+n=3047 p=1
+pre_proc_time = 113.5
+n=1526 p=2
+pre_proc_time = 42.3
+n=3046 p=1
+pre_proc_time = 116.0
+n=1525 p=2
+pre_proc_time = 27.2
+n=380 p=3
+pre_proc_time = 4.4
+n=135 p=4
+pre_proc_time = 0.9
+n=3046 p=1
+pre_proc_time = 114.4
+n=1525 p=2
+pre_proc_time = 40.8
+n=3046 p=1
+pre_proc_time = 114.3
+n=1525 p=2
+pre_proc_time = 43.1
+n=3047 p=1
+pre_proc_time = 112.4
+n=1526 p=2
+pre_proc_time = 43.5
+n=448 p=3
+pre_proc_time = 5.6
+n=3047 p=1
+pre_proc_time = 113.3
+n=1526 p=2
+pre_proc_time = 18.6
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 5
+ROC/AUC train score (median): 0.5538783909749594
+ROC/AUC test score (median): 0.5115123483754993
+BACC train score (median): 0.5538783909749592
+BACC test score (median): 0.5115123483754993
+計算時間 : 1682.1
+======================================================
+time 1682.2
+rho:0.01,theta:1, lambda:5
+n=3046 p=1
+pre_proc_time = 110.8
+n=1829 p=2
+pre_proc_time = 56.4
+n=612 p=3
+pre_proc_time = 12.7
+n=3046 p=1
+pre_proc_time = 111.8
+n=1829 p=2
+pre_proc_time = 44.2
+n=612 p=3
+pre_proc_time = 9.5
+n=3046 p=1
+pre_proc_time = 119.6
+n=1829 p=2
+pre_proc_time = 41.4
+n=612 p=3
+pre_proc_time = 9.9
+n=556 p=4
+pre_proc_time = 8.0
+n=177 p=5
+pre_proc_time = 0.4
+n=62 p=6
+n=3047 p=1
+pre_proc_time = 119.2
+n=1830 p=2
+pre_proc_time = 55.4
+n=613 p=3
+pre_proc_time = 10.1
+n=3047 p=1
+pre_proc_time = 113.7
+n=1830 p=2
+pre_proc_time = 57.3
+n=613 p=3
+pre_proc_time = 11.3
+n=3046 p=1
+pre_proc_time = 117.0
+n=1829 p=2
+pre_proc_time = 41.1
+n=612 p=3
+pre_proc_time = 9.4
+n=3046 p=1
+pre_proc_time = 112.8
+n=1829 p=2
+pre_proc_time = 52.6
+n=612 p=3
+pre_proc_time = 11.9
+n=3046 p=1
+pre_proc_time = 115.2
+n=1829 p=2
+pre_proc_time = 55.7
+n=612 p=3
+pre_proc_time = 11.7
+n=3047 p=1
+pre_proc_time = 112.6
+n=1830 p=2
+pre_proc_time = 56.2
+n=1222 p=3
+pre_proc_time = 26.3
+n=372 p=4
+pre_proc_time = 5.0
+n=3047 p=1
+pre_proc_time = 113.7
+n=1830 p=2
+pre_proc_time = 27.4
+n=634 p=3
+pre_proc_time = 1.5
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 6
+ROC/AUC train score (median): 0.621856185555629
+ROC/AUC test score (median): 0.506667251571143
+BACC train score (median): 0.621856185555629
+BACC test score (median): 0.506667251571143
+計算時間 : 1926.5
+======================================================
+time 1926.6
+rho:0.05,theta:0.01, lambda:1
+n=3046 p=1
+pre_proc_time = 109.1
+n=337 p=2
+pre_proc_time = 4.8
+n=15 p=3
+n=3046 p=1
+pre_proc_time = 110.9
+n=3046 p=1
+pre_proc_time = 116.5
+n=3047 p=1
+pre_proc_time = 118.7
+n=3047 p=1
+pre_proc_time = 110.3
+n=290 p=2
+n=3046 p=1
+pre_proc_time = 116.4
+n=3046 p=1
+pre_proc_time = 113.4
+n=3046 p=1
+pre_proc_time = 115.3
+n=1136 p=2
+pre_proc_time = 15.2
+n=3047 p=1
+pre_proc_time = 113.6
+n=1067 p=2
+pre_proc_time = 24.3
+n=21 p=3
+pre_proc_time = 0.0
+n=19 p=4
+pre_proc_time = 0.0
+n=17 p=5
+pre_proc_time = 0.0
+n=15 p=6
+pre_proc_time = 0.0
+n=13 p=7
+pre_proc_time = 0.0
+n=3047 p=1
+pre_proc_time = 112.6
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 7
+ROC/AUC train score (median): 0.5031927769291387
+ROC/AUC test score (median): 0.5057835263929986
+BACC train score (median): 0.5031927769291387
+BACC test score (median): 0.5057835263929986
+計算時間 : 1277.5
+======================================================
+time 1277.6
+rho:0.05,theta:0.01, lambda:2
+n=3046 p=1
+pre_proc_time = 110.6
+n=621 p=2
+pre_proc_time = 11.0
+n=3046 p=1
+pre_proc_time = 112.0
+n=3046 p=1
+pre_proc_time = 120.3
+n=3047 p=1
+pre_proc_time = 120.5
+n=3047 p=1
+pre_proc_time = 113.7
+n=1437 p=2
+pre_proc_time = 29.7
+n=389 p=3
+pre_proc_time = 2.4
+n=241 p=4
+pre_proc_time = 1.0
+n=131 p=5
+pre_proc_time = 0.3
+n=115 p=6
+pre_proc_time = 0.1
+n=3046 p=1
+pre_proc_time = 114.9
+n=3046 p=1
+pre_proc_time = 111.5
+n=3046 p=1
+pre_proc_time = 111.5
+n=106 p=2
+pre_proc_time = 0.1
+n=3047 p=1
+pre_proc_time = 109.8
+n=728 p=2
+pre_proc_time = 14.3
+n=172 p=3
+pre_proc_time = 0.2
+n=3047 p=1
+pre_proc_time = 110.1
+n=164 p=2
+pre_proc_time = 0.3
+n=48 p=3
+pre_proc_time = 0.0
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 6
+ROC/AUC train score (median): 0.49578995878706883
+ROC/AUC test score (median): 0.5194559412145605
+BACC train score (median): 0.49578995878706883
+BACC test score (median): 0.5194559412145605
+計算時間 : 1294.5
+======================================================
+time 1294.6
+rho:0.05,theta:0.01, lambda:3
+n=3046 p=1
+pre_proc_time = 106.9
+n=1017 p=2
+pre_proc_time = 22.6
+n=3046 p=1
+pre_proc_time = 108.2
+n=1017 p=2
+pre_proc_time = 18.1
+n=3046 p=1
+pre_proc_time = 115.1
+n=1017 p=2
+pre_proc_time = 12.8
+n=3047 p=1
+pre_proc_time = 114.9
+n=1018 p=2
+pre_proc_time = 15.3
+n=129 p=3
+n=3047 p=1
+pre_proc_time = 109.9
+n=1945 p=2
+pre_proc_time = 48.7
+n=3046 p=1
+pre_proc_time = 113.5
+n=1017 p=2
+pre_proc_time = 11.1
+n=3046 p=1
+pre_proc_time = 110.7
+n=1017 p=2
+pre_proc_time = 22.5
+n=36 p=3
+pre_proc_time = 0.0
+n=3046 p=1
+pre_proc_time = 111.8
+n=1017 p=2
+pre_proc_time = 10.0
+n=3047 p=1
+pre_proc_time = 114.2
+n=1236 p=2
+pre_proc_time = 31.6
+n=3047 p=1
+pre_proc_time = 114.4
+n=1018 p=2
+pre_proc_time = 7.5
+======================================================
+dataset/FV/HSE_3elem_desc_norm.csv
+max depth : 3
+ROC/AUC train score (median): 0.5216020157550513
+ROC/AUC test score (median): 0.5006409716568883
+BACC train score (median): 0.5216020157550513
+BACC test score (median): 0.5006409716568883
+計算時間 : 1441.6
+======================================================
+time 1441.7
+rho:0.05,theta:0.01, lambda:4
+n=3046 p=1
+pre_proc_time = 109.0
+n=1525 p=2
+pre_proc_time = 43.3
+n=316 p=3
+pre_proc_time = 4.6
+n=156 p=4
+pre_proc_time = 1.4
+n=3046 p=1
+pre_proc_time = 113.4
+n=1525 p=2
+pre_proc_time = 33.9
+n=456 p=3
+pre_proc_time = 6.4
+n=152 p=4
+pre_proc_time = 0.6
+n=11 p=5
+n=3046 p=1
+pre_proc_time = 119.3
+n=1525 p=2
+pre_proc_time = 29.6
+n=3047 p=1
