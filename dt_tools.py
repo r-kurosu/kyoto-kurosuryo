@@ -178,6 +178,44 @@ def find_separator(x_df, y, D, K, w_p, b_p, x_a, x_b):
         return None, None, None
 
 
+def new_find_separator(x_df, y, D, K, w_p, b_p, c_arg):
+    model = pulp.LpProblem("Linear_Separator", pulp.LpMinimize)
+
+    # 変数定義
+    b = pulp.LpVariable("b", cat=pulp.LpContinuous)
+    w = [pulp.LpVariable("w_{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(K)]
+    w_ = [pulp.LpVariable("w__{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(K)]
+    eps = [pulp.LpVariable("eps_{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(D)]
+
+    # 目的関数
+    model += pulp.lpSum(w) + pulp.lpSum(w_) + c_arg*(pulp.lpSum(eps))
+
+    # 制約条件
+    for i in range(D):
+        if y.loc[i] == 0:
+            model += pulp.lpDot(w, x_df.loc[i]) - pulp.lpDot(w_, x_df.loc[i]) - b <= -1 + eps[i]
+        else:
+            model += pulp.lpDot(w, x_df.loc[i]) - pulp.lpDot(w_, x_df.loc[i]) - b >= 1 - eps[i]
+
+    status = model.solve(pulp.CPLEX_CMD(path=CPLEX_PATH, msg=0))
+    # status = model.solve(pulp.GUROBI(path=GUROBI_PATH, msg=0))
+
+    # 出力
+    if status == pulp.LpStatusOptimal:
+        w_ast = [w[i].value() - w_[i].value() for i in range(len(w))]
+        b_ast = b.value()
+        eps_ast = [eps[i].value() for i in range(D)]
+        w_p.append(w_ast)
+        b_p.append(b_ast)
+        for i in range(len(w_ast)):
+            if w_ast[i] is None:
+                w_ast[i] = 0
+
+        return w_ast, b_ast, eps_ast
+    else:
+        print('FindSeparator infeasible')
+        return None, None, None
+
 # def find_separator_by_CPLEX(x_df, y, D, K, w_p, b_p, CIDs):
 #     model = cplex.Cplex()
 #     model.set_problem_type(model.problem_type.MILP)
@@ -528,11 +566,12 @@ def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, thet
     return new_D, x_test, y_test
 
 
-def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_score, rho_arg, theta_arg, lambda_arg):
+def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_score, rho_arg, theta_arg, lambda_arg, c_arg):
     # 2. 超平面（hyper plane）を探す
-    x_a, x_b = pre_problem(x_df, y, D, K)
+    # x_a, x_b = pre_problem(x_df, y, D, K)
 
-    w, b, eps = find_separator(x_df, y, D, K, w_p, b_p, x_a, x_b)
+    # w, b, eps = find_separator(x_df, y, D, K, w_p, b_p, x_a, x_b)
+    w, b, eps = new_find_separator(x_df, y, D, K, w_p, b_p, c_arg)
 
     # print(f"w={w}")
     # print(f"b={b}")
