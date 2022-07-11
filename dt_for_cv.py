@@ -24,7 +24,7 @@ CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 RHO = 0.05
 THETA = 0.1
 N_LEAST = 10
-LAMBDA = 5
+LAMBDA = 1
 
 TIMES = 1 # CVの回数（実験は10で行う）
 SEED = 0 # 予備実験:0, 評価実験: 1000
