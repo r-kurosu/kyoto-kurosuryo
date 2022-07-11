@@ -95,16 +95,12 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
                 x_train = new_x_df.reset_index(drop=True)
                 y_train = new_y.reset_index(drop=True)
                 CIDs_train.reset_index(drop=True, inplace=True)
-                # print(x_train)
-                # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                # print(y_train)
-                # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-                # print(CIDs_train)
+
+                if dt_tools.check_mono(y_train):
+                    break
+
+
             q = p+1
-
-            # print(f"true  : {y_true_train}")
-            # print(f"expect: {a_score_train}")
-
             a_score_train = dt_tools.set_a_q(x_train, y_train, CIDs_train, a_score_train)
             train_depths.append(len(b_p))
             # print(f"expect: {a_score_train}")

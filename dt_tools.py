@@ -392,11 +392,17 @@ def find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg):
     if r_p <= 0:
         c_B = 0
 
+    # print(f"|z| = {len(z)}, r*theta = {math.floor(r*theta)}")
+    # print(f"|z'| = {len(z_p)}, r*theta = {math.floor(r_p*theta)}")
+    # c_A = -z[math.floor(r * theta)]
+    # c_B = -z_p[math.floor(r_p * theta)]
+
     for l in range(r, 0, -1):
         if siki_1(l, z, z_p, r, r_p, s, s_p, rho) == True:
             # print(f"l={l}")
             # print(f"r={r}")
             c_A = -z[l]
+            # print("find suitable c_A")
             break
         c_A = -z[math.floor(r * theta)]
 
@@ -405,6 +411,7 @@ def find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg):
             # print(f"l={l}")
             # print(f"r\'={r_p}")
             c_B = -z_p[l]
+            # print("find suitable c_B")
             break
         c_B = -z_p[math.floor(r_p * theta)]
 
@@ -435,6 +442,16 @@ def siki_2(l, z, z_p, r, r_p, s, s_p, rho):
 
     return False
 
+
+def check_mono(y):
+    if (y == 1).sum() == 0:
+        print("all 0")
+        return True
+    if (y == 0).sum() == 0:
+        print("all 1")
+        return True
+
+    return False
 
 def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg):
 
