@@ -15,16 +15,17 @@ import io
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-# rho_list = [0.01, 0.05, 0.1, 0.5, 1]
-# theta_list = [0.01, 0.1, 0.3, 0.5, 1]
+rho_list = [0.01, 0.05, 0.1, 0.5, 1]
+theta_list = [0, 0.1, 0.3, 0.5, 1]
 # lambda_list = [1, 2, 3, 4, 5, 6]
-C_list = [1, 10, 100, 1000, 10000, 100000]
+# C_list = [1, 10, 100, 1000, 10000, 100000]
 # rho_list = [0.05, 1]
 # theta_list = [0.1, 1]
 # lambda_list = [1, 2]
-rho_list = [0.05]
-theta_list = [0.1]
+# rho_list = [0.05]
+# theta_list = [0.1]
 lambda_list = [1]
+C_list = [1]
 
 
 CV_TIMES = 1
