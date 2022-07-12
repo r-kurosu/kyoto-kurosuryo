@@ -7,6 +7,7 @@ import pathlib
 import openpyxl as excel
 import datetime
 import time
+import random
 import os
 import sys
 import io
@@ -25,9 +26,14 @@ C_list = [1, 10, 100, 1000, 10000, 100000]
 rho_list = [0.05]
 theta_list = [0.1]
 lambda_list = [1]
+C_list = [1]
 
+C_list = random.sample(range(0, 10**5, 10), k=1000)
+print(C_list)
 
 CV_TIMES = 1
+
+
 
 def wright_columns(ws, dataset):
     gap = 10
