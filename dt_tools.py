@@ -371,8 +371,6 @@ def sort_dataset(x_df, y, w, b):
         return z, z_p
     z.sort()
     z_p.sort(reverse=True)
-    # print(z[:5])
-    # print(z_p[:5])
 
     return z, z_p
 
@@ -477,12 +475,13 @@ def check_mono(y):
     return False
 
 
-def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg, test_flag):
+def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, f_score, lambda_arg, test_flag):
+    z, z_p = sort_dataset(x, y, w, b)
 
-    z = [0]*len(x)
+    wx_b = [0]*len(x)
     for i in range(len(x)):
-        z[i] = naiseki(w, x.loc[i]) - b
-    z_array = np.array(z)
+        wx_b[i] = naiseki(w, x.loc[i]) - b
+    z_array = np.array(wx_b)
 
     order = np.argsort(z_array)
     order_list = order.tolist()
@@ -490,29 +489,35 @@ def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg, test_flag):
     new_index_0 = []
     new_index_1 = []
     for i in order_list:
-        if z[i] > -c_A:
+        if wx_b[i] > -c_A:
             break
         new_index_0.append(i)
         # print(y[i])
     for i in reversed(order_list):
-        if z[i] < c_B:
+        if wx_b[i] < c_B:
             break
         new_index_1.append(i)
 
-    for i in new_index_0:
-        a_score[CIDs.loc[i]] = 0
-    for i in new_index_1:
-        a_score[CIDs.loc[i]] = 1
-
-    if test_flag == 0:
+    if test_flag == 0 or 1:
         pure_0 = pure_rate(y, new_index_0, 0)
         pure_1 = pure_rate(y, new_index_1, 1)
-        if pure_0 < 100 or  pure_1 < 100:
+        if pure_0 < 100 or pure_1 < 100:
             print(-c_A, c_B)
+            print(f"w = {w}")
+            print(f" z = {z}")
+            print(f"z' = {z_p}")
+            plot_func(z, z_p, c_A, c_B)
+
+    for i in new_index_0:
+        a_score[CIDs.loc[i]] = 0
+        f_score[CIDs.loc[i]] = (1 - pure_0) / 100
+
+    for i in new_index_1:
+        a_score[CIDs.loc[i]] = 1
+        f_score[CIDs.loc[i]] = pure_1 / 100
 
     new_index_0.extend(new_index_1)
     drop_index_list = new_index_0
-
 
     x.drop(drop_index_list, axis=0, inplace=True)
     y.drop(drop_index_list, inplace=True)
@@ -520,7 +525,7 @@ def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg, test_flag):
 
     D = len(y)
 
-    return D, x, y, a_score
+    return D, x, y, a_score, f_score
 
 
 def pure_rate(y, index_list, a):
@@ -543,10 +548,20 @@ def set_a_q(x_df, y, CIDs, a_score):
     else:
         value = 1
 
-    for index, vector_x in x_df.iterrows():
-        a_score.replace(-1, value, inplace=True)
+    a_score.replace(-1, value, inplace=True)
 
     return a_score
+
+
+def set_a_q_for_f(y, f_score):
+    countB = y.sum()
+    countA = len(y) - countB
+
+    rate = countB / (countA + countB)
+
+    f_score.replace(-1, rate, inplace=True)
+
+    return f_score
 
 
 def plot_func(z, z_p, c_A, c_B):
@@ -568,7 +583,7 @@ def plot_func(z, z_p, c_A, c_B):
     return
 
 
-def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, theta_arg, lambda_arg):
+def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, f_score_test, rho_arg, theta_arg, lambda_arg):
     # lambda_arg: int = 1 # 1の時、test時の各ノードの個数に関する制約をなくす
 
     # print(a_score_test)
@@ -581,27 +596,26 @@ def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, thet
     # 3.4 index(l)を探す
     c_A, c_B = find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg)
     # 3.5 振り分け
-    D, x_test, y_test, a_score_test = redefine_func(x_test, y_test, w, b, c_A, c_B, CIDs_test, a_score_test, lambda_arg, 1)
+    D, x_test, y_test, a_score_test, f_score_test = redefine_func(x_test, y_test, w, b, c_A, c_B, CIDs_test, a_score_test, f_score_test, lambda_arg, 1)
     # print(a_score_test)
     new_D = len(x_test)
 
     return new_D, x_test, y_test
 
 
-def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_score, rho_arg, theta_arg, lambda_arg, c_arg):
+def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_score, f_score, rho_arg, theta_arg, lambda_arg, c_arg):
     # 2. 超平面（hyper plane）を探す
     x_a, x_b = pre_problem(x_df, y, D, K)
     w, b, eps = find_separator(x_df, y, D, K, w_p, b_p, x_a, x_b)
-    print(eps)
+    print(f"eps = {eps}")
+    # print(f"w = {w}")
+    # print(f"b = {b}")
     # w, b, eps = new_find_separator(x_df, y, D, K, w_p, b_p, c_arg)
 
 
     # print(f"w={w}")
     # print(f"b={b}")
     # print(f"eps={eps}")
-    # for w_i in w:
-    #     if w_i != 0:
-    #         print(w_i)
 
     # 3. 決定木の実装
     # 3.1 s, s'を数える
@@ -609,12 +623,9 @@ def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_scor
 
     # 3.2 ソートする
     z, z_p = sort_dataset(x_df, y, w, b)
-    # print(s, len(z))
-    # print(s_p, len(z_p))
 
     # 3.3 r, r'を探す
     r, r_p = find_r(z, z_p)
-    # print(r, r_p)
 
     # 3.4 index(l)を探す
     c_A, c_B = find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg)
@@ -624,11 +635,16 @@ def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_scor
 
     # 3.5 データのプロット
     # plot_func(z, z_p, c_A, c_B)
+
     if -c_A == c_B:
         print(f"c_A = c_B = {-c_A}!!!===================================")
 
+    if r == -1 or r_p == -1:
+        print(f"w = {w}")
+        print(f"b = {b}")
+
     # 3.5 関数Φとデータセットの再定義
-    D, x_df, y, a_score = redefine_func(x_df, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg, 0)
+    D, x_df, y, a_score, f_score = redefine_func(x_df, y, w, b, c_A, c_B, CIDs, a_score, f_score, lambda_arg, 0)
 
     return D, x_df, y
 
