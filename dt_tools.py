@@ -8,6 +8,7 @@ import openpyxl as excel
 import datetime
 import pathlib
 from scipy.spatial import distance
+import matplotlib.pyplot as plt
 from math import dist
 # import cplex
 # import gurobipy as gp
@@ -55,41 +56,40 @@ def read_dataset(data_csv, value_txt):
 
 
 def pre_problem(x, y, D, K):
-    # from scipy.spatial import distance
 
     st_time1 = time.time()
     index_A = []
     index_B = []
-    temp_max = 0
 
     for i in range(D):
         if y.loc[i] == 0:
             index_A.append(i)
-        else:
+        elif y.loc[i] == 1:
             index_B.append(i)
 
-    if len(index_A) == 0:
-        for j in index_B:
-            temp = distance.euclidean(0, x.loc[j])
-            if temp_max <= temp:
-                temp_max = temp
-                x_a = [0]*K
-                x_b = x.loc[j]
-        ed_time1 = time.time()
+    # if len(index_A) == 0:
+    #     for j in index_B:
+    #         temp = distance.euclidean(0, x.loc[j])
+    #         if temp_max <= temp:
+    #             temp_max = temp
+    #             x_a = [0]*K
+    #             x_b = x.loc[j]
+    #     ed_time1 = time.time()
         # print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
-        return x_a, x_b
-    if len(index_B) == 0:
-        for i in index_A:
-            temp = distance.euclidean(x.loc[i], 0)
-            if temp_max <= temp:
-                temp_max = temp
-                x_a = x.loc[i]
-                x_b = [0]*K
-        ed_time1 = time.time()
-        # print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
-        return x_a, x_b
+        # return x_a, x_b
+    # if len(index_B) == 0:
+    #     for i in index_A:
+    #         temp = distance.euclidean(x.loc[i], 0)
+    #         if temp_max <= temp:
+    #             temp_max = temp
+    #             x_a = x.loc[i]
+    #             x_b = [0]*K
+    #     ed_time1 = time.time()
+    #     # print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
+    #     return x_a, x_b
 
     temp = 0
+    temp_max = 0
     for i in index_A:
         for j in index_B:
             temp = distance.euclidean(x.loc[i], x.loc[j])
@@ -105,7 +105,8 @@ def pre_problem(x, y, D, K):
             # print("pre_proc_time = {:.1f}".format(time.time() - time1))
 
             if temp_max <= temp:
-                temp_max = temp
+                # temp_max = temp
+                temp_max = copy.deepcopy(temp)
                 x_a = x.loc[i]
                 x_b = x.loc[j]
     # print(x_a, x_b)
@@ -118,53 +119,34 @@ def pre_problem(x, y, D, K):
 
 def find_separator(x_df, y, D, K, w_p, b_p, x_a, x_b):
     model = pulp.LpProblem("Linear_Separator", pulp.LpMinimize)
-    # print(f"K={K}")
-    # print(f"n={D}")
-    param = 1
 
     # 変数定義
     b = pulp.LpVariable("b", cat=pulp.LpContinuous)
-    # b = pulp.LpVariable("b", -1, 1, cat=pulp.LpContinuous)
-    # b = pulp.LpVariable("b", -(10**param), 10**param, cat=pulp.LpContinuous)
-    # b = pulp.LpVariable("b", lowBound=0,  cat=pulp.LpContinuous)
-    # b_ = pulp.LpVariable("b_", lowBound=0, cat=pulp.LpContinuous)
-
     w = [pulp.LpVariable("w_{}".format(i), cat=pulp.LpContinuous) for i in range(K)]
-    # w = [pulp.LpVariable("w_{}".format(i), -1, 1, cat=pulp.LpContinuous) for i in range(K)]
-    # w = [pulp.LpVariable("w_{}".format(i), -(10**param), 10**param, cat=pulp.LpContinuous) for i in range(K)]
-    # w = [pulp.LpVariable("w_{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(K)]
-    # w_ = [pulp.LpVariable("w__{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(K)]
-
     eps = pulp.LpVariable('eps', lowBound=0, cat=pulp.LpContinuous)
 
     # 目的関数
     model += eps
 
     # 制約条件
-    delta = 0.0001
-    model += pulp.lpDot(w, x_a) - b <= -1
-    model += pulp.lpDot(w, x_b) - b >= 1
-
+    # model += pulp.lpDot(w, x_a) - b <= -1
+    # model += pulp.lpDot(w, x_b) - b >= 1
     for i in range(D):
         if y.loc[i] == 0:
             model += pulp.lpDot(w, x_df.loc[i]) - b <= -1 + eps
-            # model += pulp.lpDot(w, x_df.loc[i]) - pulp.lpDot(w_, x_df.loc[i]) - b <= -1 + eps
         else:
             model += pulp.lpDot(w, x_df.loc[i]) - b >= 1 - eps
-            # model += pulp.lpDot(w, x_df.loc[i]) - pulp.lpDot(w_, x_df.loc[i]) - b >= 1 - eps
 
-    # model += pulp.lpSum(w) + pulp.lpSum(w_) >= delta
+    model += pulp.lpDot(w, x_a) - b <= -1
+    model += pulp.lpDot(w, x_b) - b >= 1
 
     status = model.solve(pulp.CPLEX_CMD(path=CPLEX_PATH, msg=0))
     # status = model.solve(pulp.GUROBI(path=GUROBI_PATH, msg=0))
 
     # 出力
-
     if status == pulp.LpStatusOptimal:
         w_ast = [w[i].value() for i in range(len(w))]
-        # w_ast = [w[i].value() - w_[i].value() for i in range(len(w))]
         b_ast = b.value()
-        # b_ast = b.value() - b_.value()
         eps_ast = eps.value()
         w_p.append(w_ast)
         b_p.append(b_ast)
@@ -404,7 +386,8 @@ def naiseki(a, b):
 
 
 def find_r(z, z_p):
-    r, r_p = 0, 0
+    r, r_p = -1, -1
+
     for i in range(len(z)):
         if z[i] < 0:
             r = i
@@ -425,33 +408,35 @@ def find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg):
     rho = rho_arg
     theta = theta_arg
 
-    if r <= 0:
-        c_A = 0
-    if r_p <= 0:
-        c_B = 0
+    c_A = -z[math.floor(r * theta)]
+    c_B = z_p[math.floor(r_p * theta)]
+
+    if r == -1 or r_p == -1:
+        print(f"can't find l (r=-1 or r'=-1)")
+        print(z)
+        print(z_p)
+        # sys.exit()
 
     # print(f"|z| = {len(z)}, r*theta = {math.floor(r*theta)}")
     # print(f"|z'| = {len(z_p)}, r*theta = {math.floor(r_p*theta)}")
-    # c_A = -z[math.floor(r * theta)]
-    # c_B = -z_p[math.floor(r_p * theta)]
 
-    for l in range(r, 0, -1):
-        if siki_1(l, z, z_p, r, r_p, s, s_p, rho) == True:
-            # print(f"l={l}")
-            # print(f"r={r}")
-            c_A = -z[l]
-            # print("find suitable c_A")
-            break
-        c_A = -z[math.floor(r * theta)]
+    if r != -1:
+        for l in range(r+1, 0, -1):
+            if siki_1(l, z, z_p, r, r_p, s, s_p, rho) == True:
+                # print("find suitable c_A")
+                c_A = -z[l-1]
+                break
+            # if l == 1:
+                # print(f"can't find l")
 
-    for l in range(r_p, 0, -1):
-        if siki_2(l, z, z_p, r, r_p, s, s_p, rho) == True:
-            # print(f"l={l}")
-            # print(f"r\'={r_p}")
-            c_B = -z_p[l]
-            # print("find suitable c_B")
-            break
-        c_B = -z_p[math.floor(r_p * theta)]
+    if r_p != -1:
+        for l in range(r_p+1, 0, -1):
+            if siki_2(l, z, z_p, r, r_p, s, s_p, rho) == True:
+                # print("find suitable c_B")
+                c_B = z_p[l-1]
+                break
+            # if l == 1:
+                # print(f"can't find l' ")
 
     return c_A, c_B
 
@@ -462,7 +447,7 @@ def siki_1(l, z, z_p, r, r_p, s, s_p, rho):
     # print(len(z))
     # print(len(z_p))
     for j in range(r_p + 1, s_p):
-        if z_p[j] <= z[l]:
+        if z_p[j] <= z[l-1]:
             temp += 1
     if temp / l <= rho * s_p / s:
         return True
@@ -473,7 +458,7 @@ def siki_1(l, z, z_p, r, r_p, s, s_p, rho):
 def siki_2(l, z, z_p, r, r_p, s, s_p, rho):
     temp = 0
     for j in range(r + 1, s):
-        if z[j] >= z_p[l]:
+        if z[j] >= z_p[l-1]:
             temp += 1
     if temp / l <= rho * s / s_p:
         return True
@@ -491,7 +476,8 @@ def check_mono(y):
 
     return False
 
-def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg):
+
+def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg, test_flag):
 
     z = [0]*len(x)
     for i in range(len(x)):
@@ -500,27 +486,33 @@ def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg):
 
     order = np.argsort(z_array)
     order_list = order.tolist()
-    indexes_0 = order_list[0:lambda_arg]
-    indexes_1 = order_list[len(y)-1:len(y)-1 - lambda_arg:-1]
 
     new_index_0 = []
     new_index_1 = []
-    for i in indexes_0:
-        new_index_0.append(i)
+    for i in order_list:
         if z[i] > -c_A:
             break
-    for i in indexes_1:
-        new_index_1.append(i)
+        new_index_0.append(i)
+        # print(y[i])
+    for i in reversed(order_list):
         if z[i] < c_B:
             break
+        new_index_1.append(i)
 
     for i in new_index_0:
         a_score[CIDs.loc[i]] = 0
     for i in new_index_1:
         a_score[CIDs.loc[i]] = 1
 
+    if test_flag == 0:
+        pure_0 = pure_rate(y, new_index_0, 0)
+        pure_1 = pure_rate(y, new_index_1, 1)
+        if pure_0 < 100 or  pure_1 < 100:
+            print(-c_A, c_B)
+
     new_index_0.extend(new_index_1)
     drop_index_list = new_index_0
+
 
     x.drop(drop_index_list, axis=0, inplace=True)
     y.drop(drop_index_list, inplace=True)
@@ -529,6 +521,17 @@ def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg):
     D = len(y)
 
     return D, x, y, a_score
+
+
+def pure_rate(y, index_list, a):
+    temp = 0
+    for i in index_list:
+        if y.loc[i] == a:
+            temp += 1
+    pure_ = temp / len(index_list) * 100
+    print(f"the rate of class {a} : {pure_}%")
+
+    return pure_
 
 
 def set_a_q(x_df, y, CIDs, a_score):
@@ -546,6 +549,25 @@ def set_a_q(x_df, y, CIDs, a_score):
     return a_score
 
 
+def plot_func(z, z_p, c_A, c_B):
+    x_0 = [0]*len(z)
+    x_1 = [1]*len(z_p)
+
+    plt.scatter(x_0, z)
+    plt.scatter(x_1, z_p, c="red")
+    plt.xlim([-1, 2])
+    plt.hlines(0, -1, 2, "black")
+    plt.hlines(-c_A, -1, 2, "b", linestyles="dashed")
+    plt.hlines(c_B, -1, 2, "r", linestyles="dashed")
+
+    plt.show()
+    # plt.savefig("image.png")
+
+    # sys.exit()
+
+    return
+
+
 def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, theta_arg, lambda_arg):
     # lambda_arg: int = 1 # 1の時、test時の各ノードの個数に関する制約をなくす
 
@@ -559,7 +581,7 @@ def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, thet
     # 3.4 index(l)を探す
     c_A, c_B = find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg)
     # 3.5 振り分け
-    D, x_test, y_test, a_score_test = redefine_func(x_test, y_test, w, b, c_A, c_B, CIDs_test, a_score_test, lambda_arg)
+    D, x_test, y_test, a_score_test = redefine_func(x_test, y_test, w, b, c_A, c_B, CIDs_test, a_score_test, lambda_arg, 1)
     # print(a_score_test)
     new_D = len(x_test)
 
@@ -568,10 +590,11 @@ def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, rho_arg, thet
 
 def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_score, rho_arg, theta_arg, lambda_arg, c_arg):
     # 2. 超平面（hyper plane）を探す
-    # x_a, x_b = pre_problem(x_df, y, D, K)
+    x_a, x_b = pre_problem(x_df, y, D, K)
+    w, b, eps = find_separator(x_df, y, D, K, w_p, b_p, x_a, x_b)
+    print(eps)
+    # w, b, eps = new_find_separator(x_df, y, D, K, w_p, b_p, c_arg)
 
-    # w, b, eps = find_separator(x_df, y, D, K, w_p, b_p, x_a, x_b)
-    w, b, eps = new_find_separator(x_df, y, D, K, w_p, b_p, c_arg)
 
     # print(f"w={w}")
     # print(f"b={b}")
@@ -599,8 +622,13 @@ def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_scor
     c_p_B.append(c_B)
     # print(c_A, c_B)
 
+    # 3.5 データのプロット
+    # plot_func(z, z_p, c_A, c_B)
+    if -c_A == c_B:
+        print(f"c_A = c_B = {-c_A}!!!===================================")
+
     # 3.5 関数Φとデータセットの再定義
-    D, x_df, y, a_score = redefine_func(x_df, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg)
+    D, x_df, y, a_score = redefine_func(x_df, y, w, b, c_A, c_B, CIDs, a_score, lambda_arg, 0)
 
     return D, x_df, y
 
