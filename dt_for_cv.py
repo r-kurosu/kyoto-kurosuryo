@@ -21,16 +21,18 @@ import io, sys
 CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 
 # マクロ定義
-RHO = 0.05
-THETA = 0.1
+RHO = 0.01
+THETA = 0
 N_LEAST = 10
 LAMBDA = 1
-
-TIMES = 1 # CVの回数（実験は10で行う）
-SEED = 0 # 予備実験:0, 評価実験: 1000
+C = 100
 
 
-def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
+TIMES = 10 # CVの回数（実験は10で行う）
+SEED = 1000 # 予備実験:0, 評価実験: 1000
+
+
+def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg, c_arg):
     # 1. read data set
     data_csv = INPUT_CSV
     value_text = INPUT_TXT
@@ -40,13 +42,11 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
     y = pd.Series(y)
     CIDs = pd.Series(list(x.index))
     a_score = pd.Series([-1]*len(CIDs), index=list(CIDs))
-    # print(x_df)
-    # print(x)
-    # print(CIDs)
+    f_score = pd.Series([-1]*len(CIDs), index=list(CIDs))
 
     # (TIMES)回 5-fold回す
-    test_scores = []
-    train_scores = []
+    auc_test_scores = []
+    auc_train_scores = []
     bacc_test_scores = []
     bacc_train_scores = []
     train_depths = []
@@ -62,22 +62,18 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
             y_train, y_test = y.iloc[train_id], y.iloc[test_id]
             CIDs_train, CIDs_test = CIDs.iloc[train_id], CIDs.iloc[test_id]
             a_score_train, a_score_test = a_score.iloc[train_id], a_score.iloc[test_id]
+            f_score_train, f_score_test = a_score.iloc[train_id], a_score.iloc[test_id]
 
             # 2. construct a decision tree using hyper plane
             x_train = x_train.reset_index(drop=True)
             y_true_train = copy.deepcopy(y_train)
             y_train = y_train.reset_index(drop=True)
             CIDs_train.reset_index(drop=True, inplace=True)
-            # print(x_train)
-            # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            # print(y_train)
-            # print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            # print(CIDs_train)
 
             # マクロ変数
             D = len(y_train)  # データの数
             K = len(x_df.columns)  # ベクトルサイズ（記述示の数）
-            N_least = N_LEAST  # 許容
+            N_least = N_LEAST  # 許容される最後のノードサイズ
             LAMBDA_arg: int = math.floor(D / lambda_arg)
             p = 0
 
@@ -90,7 +86,8 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
             while D > N_least:
                 p += 1
                 print(f"n={D}", f"p={p}")
-                new_D, new_x_df, new_y = dt_tools.constructing_DT_based_HP(x_train, y_train, D, K, w_p, b_p, c_p_A, c_p_B, CIDs_train, a_score_train, rho_arg, theta_arg, LAMBDA_arg)
+                print(f"(class 0: {(y_train == 0).sum()}, class 1: {(y_train == 1).sum()})")
+                new_D, new_x_df, new_y = dt_tools.constructing_DT_based_HP(x_train, y_train, D, K, w_p, b_p, c_p_A, c_p_B, CIDs_train, a_score_train, f_score_train, rho_arg, theta_arg, LAMBDA_arg, c_arg)
                 D = new_D
                 x_train = new_x_df.reset_index(drop=True)
                 y_train = new_y.reset_index(drop=True)
@@ -99,12 +96,10 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
                 if dt_tools.check_mono(y_train):
                     break
 
-
             q = p+1
             a_score_train = dt_tools.set_a_q(x_train, y_train, CIDs_train, a_score_train)
+            f_score_train = dt_tools.set_a_q_for_f(y_train, f_score_train)
             train_depths.append(len(b_p))
-            # print(f"expect: {a_score_train}")
-
 
             # 3. test ---------------------------------------------
             D = len(x_test)
@@ -112,11 +107,11 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
             y_true_test = copy.deepcopy(y_test)
             y_test = y_test.reset_index(drop=True)
             CIDs_test.reset_index(drop=True, inplace=True)
-
+            
             LAMBDA_arg: int = math.floor(D / lambda_arg)
-
+            
             for p in range(len(b_p)):
-                new_D, new_x_df, new_y = dt_tools.experiment_test(x_test, y_test, w_p[p], b_p[p], CIDs_test, a_score_test, rho_arg, theta_arg, LAMBDA_arg)
+                new_D, new_x_df, new_y = dt_tools.experiment_test(x_test, y_test, w_p[p], b_p[p], CIDs_test, a_score_test, f_score_test, rho_arg, theta_arg, LAMBDA_arg)
                 D = new_D
                 x_test = new_x_df.reset_index(drop=True)
                 y_test = new_y.reset_index(drop=True)
@@ -124,43 +119,39 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
                 remain_data = (a_score_test == -1).sum()
                 if remain_data <= N_LEAST:
                     break
-                # print(f"this is {p+1} 回目の分類 of test")
-                # print(f"remain data = {remain_data}")
+                if dt_tools.check_mono(y_test):
+                    break
 
             a_score_test = dt_tools.set_a_q(x_test, y_test, CIDs, a_score_test)
-
-            # roc = roc_curve(y_true_test, a_score_test)
-            # fpr, tpr, thresholds = roc_curve(y_true_test, a_score_test)
-            # print(fpr, tpr, thresholds)
-            # plt.plot(fpr, tpr, marker='o')
-            # plt.xlabel('FPR: False positive rate')
-            # plt.ylabel('TPR: True positive rate')
-            # plt.grid()
-            # plt.savefig('sklearn_roc_curve.png')
+            f_score_test = dt_tools.set_a_q_for_f(y_test, f_score_test)
 
             # 4. 結果 -------------------------------
             a_score_train = a_score_train.to_numpy()
-            train_score = roc_auc_score(y_true_train.tolist(), a_score_train.tolist())
+            f_score_train = f_score_train.to_numpy()
+            auc_train_score = roc_auc_score(y_true_train.tolist(), f_score_train.tolist())
             bacc_train_score = balanced_accuracy_score(y_true_train.tolist(), a_score_train.tolist())
-            train_scores.append(train_score)
+            auc_train_scores.append(auc_train_score)
             bacc_train_scores.append(bacc_train_score)
-            # print(f"ROC/AUC train score: {train_score}")
+            # print(f"ROC/AUC train score: {auc_train_score}")
             # print(f"BACC train score: {bacc_train_score}")
 
             a_score_test = a_score_test.to_numpy()
-            test_score = roc_auc_score(y_true_test, a_score_test)
-            bacc_test_score = balanced_accuracy_score(y_true_test, a_score_test)
-            test_scores.append(test_score)
+            f_score_test = f_score_test.to_numpy()
+            auc_test_score = roc_auc_score(y_true_test.tolist(), f_score_test.tolist())
+            bacc_test_score = balanced_accuracy_score(y_true_test.tolist(), a_score_test.tolist())
+            auc_test_scores.append(auc_test_score)
             bacc_test_scores.append(bacc_test_score)
-            # print(f"ROC/AUC test score: {test_score}")
+
+            # print(f"ROC/AUC test score: {auc_test_score}")
             # print(f"BACC test score: {bacc_test_score}")
             # -----------------------------------------
         # 5foldCV終了
 
     # 10回のCV終了
     ed_time = time.time()
-    ROCAUC_train_score = statistics.median(train_scores)
-    ROCAUC_test_score = statistics.median(test_scores)
+    # ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score = 0, 0, 0, 0
+    ROCAUC_train_score = statistics.median(auc_train_scores)
+    ROCAUC_test_score = statistics.median(auc_test_scores)
     BACC_train_score = statistics.median(bacc_train_scores)
     BACC_test_score = statistics.median(bacc_test_scores)
     max_depth = max(train_depths)
@@ -178,7 +169,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg):
     return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth
 
 
-def main(rho_arg, theta_arg, lambda_arg, INPUT_CSV, INPUT_TXT, cv_times):
+def main(rho_arg, theta_arg, lambda_arg, c_arg, INPUT_CSV, INPUT_TXT, cv_times):
     if not dt_tools.check_exist_dataset_for_cv(INPUT_CSV, INPUT_TXT):
         return
 
@@ -189,7 +180,7 @@ def main(rho_arg, theta_arg, lambda_arg, INPUT_CSV, INPUT_TXT, cv_times):
     # dt_tools.wright_columns(ws)
     # dt_tools.wright_parameter(ws, rho_arg, theta_arg, N_LEAST)
 
-    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth = test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg)
+    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth = test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg, c_arg)
     # dt_tools.output_xlx(ws, 1, INPUT_CSV, ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth)
     # wb.save(wbname)
 
@@ -204,11 +195,13 @@ if __name__ == "__main__":
     ws_all = wb_all.active
     dt_tools.wright_columns(ws_all)
     dt_tools.wright_parameter(ws_all, RHO, THETA, N_LEAST)
+
     for i in range(len(INPUT_CSV)):
         ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth\
             = main(rho_arg=RHO,
              theta_arg=THETA,
-             lambda_arg=LAMBDA,
+             lambda_arg=1,
+             c_arg = 1,
              INPUT_CSV=INPUT_CSV[i],
              INPUT_TXT=INPUT_TXT[i],
              cv_times=TIMES
