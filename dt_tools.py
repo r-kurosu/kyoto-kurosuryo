@@ -588,6 +588,20 @@ def plot_func(z, z_p, c_A, c_B):
     return
 
 
+def plot_roc_curv(y_true_test, f_score_test):
+    from sklearn.metrics import roc_curve
+
+    # roc = roc_curve(y_true_test, f_score_test)
+    fpr, tpr, thresholds = roc_curve(y_true_test, f_score_test)
+    print(fpr, tpr, thresholds)
+    plt.plot(fpr, tpr, marker='o')
+    plt.xlabel('FPR: False positive rate')
+    plt.ylabel('TPR: True positive rate')
+    plt.grid()
+    plt.savefig('sklearn_roc_curve.png')
+
+    return
+
 def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, f_score_test, rho_arg, theta_arg, lambda_arg):
     # lambda_arg: int = 1 # 1の時、test時の各ノードの個数に関する制約をなくす
 
