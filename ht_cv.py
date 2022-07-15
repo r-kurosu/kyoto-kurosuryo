@@ -28,8 +28,8 @@ theta_list = [0, 0.1, 0.3, 0.5, 1]
 lambda_list = [1]
 C_list = [1]
 
-C_list = random.sample(range(0, 10**5, 10), k=1000)
-print(C_list)
+# C_list = random.sample(range(0, 10**5, 10), k=1000)
+# print(C_list)
 
 CV_TIMES = 1
 
@@ -120,8 +120,10 @@ def main():
         ws = wb.active
         ws.title = "score"
         wright_columns(ws, data)
-        score_data_test = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
-        score_data_train = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
+        bacc_score_data_test = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
+        bacc_score_data_train = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
+        auc_score_data_test = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
+        auc_score_data_train = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
 
         # --
         for i, rho in enumerate(rho_list):
@@ -135,44 +137,51 @@ def main():
 
                         # 出力
                         if lambd == 1:
-                            ws.cell(row=i + 3, column=j + 2).value = ROCAUC_test_score
-                            ws.cell(row=i + 3, column=j + 2 + gap).value = ROCAUC_train_score
+                            ws.cell(row=i + 3, column=j + 2).value = BACC_test_score
+                            ws.cell(row=i + 3, column=j + 2 + gap).value = BACC_train_score
 
                         if rho == 0.05:
-                            ws.cell(row=j + 3 + gap, column=l + 2).value = ROCAUC_test_score
-                            ws.cell(row=j + 3 + gap, column=l + 2 + gap).value = ROCAUC_train_score
+                            ws.cell(row=j + 3 + gap, column=l + 2).value = BACC_test_score
+                            ws.cell(row=j + 3 + gap, column=l + 2 + gap).value = BACC_train_score
 
                         if theta == 0.1:
-                            ws.cell(row=l + 3 + gap*2, column=i + 2).value = ROCAUC_test_score
-                            ws.cell(row=l + 3 + gap*2, column=i + 2 + gap).value = ROCAUC_train_score
+                            ws.cell(row=l + 3 + gap*2, column=i + 2).value = BACC_test_score
+                            ws.cell(row=l + 3 + gap*2, column=i + 2 + gap).value = BACC_train_score
 
-                        score_data_test[i, j, l, m] = ROCAUC_test_score
-                        score_data_train[i, j, l, m] = ROCAUC_train_score
-
+                        bacc_score_data_test[i, j, l, m] = BACC_test_score
+                        bacc_score_data_train[i, j, l, m] = BACC_train_score
+                        auc_score_data_test[i, j, l, m] = ROCAUC_test_score
+                        auc_score_data_train[i, j, l, m] = ROCAUC_train_score
 
                         ed_time = time.time()
                         print("time {:.1f}".format(ed_time - st_time))
 
         wb.save(wb_name[k])
 
-        max_test_index = np.unravel_index(np.argmax(score_data_test), score_data_test.shape)
-        max_train_index = np.unravel_index(np.argmax(score_data_train), score_data_train.shape)
-
+        bacc_max_test_index = np.unravel_index(np.argmax(bacc_score_data_test), bacc_score_data_test.shape)
+        bacc_max_train_index = np.unravel_index(np.argmax(bacc_score_data_train), bacc_score_data_train.shape)
+        auc_max_train_index = np.unravel_index(np.argmax(auc_score_data_train), auc_score_data_train.shape)
+        auc_max_test_index = np.unravel_index(np.argmax(auc_score_data_test), auc_score_data_test.shape)
+        
         # print(max_test_index, max_train_index)
-        max_test_score = score_data_test[max_test_index]
-        max_train_score = score_data_train[max_train_index]
+        bacc_max_test_score = bacc_score_data_test[bacc_max_test_index]
+        bacc_max_train_score = bacc_score_data_train[bacc_max_train_index]
+        auc_max_test_score = auc_score_data_test[auc_max_test_index]
+        auc_max_train_score = auc_score_data_train[auc_max_train_index]
         # print(max_test_score, max_train_score)
         # print(score_data_train)
         # print(score_data_test)
 
         ht_end_time = time.time()
 
-        print("*"*50)
+        print("*"*70)
         print(f"{data}")
-        print(f"max train score = {max_train_score}, (rho={rho_list[max_train_index[0]]}, theta={theta_list[max_train_index[1]]}, lambda={lambda_list[max_train_index[2]]}, C={C_list[max_train_index[3]]})")
-        print(f"max test score = {max_test_score}, (rho={rho_list[max_test_index[0]]}, theta={theta_list[max_test_index[1]]}, lambda={lambda_list[max_test_index[2]]}, C={C_list[max_train_index[3]]})")
+        print(f"max train score (BACC) = {bacc_max_train_score}, (rho={rho_list[bacc_max_train_index[0]]}, theta={theta_list[bacc_max_train_index[1]]})")
+        print(f"max test score (BACC) = {bacc_max_test_score}, (rho={rho_list[bacc_max_test_index[0]]}, theta={theta_list[bacc_max_test_index[1]]})")
+        print(f"max train score (AUC) = {auc_max_train_score}, (rho={rho_list[auc_max_train_index[0]]}, theta={theta_list[auc_max_train_index[1]]})")
+        print(f"max test score (AUC) = {auc_max_test_score}, (rho={rho_list[auc_max_test_index[0]]}, theta={theta_list[auc_max_test_index[1]]})")
         print("計算時間 {:.1f}".format(ht_end_time - ht_start_time))
-        print("*"*50)
+        print("*"*70)
 
     return
 

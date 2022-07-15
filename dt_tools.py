@@ -406,19 +406,23 @@ def find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg):
     rho = rho_arg
     theta = theta_arg
 
-    c_A = -z[math.floor(r * theta)]
-    c_B = z_p[math.floor(r_p * theta)]
+    if r == -1:
+        c_A = -z[0]
+    if r_p == -1:
+        c_B = z_p[0]
+         
 
-    if r == -1 or r_p == -1:
-        print(f"can't find l (r=-1 or r'=-1)")
-        print(z)
-        print(z_p)
+    # if r == -1 or r_p == -1:
+        # print(f"can't find l (r=-1 or r'=-1)")
+        # print(z)
+        # print(z_p)
         # sys.exit()
 
     # print(f"|z| = {len(z)}, r*theta = {math.floor(r*theta)}")
     # print(f"|z'| = {len(z_p)}, r*theta = {math.floor(r_p*theta)}")
 
     if r != -1:
+        c_A = -z[math.floor(r * theta)]
         for l in range(r+1, 0, -1):
             if siki_1(l, z, z_p, r, r_p, s, s_p, rho) == True:
                 # print("find suitable c_A")
@@ -428,6 +432,7 @@ def find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg):
                 # print(f"can't find l")
 
     if r_p != -1:
+        c_B = z_p[math.floor(r_p * theta)]
         for l in range(r_p+1, 0, -1):
             if siki_2(l, z, z_p, r, r_p, s, s_p, rho) == True:
                 # print("find suitable c_B")
@@ -501,12 +506,12 @@ def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, f_score, lambda_arg, test
     if test_flag == 0 or 1:
         pure_0 = pure_rate(y, new_index_0, 0)
         pure_1 = pure_rate(y, new_index_1, 1)
-        if pure_0 < 100 or pure_1 < 100:
-            print(-c_A, c_B)
-            print(f"w = {w}")
-            print(f" z = {z}")
-            print(f"z' = {z_p}")
-            plot_func(z, z_p, c_A, c_B)
+        # if pure_0 < 100 or pure_1 < 100:
+        #     print(-c_A, c_B)
+        #     print(f"w = {w}")
+        #     print(f" z = {z}")
+        #     print(f"z' = {z_p}")
+        #     plot_func(z, z_p, c_A, c_B)
 
     for i in new_index_0:
         a_score[CIDs.loc[i]] = 0
@@ -534,7 +539,7 @@ def pure_rate(y, index_list, a):
         if y.loc[i] == a:
             temp += 1
     pure_ = temp / len(index_list) * 100
-    print(f"the rate of class {a} : {pure_}%")
+    # print(f"the rate of class {a} : {pure_}%")
 
     return pure_
 
@@ -636,12 +641,13 @@ def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_scor
     # 3.5 データのプロット
     # plot_func(z, z_p, c_A, c_B)
 
-    if -c_A == c_B:
-        print(f"c_A = c_B = {-c_A}!!!===================================")
+    # if -c_A == c_B:
+        # print(f"c_A = c_B = {-c_A}!!!===================================")
 
-    if r == -1 or r_p == -1:
-        print(f"w = {w}")
-        print(f"b = {b}")
+    # if r == -1 or r_p == -1:
+    #     print(f"w = {w}")
+    #     print(f"b = {b}")
+
 
     # 3.5 関数Φとデータセットの再定義
     D, x_df, y, a_score, f_score = redefine_func(x_df, y, w, b, c_A, c_B, CIDs, a_score, f_score, lambda_arg, 0)

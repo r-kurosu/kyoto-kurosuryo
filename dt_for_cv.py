@@ -102,28 +102,29 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg, c_
             train_depths.append(len(b_p))
 
             # 3. test ---------------------------------------------
-            # D = len(x_test)
-            # x_test = x_test.reset_index(drop=True)
-            # y_true_test = copy.deepcopy(y_test)
-            # y_test = y_test.reset_index(drop=True)
-            # CIDs_test.reset_index(drop=True, inplace=True)
-            #
-            # LAMBDA_arg: int = math.floor(D / lambda_arg)
-            #
-            # for p in range(len(b_p)):
-            #     new_D, new_x_df, new_y = dt_tools.experiment_test(x_test, y_test, w_p[p], b_p[p], CIDs_test, a_score_test, f_score_test, rho_arg, theta_arg, LAMBDA_arg)
-            #     D = new_D
-            #     x_test = new_x_df.reset_index(drop=True)
-            #     y_test = new_y.reset_index(drop=True)
-            #     CIDs_test.reset_index(drop=True, inplace=True)
-            #     remain_data = (a_score_test == -1).sum()
-            #     if remain_data <= N_LEAST:
-            #         break
-            #     # print(f"this is {p+1} 回目の分類 of test")
-            #     # print(f"remain data = {remain_data}")
-            #
-            # a_score_test = dt_tools.set_a_q(x_test, y_test, CIDs, a_score_test)
-            # f_score_test = dt_tools.set_a_q_for_f(y_test, f_score_test)
+            D = len(x_test)
+            x_test = x_test.reset_index(drop=True)
+            y_true_test = copy.deepcopy(y_test)
+            y_test = y_test.reset_index(drop=True)
+            CIDs_test.reset_index(drop=True, inplace=True)
+            
+            LAMBDA_arg: int = math.floor(D / lambda_arg)
+            
+            for p in range(len(b_p)):
+                new_D, new_x_df, new_y = dt_tools.experiment_test(x_test, y_test, w_p[p], b_p[p], CIDs_test, a_score_test, f_score_test, rho_arg, theta_arg, LAMBDA_arg)
+                D = new_D
+                x_test = new_x_df.reset_index(drop=True)
+                y_test = new_y.reset_index(drop=True)
+                CIDs_test.reset_index(drop=True, inplace=True)
+                remain_data = (a_score_test == -1).sum()
+                if remain_data <= N_LEAST:
+                    break
+                if dt_tools.check_mono(y_test):
+                    break
+
+            
+            a_score_test = dt_tools.set_a_q(x_test, y_test, CIDs, a_score_test)
+            f_score_test = dt_tools.set_a_q_for_f(y_test, f_score_test)
 
             # roc = roc_curve(y_true_test, a_score_test)
             # fpr, tpr, thresholds = roc_curve(y_true_test, a_score_test)
@@ -144,12 +145,12 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg, c_
             # print(f"ROC/AUC train score: {auc_train_score}")
             # print(f"BACC train score: {bacc_train_score}")
 
-            # a_score_test = a_score_test.to_numpy()
-            # f_score_test = f_score_test.to_numpy()
-            # auc_test_score = roc_auc_score(y_true_test.tolist(), f_score_test.tolist())
-            # bacc_test_score = balanced_accuracy_score(y_true_test.tolist(), a_score_test.tolist())
-            # test_scores.append(auc_test_score)
-            # bacc_test_scores.append(bacc_test_score)
+            a_score_test = a_score_test.to_numpy()
+            f_score_test = f_score_test.to_numpy()
+            auc_test_score = roc_auc_score(y_true_test.tolist(), f_score_test.tolist())
+            bacc_test_score = balanced_accuracy_score(y_true_test.tolist(), a_score_test.tolist())
+            test_scores.append(auc_test_score)
+            bacc_test_scores.append(bacc_test_score)
 
             # print(f"ROC/AUC test score: {auc_test_score}")
             # print(f"BACC test score: {bacc_test_score}")
@@ -158,20 +159,20 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg, c_
 
     # 10回のCV終了
     ed_time = time.time()
-    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score = 0, 0, 0, 0
+    # ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score = 0, 0, 0, 0
     ROCAUC_train_score = statistics.median(train_scores)
-    # ROCAUC_test_score = statistics.median(test_scores)
+    ROCAUC_test_score = statistics.median(test_scores)
     BACC_train_score = statistics.median(bacc_train_scores)
-    # BACC_test_score = statistics.median(bacc_test_scores)
+    BACC_test_score = statistics.median(bacc_test_scores)
     max_depth = max(train_depths)
 
     print("======================================================")
     print(data_csv)
     print(f"max depth : {max_depth}")
     print(f"ROC/AUC train score (median): {ROCAUC_train_score}")
-    # print(f"ROC/AUC test score (median): {ROCAUC_test_score}")
+    print(f"ROC/AUC test score (median): {ROCAUC_test_score}")
     print(f"BACC train score (median): {BACC_train_score}")
-    # print(f"BACC test score (median): {BACC_test_score}")
+    print(f"BACC test score (median): {BACC_test_score}")
     print("計算時間 : {:.1f}".format(ed_time - st_time))
     print("======================================================")
 
