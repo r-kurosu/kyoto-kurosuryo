@@ -118,8 +118,12 @@ def main():
         wb_name[k] = prepare_output_file(data_name=data)
         wb = excel.Workbook()
         ws = wb.active
-        ws.title = "score"
+        ws.title = "BACC score"
         wright_columns(ws, data)
+        wb.create_sheet(title="AUC score")
+        ws2 = wb["AUC score"]
+        wright_columns(ws2, data)
+
         bacc_score_data_test = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
         bacc_score_data_train = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
         auc_score_data_test = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
@@ -139,14 +143,20 @@ def main():
                         if lambd == 1:
                             ws.cell(row=i + 3, column=j + 2).value = BACC_test_score
                             ws.cell(row=i + 3, column=j + 2 + gap).value = BACC_train_score
+                            ws2.cell(row=i + 3, column=j + 2).value = ROCAUC_test_score
+                            ws2.cell(row=i + 3, column=j + 2 + gap).value = ROCAUC_train_score
 
-                        if rho == 0.05:
-                            ws.cell(row=j + 3 + gap, column=l + 2).value = BACC_test_score
-                            ws.cell(row=j + 3 + gap, column=l + 2 + gap).value = BACC_train_score
-
-                        if theta == 0.1:
-                            ws.cell(row=l + 3 + gap*2, column=i + 2).value = BACC_test_score
-                            ws.cell(row=l + 3 + gap*2, column=i + 2 + gap).value = BACC_train_score
+                        # if rho == 0.05:
+                        #     ws.cell(row=j + 3 + gap, column=l + 2).value = BACC_test_score
+                        #     ws.cell(row=j + 3 + gap, column=l + 2 + gap).value = BACC_train_score
+                        #     ws2.cell(row=j + 3 + gap, column=l + 2).value = ROCAUC_test_score
+                        #     ws2.cell(row=j + 3 + gap, column=l + 2 + gap).value = ROCAUC_train_score
+                        #
+                        # if theta == 0.1:
+                        #     ws.cell(row=l + 3 + gap*2, column=i + 2).value = BACC_test_score
+                        #     ws.cell(row=l + 3 + gap*2, column=i + 2 + gap).value = BACC_train_score
+                        #     ws2.cell(row=l + 3 + gap*2, column=i + 2).value = ROCAUC_test_score
+                        #     ws2.cell(row=l + 3 + gap*2, column=i + 2 + gap).value = ROCAUC_train_score
 
                         bacc_score_data_test[i, j, l, m] = BACC_test_score
                         bacc_score_data_train[i, j, l, m] = BACC_train_score
