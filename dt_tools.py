@@ -122,23 +122,26 @@ def pre_problem(x, y, D, K):
 
 def find_separator(x_df, y, D, K, w_p, b_p, x_a, x_b):
     model = pulp.LpProblem("Linear_Separator", pulp.LpMinimize)
+    C = 0.0001
 
     # 変数定義
     b = pulp.LpVariable("b", cat=pulp.LpContinuous)
     w = [pulp.LpVariable("w_{}".format(i), cat=pulp.LpContinuous) for i in range(K)]
     eps = pulp.LpVariable('eps', lowBound=0, cat=pulp.LpContinuous)
+    eps2 = [pulp.LpVariable("eps_{}".format(i), lowBound=0, cat=pulp.LpContinuous) for i in range(D)]
 
     # 目的関数
     model += eps
+    # model += eps + C*pulp.lpSum(eps2)
 
     # 制約条件
-    # model += pulp.lpDot(w, x_a) - b <= -1
-    # model += pulp.lpDot(w, x_b) - b >= 1
     for i in range(D):
         if y.loc[i] == 0:
             model += pulp.lpDot(w, x_df.loc[i]) - b <= -1 + eps
+            # model += pulp.lpDot(w, x_df.loc[i]) - b <= -1 + eps2[i]
         else:
             model += pulp.lpDot(w, x_df.loc[i]) - b >= 1 - eps
+            # model += pulp.lpDot(w, x_df.loc[i]) - b >= 1 - eps2[i]
 
     model += pulp.lpDot(w, x_a) - b <= -1
     model += pulp.lpDot(w, x_b) - b >= 1
