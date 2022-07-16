@@ -67,26 +67,29 @@ def pre_problem(x, y, D, K):
         elif y.loc[i] == 1:
             index_B.append(i)
 
-    # if len(index_A) == 0:
-    #     for j in index_B:
-    #         temp = distance.euclidean(0, x.loc[j])
-    #         if temp_max <= temp:
-    #             temp_max = temp
-    #             x_a = [0]*K
-    #             x_b = x.loc[j]
-    #     ed_time1 = time.time()
-        # print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
-        # return x_a, x_b
-    # if len(index_B) == 0:
-    #     for i in index_A:
-    #         temp = distance.euclidean(x.loc[i], 0)
-    #         if temp_max <= temp:
-    #             temp_max = temp
-    #             x_a = x.loc[i]
-    #             x_b = [0]*K
-    #     ed_time1 = time.time()
-    #     # print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
-    #     return x_a, x_b
+    temp_max = 0
+    if len(index_A) == 0:
+        for j in index_B:
+            temp = distance.euclidean(0, x.loc[j])
+            if temp_max <= temp:
+                temp_max = temp
+                x_a = [0]*K
+                x_b = x.loc[j]
+        ed_time1 = time.time()
+        print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
+        return x_a, x_b
+
+    temp_max = 0
+    if len(index_B) == 0:
+        for i in index_A:
+            temp = distance.euclidean(x.loc[i], 0)
+            if temp_max <= temp:
+                temp_max = temp
+                x_a = x.loc[i]
+                x_b = [0]*K
+        ed_time1 = time.time()
+        print("pre_proc_time = {:.1f}".format(ed_time1 - st_time1))
+        return x_a, x_b
 
     temp = 0
     temp_max = 0
@@ -566,6 +569,9 @@ def set_a_q(a_q, a_score):
 def set_a_q_for_f(y, f_score):
     countB = y.sum()
     countA = len(y) - countB
+
+    countA = round(countA, 5)
+    countB = round(countB, 5)
 
     rate = countB / (countA + countB)
 

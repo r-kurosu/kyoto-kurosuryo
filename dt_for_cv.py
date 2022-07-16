@@ -93,8 +93,8 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg, c_
                 y_train = new_y.reset_index(drop=True)
                 CIDs_train.reset_index(drop=True, inplace=True)
 
-                if dt_tools.check_mono(y_train):
-                    break
+                # if dt_tools.check_mono(y_train):
+                #     break
 
             a_q = dt_tools.decision_a_q(y_train)
             a_score_train = dt_tools.set_a_q(a_q, a_score_train)
@@ -116,7 +116,7 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg, c_
                 x_test = new_x_df.reset_index(drop=True)
                 y_test = new_y.reset_index(drop=True)
                 CIDs_test.reset_index(drop=True, inplace=True)
-                remain_data = (a_score_test == -1).sum()
+                # remain_data = (a_score_test == -1).sum()
 
                 # if remain_data <= N_LEAST:
                 #     break
