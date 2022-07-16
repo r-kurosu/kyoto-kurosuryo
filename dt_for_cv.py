@@ -28,8 +28,8 @@ LAMBDA = 1
 C = 100
 
 
-TIMES = 10 # CVの回数（実験は10で行う）
-SEED = 1000 # 予備実験:0, 評価実験: 1000
+TIMES = 2 # CVの回数（実験は10で行う）
+SEED = 0 # 予備実験:0, 評価実験: 1000
 
 
 def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg, c_arg):
@@ -96,10 +96,10 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg, c_
                 if dt_tools.check_mono(y_train):
                     break
 
-            q = p+1
-            a_score_train = dt_tools.set_a_q(x_train, y_train, CIDs_train, a_score_train)
+            a_q = dt_tools.decision_a_q(y_train)
+            a_score_train = dt_tools.set_a_q(a_q, a_score_train)
             f_score_train = dt_tools.set_a_q_for_f(y_train, f_score_train)
-            train_depths.append(len(b_p))
+            train_depths.append(p)
 
             # 3. test ---------------------------------------------
             D = len(x_test)
@@ -111,18 +111,19 @@ def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg, c_
             LAMBDA_arg: int = math.floor(D / lambda_arg)
             
             for p in range(len(b_p)):
-                new_D, new_x_df, new_y = dt_tools.experiment_test(x_test, y_test, w_p[p], b_p[p], CIDs_test, a_score_test, f_score_test, rho_arg, theta_arg, LAMBDA_arg)
+                new_D, new_x_df, new_y = dt_tools.experiment_test(x_test, y_test, w_p[p], b_p[p], c_p_A[p], c_p_B[p], CIDs_test, a_score_test, f_score_test, rho_arg, theta_arg, LAMBDA_arg)
                 D = new_D
                 x_test = new_x_df.reset_index(drop=True)
                 y_test = new_y.reset_index(drop=True)
                 CIDs_test.reset_index(drop=True, inplace=True)
                 remain_data = (a_score_test == -1).sum()
-                if remain_data <= N_LEAST:
-                    break
-                if dt_tools.check_mono(y_test):
-                    break
 
-            a_score_test = dt_tools.set_a_q(x_test, y_test, CIDs, a_score_test)
+                # if remain_data <= N_LEAST:
+                #     break
+                # if dt_tools.check_mono(y_test):
+                #     break
+
+            a_score_test = dt_tools.set_a_q(a_q, a_score_test)
             f_score_test = dt_tools.set_a_q_for_f(y_test, f_score_test)
 
             # 4. 結果 -------------------------------

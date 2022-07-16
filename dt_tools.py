@@ -407,10 +407,9 @@ def find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg):
     theta = theta_arg
 
     if r == -1:
-        c_A = -z[0]
+        c_A = 0
     if r_p == -1:
-        c_B = z_p[0]
-         
+        c_B = 0
 
     # if r == -1 or r_p == -1:
         # print(f"can't find l (r=-1 or r'=-1)")
@@ -481,7 +480,7 @@ def check_mono(y):
 
 
 def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, f_score, lambda_arg, test_flag):
-    z, z_p = sort_dataset(x, y, w, b)
+    # z, z_p = sort_dataset(x, y, w, b)
 
     wx_b = [0]*len(x)
     for i in range(len(x)):
@@ -504,8 +503,11 @@ def redefine_func(x, y, w, b, c_A, c_B, CIDs, a_score, f_score, lambda_arg, test
         new_index_1.append(i)
 
     if test_flag == 0 or 1:
-        pure_0 = pure_rate(y, new_index_0, 0)
-        pure_1 = pure_rate(y, new_index_1, 1)
+        if len(new_index_0) != 0:
+            pure_0 = pure_rate(y, new_index_0, 0)
+        if len(new_index_1) != 0:
+            pure_1 = pure_rate(y, new_index_1, 1)
+        # z, z_p = sort_dataset(x, y, w, b)
         # if pure_0 < 100 or pure_1 < 100:
         #     print(-c_A, c_B)
         #     print(f"w = {w}")
@@ -544,16 +546,19 @@ def pure_rate(y, index_list, a):
     return pure_
 
 
-def set_a_q(x_df, y, CIDs, a_score):
-    countA, countB = 0, 0
+def decision_a_q(y):
     countB = y.sum()
     countA = len(y) - countB
     if countA >= countB:
-        value = 0
+        a_q = 0
     else:
-        value = 1
+        a_q = 1
 
-    a_score.replace(-1, value, inplace=True)
+    return a_q
+
+
+def set_a_q(a_q, a_score):
+    a_score.replace(-1, a_q, inplace=True)
 
     return a_score
 
@@ -602,18 +607,17 @@ def plot_roc_curv(y_true_test, f_score_test):
 
     return
 
-def experiment_test(x_test, y_test, w, b, CIDs_test, a_score_test, f_score_test, rho_arg, theta_arg, lambda_arg):
-    # lambda_arg: int = 1 # 1の時、test時の各ノードの個数に関する制約をなくす
+def experiment_test(x_test, y_test, w, b, c_A, c_B, CIDs_test, a_score_test, f_score_test, rho_arg, theta_arg, lambda_arg):
 
-    # print(a_score_test)
     # 3.1 s, s'を数える
-    s, s_p = count_s(y_test)
+    # s, s_p = count_s(y_test)
     # 3.2 ソートする
-    z, z_p = sort_dataset(x_test, y_test, w, b)
+    # z, z_p = sort_dataset(x_test, y_test, w, b)
     # 3.3 r, r'を探す
-    r, r_p = find_r(z, z_p)
+    # r, r_p = find_r(z, z_p)
     # 3.4 index(l)を探す
-    c_A, c_B = find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg)
+    # c_A, c_B = find_index_l(z, r, z_p, r_p, s, s_p, rho_arg, theta_arg)
+
     # 3.5 振り分け
     D, x_test, y_test, a_score_test, f_score_test = redefine_func(x_test, y_test, w, b, c_A, c_B, CIDs_test, a_score_test, f_score_test, lambda_arg, 1)
     # print(a_score_test)
@@ -630,7 +634,6 @@ def constructing_DT_based_HP(x_df, y, D, K, w_p, b_p, c_p_A, c_p_B, CIDs, a_scor
     # print(f"w = {w}")
     # print(f"b = {b}")
     # w, b, eps = new_find_separator(x_df, y, D, K, w_p, b_p, c_arg)
-
 
     # print(f"w={w}")
     # print(f"b={b}")
