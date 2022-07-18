@@ -21,15 +21,15 @@ import io, sys
 CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 
 # マクロ定義
-RHO = 0.01
+RHO = 0.2
 THETA = 0
 N_LEAST = 10
 LAMBDA = 1
 C = 100
 
 
-TIMES = 2 # CVの回数（実験は10で行う）
-SEED = 0 # 予備実験:0, 評価実験: 1000
+TIMES = 10 # CVの回数（評価実験は10で行う）
+SEED = 1000 # 予備実験:0, 評価実験: 1000
 
 
 def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg, c_arg):
@@ -198,6 +198,7 @@ if __name__ == "__main__":
     dt_tools.wright_parameter(ws_all, RHO, THETA, N_LEAST)
 
     for i in range(len(INPUT_CSV)):
+        print(INPUT_CSV[i])
         ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, max_depth\
             = main(rho_arg=RHO,
              theta_arg=THETA,
