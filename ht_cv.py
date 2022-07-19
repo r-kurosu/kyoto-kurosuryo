@@ -16,8 +16,8 @@ import io
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-rho_list = [0.01, 0.05, 0.1, 0.5, 1]
-theta_list = [0, 0.1, 0.3, 0.5, 1]
+rho_list = [0.01, 0.05, 0.1, 0.2, 0.5, 1]
+theta_list = [0, 0.1, 0.3, 0.5, 0.7, 1]
 # lambda_list = [1, 2, 3, 4, 5, 6]
 # C_list = [1, 10, 100, 1000, 10000, 100000]
 # rho_list = [0.05, 1]
@@ -41,19 +41,19 @@ def wright_columns(ws, dataset):
     ws.cell(row=1, column=2 + gap).value = "train"
 
     # 1
-    ws.cell(row=2, column=1).value = "theta/rho"
-    ws.cell(row=2, column=1 + gap).value = "theta/rho"
+    ws.cell(row=2, column=1).value = "rho\\theta"
+    ws.cell(row=2, column=1 + gap).value = "rho\\theta"
     for i in range(len(rho_list)):
-        ws.cell(row=2, column=i + 2).value = rho_list[i]
-        ws.cell(row=2, column=i + 2 + gap).value = rho_list[i]
+        ws.cell(row=2, column=i + 2).value = theta_list[i]
+        ws.cell(row=2, column=i + 2 + gap).value = theta_list[i]
     for i in range(len(theta_list)):
-        ws.cell(row=i + 3, column=1).value = theta_list[i]
-        ws.cell(row=i + 3, column=1 + gap).value = theta_list[i]
+        ws.cell(row=i + 3, column=1).value = rho_list[i]
+        ws.cell(row=i + 3, column=1 + gap).value = rho_list[i]
     ws.cell(row=3 + len(theta_list), column=2).value = "(lambda=1)"
 
     # 2
-    ws.cell(row=2 + gap, column=1).value = "rho/lambda"
-    ws.cell(row=2 + gap, column=1 + gap).value = "rho/lambda"
+    ws.cell(row=2 + gap, column=1).value = "rh\\lambda"
+    ws.cell(row=2 + gap, column=1 + gap).value = "rho\\lambda"
     for i in range(len(lambda_list)):
         ws.cell(row=2 + gap, column=i + 2).value = lambda_list[i]
         ws.cell(row=2 + gap, column=i + 2 + gap).value = lambda_list[i]
@@ -63,8 +63,8 @@ def wright_columns(ws, dataset):
     ws.cell(row=3 + gap + len(rho_list), column=2).value = "(rho=0.05)"
 
     # 3
-    ws.cell(row=2 + gap*2, column=1).value = "lambda/theta"
-    ws.cell(row=2 + gap*2, column=1 + gap).value = "lambda/theta"
+    ws.cell(row=2 + gap*2, column=1).value = "lambda\\theta"
+    ws.cell(row=2 + gap*2, column=1 + gap).value = "lambda\\theta"
     for i in range(len(theta_list)):
         ws.cell(row=2 + gap*2, column=i + 2).value = theta_list[i]
         ws.cell(row=2 + gap*2, column=i + 2 + gap).value = theta_list[i]
@@ -118,8 +118,12 @@ def main():
         wb_name[k] = prepare_output_file(data_name=data)
         wb = excel.Workbook()
         ws = wb.active
-        ws.title = "score"
+        ws.title = "BACC score"
         wright_columns(ws, data)
+        wb.create_sheet(title="AUC score")
+        ws2 = wb["AUC score"]
+        wright_columns(ws2, data)
+
         bacc_score_data_test = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
         bacc_score_data_train = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
         auc_score_data_test = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
@@ -139,14 +143,20 @@ def main():
                         if lambd == 1:
                             ws.cell(row=i + 3, column=j + 2).value = BACC_test_score
                             ws.cell(row=i + 3, column=j + 2 + gap).value = BACC_train_score
+                            ws2.cell(row=i + 3, column=j + 2).value = ROCAUC_test_score
+                            ws2.cell(row=i + 3, column=j + 2 + gap).value = ROCAUC_train_score
 
-                        if rho == 0.05:
-                            ws.cell(row=j + 3 + gap, column=l + 2).value = BACC_test_score
-                            ws.cell(row=j + 3 + gap, column=l + 2 + gap).value = BACC_train_score
-
-                        if theta == 0.1:
-                            ws.cell(row=l + 3 + gap*2, column=i + 2).value = BACC_test_score
-                            ws.cell(row=l + 3 + gap*2, column=i + 2 + gap).value = BACC_train_score
+                        # if rho == 0.05:
+                        #     ws.cell(row=j + 3 + gap, column=l + 2).value = BACC_test_score
+                        #     ws.cell(row=j + 3 + gap, column=l + 2 + gap).value = BACC_train_score
+                        #     ws2.cell(row=j + 3 + gap, column=l + 2).value = ROCAUC_test_score
+                        #     ws2.cell(row=j + 3 + gap, column=l + 2 + gap).value = ROCAUC_train_score
+                        #
+                        # if theta == 0.1:
+                        #     ws.cell(row=l + 3 + gap*2, column=i + 2).value = BACC_test_score
+                        #     ws.cell(row=l + 3 + gap*2, column=i + 2 + gap).value = BACC_train_score
+                        #     ws2.cell(row=l + 3 + gap*2, column=i + 2).value = ROCAUC_test_score
+                        #     ws2.cell(row=l + 3 + gap*2, column=i + 2 + gap).value = ROCAUC_train_score
 
                         bacc_score_data_test[i, j, l, m] = BACC_test_score
                         bacc_score_data_train[i, j, l, m] = BACC_train_score
