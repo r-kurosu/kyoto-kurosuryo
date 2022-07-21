@@ -43,13 +43,13 @@ def wright_columns(ws, dataset):
     # 1
     ws.cell(row=2, column=1).value = "rho\\theta"
     ws.cell(row=2, column=1 + gap).value = "rho\\theta"
-    for i in range(len(rho_list)):
+    for i in range(len(theta_list)):
         ws.cell(row=2, column=i + 2).value = theta_list[i]
         ws.cell(row=2, column=i + 2 + gap).value = theta_list[i]
-    for i in range(len(theta_list)):
+    for i in range(len(rho_list)):
         ws.cell(row=i + 3, column=1).value = rho_list[i]
         ws.cell(row=i + 3, column=1 + gap).value = rho_list[i]
-    ws.cell(row=3 + len(theta_list), column=2).value = "(lambda=1)"
+    ws.cell(row=3 + len(lambda_list), column=2).value = "(lambda=1)"
 
     # 2
     ws.cell(row=2 + gap, column=1).value = "rh\\lambda"
