@@ -30,7 +30,6 @@ def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times):
     x, y = dt_tools.read_dataset(data_csv, value_text)
     x_df = x.reset_index(drop=True)
     y = pd.Series(y)
-    CIDs = pd.Series(list(x.index))
 
     # (TIMES)回 5-fold回す
     auc_test_scores = []
@@ -52,10 +51,29 @@ def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times):
             xgb_train = xgb.DMatrix(x_train, label=y_train)
             xgb_test = xgb.DMatrix(x_test, label=y_test)
             param = {
-                # 二値分類問題
+                # 1. 全体パラメータ
+                # "silent": 0,
+                
+                # 2.ブースターパラメータ
+                "max_depth": 6,  # デフォルト6
+                "min_child_weight": 1,  # デフォルト1
+                "eta": 0.1,  # 0.01~0.2が多いらしい
+                "tree_method": "exact",
+                "predictor": "cpu_predictor",
+                "lambda": 1,  # 重みに関するL"正則 デフォルト1
+                "alpha": 0,  # 重みに関するL1正則  # デフォルト0
+
+                # 3. 学習タスクパラメータ
                 'objective': 'binary:logistic',
+                # "objective": "reg:linear",
+                "eval_metric": "rmse",  # 損失関数 l(y, a)
+                "seed": 0
             }
-            model = xgb.train(param, xgb_train)
+            model = xgb.train(
+                param,
+                xgb_train,
+                num_boost_round=1
+            )
 
             y_pred_proba_train = model.predict(xgb_train)
             y_pred_train = np.where(y_pred_proba_train > 0.5, 1, 0)
