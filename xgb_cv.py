@@ -8,21 +8,21 @@ from sklearn.model_selection import train_test_split, cross_val_score, KFold
 from sklearn.metrics import roc_auc_score, balanced_accuracy_score, roc_curve
 import xgboost as xgb
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import StandardScaler
 
 import dt_tools, read_datasets
 
-# sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
-# warnings.simplefilter('ignore')
 CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 
 # マクロ定義
 TIMES = 10 # CVの回数（評価実験は10で行う）
 SEED = 1000 # 予備実験:0, 評価実験: 1000
 
+MAX_DEPTH = 6
+ETA = 0.1
+NUM_BOOST_ROUND = 10
 
-def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times):
+def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost):
     # 1. read data set
     data_csv = INPUT_CSV
     value_text = INPUT_TXT
@@ -55,9 +55,9 @@ def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times):
                 # "silent": 0,
                 
                 # 2.ブースターパラメータ
-                "max_depth": 6,  # デフォルト6
+                "max_depth": max_depth,  # デフォルト6
                 "min_child_weight": 1,  # デフォルト1
-                "eta": 0.1,  # 0.01~0.2が多いらしい
+                "eta": eta,  # 0.01~0.2が多いらしい
                 "tree_method": "exact",
                 "predictor": "cpu_predictor",
                 "lambda": 1,  # 重みに関するL"正則 デフォルト1
@@ -72,7 +72,7 @@ def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times):
             model = xgb.train(
                 param,
                 xgb_train,
-                num_boost_round=1
+                num_boost_round=boost
             )
 
             y_pred_proba_train = model.predict(xgb_train)
@@ -117,11 +117,11 @@ def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times):
     return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score
 
 
-def main(INPUT_CSV, INPUT_TXT, cv_times):
+def main(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost):
     if not dt_tools.check_exist_dataset_for_cv(INPUT_CSV, INPUT_TXT):
         return
 
-    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score= use_xgboost(INPUT_CSV, INPUT_TXT, cv_times)
+    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score= use_xgboost(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost)
 
     return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score
 
@@ -129,7 +129,7 @@ def main(INPUT_CSV, INPUT_TXT, cv_times):
 if __name__ == "__main__":
     INPUT_CSV, INPUT_TXT = read_datasets.read_data_list_for_cv()
     # エクセルシートを用意
-    wbname_all = dt_tools.prepare_output_file_for_sum()
+    wbname_all = dt_tools.prepare_output_file_for_XGB()
     wb_all = excel.Workbook()
     ws_all = wb_all.active
     dt_tools.wright_columns(ws_all)
@@ -141,7 +141,10 @@ if __name__ == "__main__":
             = main(
              INPUT_CSV=INPUT_CSV[i],
              INPUT_TXT=INPUT_TXT[i],
-             cv_times=TIMES
+             cv_times=TIMES,
+             max_depth=MAX_DEPTH,
+             eta=ETA,
+             boost=NUM_BOOST_ROUND
              )
         dt_tools.output_xlx(ws_all, i, INPUT_CSV[i], ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, depth=0)
         ws_all["A1"] = SEED

@@ -768,6 +768,17 @@ def prepare_output_file_for_sum():
     return file_name
 
 
+def prepare_output_file_for_XGB():
+    # 出力用のファイルを準備
+    now_time = datetime.datetime.now()
+    y_m_d = make_dir(now_time)
+    date_time = now_time.strftime('%Y%m%d-%H%M%S')
+
+    file_name = f"outputfile/XGB/{y_m_d}/{date_time}_sum.xlsx"
+
+    return file_name
+
+
 def prepare_output_file_for_test():
     # 出力用のファイルを準備
     now_time = datetime.datetime.now()
