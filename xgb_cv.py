@@ -20,9 +20,13 @@ SEED = 1000 # 予備実験:0, 評価実験: 1000
 
 MAX_DEPTH = 6
 ETA = 0.1
-NUM_BOOST_ROUND = 10
+NUM_BOOST_ROUND = 500
+WEIGHT = 1
+SUBSAMPLE = 1
+STEP = 0
 
-def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost):
+
+def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost, weight, subsample, step):
     # 1. read data set
     data_csv = INPUT_CSV
     value_text = INPUT_TXT
@@ -56,12 +60,14 @@ def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost):
                 
                 # 2.ブースターパラメータ
                 "max_depth": max_depth,  # デフォルト6
-                "min_child_weight": 1,  # デフォルト1
+                "min_child_weight": weight,  # デフォルト1
                 "eta": eta,  # 0.01~0.2が多いらしい
                 "tree_method": "exact",
                 "predictor": "cpu_predictor",
                 "lambda": 1,  # 重みに関するL"正則 デフォルト1
                 "alpha": 0,  # 重みに関するL1正則  # デフォルト0
+                "subsample": subsample,  # デフォルト1, 0~1
+                "max_delta_step": step,
 
                 # 3. 学習タスクパラメータ
                 'objective': 'binary:logistic',
@@ -72,10 +78,12 @@ def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost):
             model = xgb.train(
                 param,
                 xgb_train,
-                num_boost_round=boost
+                num_boost_round=boost,
+                # early_stopping_rounds=10,
             )
 
             y_pred_proba_train = model.predict(xgb_train)
+
             y_pred_train = np.where(y_pred_proba_train > 0.5, 1, 0)
             auc_train_score = roc_auc_score(y_train, y_pred_proba_train)
             bacc_train_score = balanced_accuracy_score(y_train, y_pred_train)
@@ -117,11 +125,11 @@ def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost):
     return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score
 
 
-def main(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost):
+def main(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost, weight, subsample, step):
     if not dt_tools.check_exist_dataset_for_cv(INPUT_CSV, INPUT_TXT):
         return
 
-    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score= use_xgboost(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost)
+    ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score= use_xgboost(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost, weight, subsample, step)
 
     return ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score
 
@@ -144,7 +152,10 @@ if __name__ == "__main__":
              cv_times=TIMES,
              max_depth=MAX_DEPTH,
              eta=ETA,
-             boost=NUM_BOOST_ROUND
+             boost=NUM_BOOST_ROUND,
+             weight=WEIGHT,
+             subsample=SUBSAMPLE,
+             step=STEP
              )
         dt_tools.output_xlx(ws_all, i, INPUT_CSV[i], ROCAUC_train_score, ROCAUC_test_score, BACC_train_score, BACC_test_score, depth=0)
         ws_all["A1"] = SEED
