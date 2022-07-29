@@ -460,6 +460,7 @@ def siki_1(l, z, z_p, r, r_p, s, s_p, rho):
         if z_p[j] <= z[l-1]:
             temp += 1
     if temp / l <= rho * s_p / s:
+    # if temp / l <= rho:
         return True
 
     return False
@@ -471,6 +472,7 @@ def siki_2(l, z, z_p, r, r_p, s, s_p, rho):
         if z[j] >= z_p[l-1]:
             temp += 1
     if temp / l <= rho * s / s_p:
+    # if temp / l <= rho:
         return True
 
     return False
@@ -718,6 +720,7 @@ def make_dir(now_time):
     p_file_ht = pathlib.Path("outputfile/CV/" + y_m_d + "/hyper_turning")
     p_file_ht_memo = pathlib.Path("outputfile/CV/" + y_m_d + "/ht_memo")
     p_file_for_test = pathlib.Path("outputfile/TEST/" + y_m_d)
+    p_file_for_xgb = pathlib.Path("outputfile/XGB/" + y_m_d)
 
     if not p_file.exists():
         p_file.mkdir()
@@ -727,6 +730,9 @@ def make_dir(now_time):
         p_file_ht_memo.mkdir()
     if not p_file_for_test.exists():
         p_file_for_test.mkdir()
+    if not p_file_for_xgb.exists():
+        p_file_for_xgb.mkdir()
+
     return y_m_d
 
 
