@@ -13,18 +13,19 @@ import sys
 import io
 
 
-depth_list = [3, 4, 5, 6, 7, 8]
-eta_list = [0.01, 0.05, 0.1, 0.2, 0.3, 0.5]
+depth_list = [4, 5, 6, 7, 8]
+eta_list = [0.01, 0.05, 0.1, 0.2, 0.5]
 boost_list = [500]
 weight_list = [0.1, 0.5, 1]
-subsample_list = [0.2, 0.5, 0.7, 1]
-step_list = [0, 1, 5, 10, 50]
+subsample_list = [0.2, 0.5, 0.7]
+step_list = [0, 1, 5]
 
 # depth_list = [0.05, 1]
 # eta_list = [0.1, 1]
 # boost_list = [1, 2]
 # depth_list = [0.05]
 # eta_list = [0.1]
+step_list = [1]
 
 CV_TIMES = 1
 

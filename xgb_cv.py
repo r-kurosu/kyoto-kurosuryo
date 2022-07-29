@@ -86,7 +86,9 @@ def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost, weight, s
 
             # find best alfa
             max_score = 0
-            for a in [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]:
+            alfa_list = list(range(100))
+            for a in alfa_list:
+                a = a/100
                 temp_score = balanced_accuracy_score(y_train, np.where(y_pred_proba_train > a, 1, 0))
                 if temp_score >= max_score:
                     max_score = temp_score
