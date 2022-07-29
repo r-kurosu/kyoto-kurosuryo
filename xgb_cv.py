@@ -90,7 +90,7 @@ def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost, weight, s
                 temp_score = balanced_accuracy_score(y_train, np.where(y_pred_proba_train > a, 1, 0))
                 if temp_score >= max_score:
                     max_score = temp_score
-                    alfa = i
+                    alfa = a
             # print(alfa)
 
             y_pred_train = np.where(y_pred_proba_train > alfa, 1, 0)
