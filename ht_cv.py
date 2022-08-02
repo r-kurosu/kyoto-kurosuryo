@@ -1,6 +1,7 @@
 import time
 
 import numpy as np
+import matplotlib.pyplot as plt
 
 import read_datasets, dt_for_cv
 import pathlib
@@ -108,6 +109,28 @@ def prepare_output_file(data_name):
     return file_name
 
 
+def plot_func_for_rho_list(train_scores, test_scores, data_name):
+    # train
+    plt.scatter(rho_list, train_scores)
+    plt.ylim(0, 1)
+    plt.title(f"train score ({data_name})")
+    plt.xlabel('rho')
+    plt.ylabel('score')
+    plt.grid()
+    plt.show()
+
+    # train
+    plt.scatter(rho_list, test_scores)
+    plt.ylim(0, 1)
+    plt.xlabel('rho')
+    plt.ylabel('score')
+    plt.title(f"test score ({data_name})")
+    plt.grid()
+    plt.show()
+
+    return
+
+
 def main():
     INPUT_CSV, INPUT_TXT = read_datasets.read_data_list_for_cv()
     wb_name = [0]*len(INPUT_CSV)
@@ -130,6 +153,9 @@ def main():
         bacc_score_data_train = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
         auc_score_data_test = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
         auc_score_data_train = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
+
+        train_scores = []
+        test_scores = []
 
         # --
         for i, rho in enumerate(rho_list):
@@ -165,6 +191,9 @@ def main():
                         auc_score_data_test[i, j, l, m] = ROCAUC_test_score
                         auc_score_data_train[i, j, l, m] = ROCAUC_train_score
 
+                        train_scores.append(BACC_train_score)
+                        test_scores.append(BACC_test_score)
+
                         ed_time = time.time()
                         print("time {:.1f}".format(ed_time - st_time))
 
@@ -194,6 +223,8 @@ def main():
         print(f"max test score (AUC) = {auc_max_test_score}, (rho={rho_list[auc_max_test_index[0]]}, theta={theta_list[auc_max_test_index[1]]})")
         print("計算時間 {:.1f}".format(ht_end_time - ht_start_time))
         print("*"*70)
+
+        plot_func_for_rho_list(train_scores, test_scores, data_name=data)
 
     return
 
