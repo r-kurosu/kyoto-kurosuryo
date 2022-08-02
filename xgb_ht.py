@@ -18,7 +18,7 @@ eta_list = [0.01, 0.05, 0.1, 0.2, 0.5]
 boost_list = [500]
 weight_list = [0.1, 0.5, 1]
 subsample_list = [0.2, 0.5, 0.7]
-step_list = [0, 1, 5]
+# step_list = [0, 1, 5]
 
 # depth_list = [0.05, 1]
 # eta_list = [0.1, 1]

@@ -18,12 +18,12 @@ CPLEX_PATH = "/Applications/CPLEX_Studio221/cplex/bin/x86-64_osx/cplex"
 TIMES = 10 # CVの回数（評価実験は10で行う）
 SEED = 1000 # 予備実験:0, 評価実験: 1000
 
-MAX_DEPTH = 6
-ETA = 0.1
+MAX_DEPTH = 4
+ETA = 0.01
 NUM_BOOST_ROUND = 500
-WEIGHT = 1
-SUBSAMPLE = 1
-STEP = 0
+WEIGHT = 0.5
+SUBSAMPLE = 0.2
+STEP = 1
 
 
 def use_xgboost(INPUT_CSV, INPUT_TXT, cv_times, max_depth, eta, boost, weight, subsample, step):
