@@ -21,7 +21,7 @@ rho_list = [0, 0.01, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5
 # theta_list = [0, 0.1, 0.3, 0.5, 0.7, 1]
 # lambda_list = [1, 2, 3, 4, 5, 6]
 # C_list = [1, 10, 100, 1000, 10000, 100000]
-# rho_list = [0.05, 1]
+# rho_list = [0, 0.05, 0.5, 1]
 # theta_list = [0.1, 1]
 # lambda_list = [1, 2]
 
@@ -109,24 +109,28 @@ def prepare_output_file(data_name):
     return file_name
 
 
-def plot_func_for_rho_list(train_scores, test_scores, data_name):
-    # train
-    plt.scatter(rho_list, train_scores)
-    plt.ylim(0, 1)
-    plt.title(f"train score ({data_name})")
-    plt.xlabel('rho')
-    plt.ylabel('score')
-    plt.grid()
-    plt.show()
+def edit_data_name(data_name):
+    name_list = data_name.split("/")
+    property_list = name_list[2].split("_")
+    name = property_list[0]
 
-    # train
-    plt.scatter(rho_list, test_scores)
+    return name
+
+
+def plot_func_for_rho_list(train_scores, test_scores, data_name):
+    name = edit_data_name(data_name)
+
+    plt.scatter(rho_list, train_scores, color="blue", label="train")
+    plt.scatter(rho_list, test_scores, color="orange", label="test")
     plt.ylim(0, 1)
-    plt.xlabel('rho')
-    plt.ylabel('score')
-    plt.title(f"test score ({data_name})")
+    plt.title(f"BACC score ({name})")
+    plt.xlabel(f'rho={rho_list}')
+    plt.ylabel('BACC score')
+    plt.legend()
     plt.grid()
-    plt.show()
+
+    plt.savefig(f"score_{name}.png")
+    # plt.show()
 
     return
 
