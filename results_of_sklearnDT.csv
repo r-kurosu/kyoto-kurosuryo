@@ -1,0 +1,17 @@
+Property,CON_score,all_score
+AhR, 0.75, 0
+AR, 0.75, 0
+AR_LBD, 0.85, 0
+ARE, 0.71, 0
+Aromatase, 0.75, 0
+ATAD5, 0.74, 0
+ER, 0.69, 0
+ER_LBD, 0.77, 0
+HSE, 0.63, 0
+p53, 0.75, 0
+PPAR_gamma, 0.67, 0
+MUTAG, 0.79, 0
+PTC_FM, 0.51, 0.52
+PTC_FR, 0.59, 0.56
+PTC_MM, 0.51, 0.51
+PTC_MR, 0.59, 0.58

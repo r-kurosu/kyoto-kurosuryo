@@ -1,6 +1,7 @@
 import time
 
 import numpy as np
+import pandas as pd
 import matplotlib.pyplot as plt
 
 import read_datasets, dt_for_cv
@@ -17,7 +18,7 @@ import io
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-rho_list = [0, 0.01, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.7, 1]
+# rho_list = [0, 0.01, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.7, 1]
 # theta_list = [0, 0.1, 0.3, 0.5, 0.7, 1]
 # lambda_list = [1, 2, 3, 4, 5, 6]
 # C_list = [1, 10, 100, 1000, 10000, 100000]
@@ -25,7 +26,7 @@ rho_list = [0, 0.01, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5
 # theta_list = [0.1, 1]
 # lambda_list = [1, 2]
 
-# rho_list = [0]
+rho_list = [0]
 theta_list = [0]
 
 lambda_list = [1]
@@ -112,17 +113,32 @@ def prepare_output_file(data_name):
 def edit_data_name(data_name):
     name_list = data_name.split("/")
     property_list = name_list[2].split("_")
-    name = property_list[0]
+    if len(property_list) == 4:
+        name = property_list[0]
+    else:
+        name = property_list[0] + "_" + property_list[1]
 
     return name
 
 
+def get_sklearn_results(name):
+    df = pd.read_csv("results_of_sklearnDT.csv", index_col=0)
+    sklearn_score = df.at[f"{name}", "CON_score"]
+
+    return sklearn_score
+
+
 def plot_func_for_rho_list(train_scores, test_scores, data_name):
     name = edit_data_name(data_name)
+    sklearn_score = get_sklearn_results(name)
 
     plt.scatter(rho_list, train_scores, color="blue", label="train")
     plt.scatter(rho_list, test_scores, color="orange", label="test")
-    plt.ylim(0, 1)
+    plt.hlines(sklearn_score, -0.1, 1.1, color="green", label=f"sklearn score ({sklearn_score})")
+
+    plt.xlim(-0.1, 1.1)
+    plt.ylim(min(test_scores) - 0.1, 1)
+
     plt.title(f"BACC score ({name})")
     plt.xlabel(f'rho={rho_list}')
     plt.ylabel('BACC score')
