@@ -28,8 +28,8 @@ LAMBDA = 1
 C = 100
 
 
-TIMES = 10 # CVの回数（評価実験は10で行う）
-SEED = 1000 # 予備実験:0, 評価実験: 1000
+TIMES = 5 # CVの回数（評価実験は10で行う）
+SEED = 0 # 予備実験:0, 評価実験: 1000
 
 
 def test_main(INPUT_CSV, INPUT_TXT, cv_times, rho_arg, theta_arg, lambda_arg, c_arg):

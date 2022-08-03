@@ -18,7 +18,7 @@ import io
 # sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 # sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
-# rho_list = [0, 0.01, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.7, 1]
+rho_list = [0, 0.01, 0.03, 0.05, 0.07, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
 # theta_list = [0, 0.1, 0.3, 0.5, 0.7, 1]
 # lambda_list = [1, 2, 3, 4, 5, 6]
 # C_list = [1, 10, 100, 1000, 10000, 100000]
@@ -26,7 +26,7 @@ import io
 # theta_list = [0.1, 1]
 # lambda_list = [1, 2]
 
-rho_list = [0]
+# rho_list = [0]
 theta_list = [0]
 
 lambda_list = [1]
@@ -35,7 +35,7 @@ C_list = [1]
 # C_list = random.sample(range(0, 10**5, 10), k=1000)
 # print(C_list)
 
-CV_TIMES = 1
+CV_TIMES = 5
 
 
 
@@ -78,6 +78,21 @@ def wright_columns(ws, dataset):
     ws.cell(row=3 + gap*2 + len(lambda_list), column=2).value = "(theta=0.1)"
 
     # ws.cell(row=12, column=2).value = dataset
+
+    return
+
+
+def wright_columns_for_rho(ws, dataset):
+    gap = 4
+    ws.cell(row=1, column=2).value = "test"
+    ws.cell(row=1, column=2 + gap).value = "train"
+
+    # 1
+    ws.cell(row=2, column=1).value = "rho"
+    ws.cell(row=2, column=1 + gap).value = "rho"
+    for i in range(len(rho_list)):
+        ws.cell(row=i + 3, column=1).value = rho_list[i]
+        ws.cell(row=i + 3, column=1 + gap).value = rho_list[i]
 
     return
 
@@ -164,10 +179,13 @@ def main():
         wb = excel.Workbook()
         ws = wb.active
         ws.title = "BACC score"
-        wright_columns(ws, data)
+        # wright_columns(ws, data)
+        wright_columns_for_rho(ws, data)
+
         wb.create_sheet(title="AUC score")
         ws2 = wb["AUC score"]
-        wright_columns(ws2, data)
+        # wright_columns(ws2, data)
+        wright_columns_for_rho(ws2, data)
 
         bacc_score_data_test = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
         bacc_score_data_train = np.zeros((len(rho_list), len(theta_list), len(lambda_list), len(C_list)))
